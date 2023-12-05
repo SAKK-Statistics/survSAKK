@@ -27,11 +27,11 @@
 fit <- survobject # Surfit object 
 xlab <- "Time"                                                                  # xlab:     Label x-axis
 ylab <- "Estiamted Survival Probability"                                        # ylab:     Label y-axis
-cex.lab <- 1                                                                    # cex.lab  Font Size for xlab and ylab.
+cex.lab <- 1                                                                    # cex.lab   Font Size for xlab and ylab.
 lty <- "solid"                                                                  # lty:      line-type 
 lwd <- "1"                                                                      # lwd:      line-width
-xlim <- seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time)))       # xlim:     seq(starting value,  end value, number of increment of the sequence)
-ylim <- seq(from = 0, to = 1, by = 0.25)                                        # ylim:     seq(starting value,  end value, number of increment of the sequence)
+xlim <- seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time)))       # xlim:     Set xlim based on the range, seq(starting value,  end value, number of increment of the sequence)
+ylim <- seq(from = 0, to = 1, by = 0.25)                                        # ylim:     Set ylim based on the range, seq(starting value,  end value, number of increment of the sequence)
 
 
 plot(
@@ -41,26 +41,32 @@ plot(
   lwd = lwd,
   ## Add censoring information with ticks
   ## Modify Layout
-  xaxs = "i", yaxs = "i",                  # start axis exactly from zero origin
-  xaxt = "n", yaxt = "n",                  # remove the original axes
-  bty = "n",                               # remove borders
-  ylim = range(ylim),                      # range of y coordinates 
-  xlim = range(xlim),                      # range of x coordinates
+  xaxs = "i", yaxs = "i",                  # Start axis exactly from zero origin
+  xaxt = "n", yaxt = "n",                  # Remove the original axes
+  bty = "n",                               # Remove borders
+  ylim = range(ylim),                      # Set y-axis limits 
+  xlim = range(xlim),                      # Set x-axis limits
   xlab = xlab,                             # Draw x label
   ylab = ylab,                             # Draw y label
-  cex.lab = cex.lab)                       # Label size
+  cex.lab = cex.lab                        # Label size
+)
+
 # Customize the x coordinates
-axis(side = 1,                             # specifies the side (1,2,3,4)
+axis(
+  side = 1,                                # Specifies the side (1,2,3,4)
      las = 0,                              # Rotate the labels
-     mgp = c(3,0.50,0),                     # Adjust the label position (axis title, axis label, axis line)
-     at = xlim,                            # specify tick mark position
-     labels = xlim)                        # Draw labels
+     mgp = c(3,0.50,0),                    # Adjust the label position (axis title, axis label, axis line)
+     at = xlim,                            # Specify tick mark position
+     labels = xlim                         # Draw labels
+)
+
 # Customize the y coordinates
-axis(side = 2,                             # specifies the side (1,2,3,4)
+axis(side = 2,                             # Specifies the side (1,2,3,4)
      las = 1,                              # Rotate the labels 
      mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
-     at = ylim,                            # specify tick mark position
-     labels = ylim)                        # Draw labels
+     at = ylim,                            # Specify tick mark position
+     labels = ylim                         # Draw labels
+)
 # Draw risk table
 # text(x = 0:xlim[2],                      # Starting point of the x values
 #      y = par("usr")[3] - 1,              # Starting point of the y values
@@ -87,6 +93,8 @@ survobject <- survival::survfit(Surv(time_mt, status) ~ sex, data = lung)
 survobject <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
 
 survobject <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
+
+survobject <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
 
 surv.plot(S = fit)
 
