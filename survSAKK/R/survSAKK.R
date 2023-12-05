@@ -24,7 +24,8 @@
 
 
 # adjustable parameters for the function
-fit <- survobject # Surfit object 
+fit <- survobject                                                               # Survfit object 
+col <- NULL                                                                     # col:      can accept a single value for color, or a vector of color values to set color(s)
 xlab <- "Time"                                                                  # xlab:     Label x-axis
 ylab <- "Estiamted Survival Probability"                                        # ylab:     Label y-axis
 cex.lab <- 1                                                                    # cex.lab   Font Size for xlab and ylab.
@@ -34,9 +35,30 @@ xlim <- seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time)))       
 ylim <- seq(from = 0, to = 1, by = 0.25)                                        # ylim:     Set ylim based on the range, seq(starting value,  end value, number of increment of the sequence)
 
 
+
+
+#- 
+
+# Extract data from fit
+data <- as.data.frame(eval(fit$call$data)) 
+
+# Colouring KM-Plot
+if (is.null(col)){
+  if(is.null(fit$strata)){
+    col <- "black"
+    group <- ""
+  } else {
+    col <- as.factor(names(fit$strata))
+    group <- names(fit$strata)
+  }
+} 
+
+
+# KM-Plot
 plot(
   ## Plot the survival curve
   fit,
+  col = col,                               
   lty = lty,
   lwd = lwd,
   ## Add censoring information with ticks
@@ -77,6 +99,7 @@ axis(side = 2,                             # Specifies the side (1,2,3,4)
 
 
 
+# - Testing
 
 # Testing the function
 library(survival)
