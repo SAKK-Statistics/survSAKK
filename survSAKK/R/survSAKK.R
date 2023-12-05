@@ -24,20 +24,18 @@
 
 
 # adjustable parameters for the function
-fit <- survobject                                                               # Survfit object 
-col <- NULL                                                                     # col:      can accept a single value for color, or a vector of color values to set color(s)
-xlab <- "Time"                                                                  # xlab:     Label x-axis
-ylab <- "Estiamted Survival Probability"                                        # ylab:     Label y-axis
-cex.lab <- 1                                                                    # cex.lab   Font Size for xlab and ylab.
-lty <- "solid"                                                                  # lty:      line-type 
-lwd <- "1"                                                                      # lwd:      line-width
+fit <- survobject                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton. 
+col <- NULL                                                                     # col:      Can accept a single value for color, or a vector of color values to set color(s)
+xlab <- "Time"                                                                  # xlab:     Label given to x-axis
+ylab <- "Estiamted Survival Probability"                                        # ylab:     Label given to y-axis
+cex.lab <- 1                                                                    # cex.lab   A numeric value specifying the size of the xlab and ylab.
+lty <- "solid"                                                                  # lty:      A vector of integers specifying line types for each curve. The default value is 1.
+lwd <- "1"                                                                      # lwd:      A vector of numeric values for line widths. The default value is 1.
 xlim <- seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time)))       # xlim:     Set xlim based on the range, seq(starting value,  end value, number of increment of the sequence)
 ylim <- seq(from = 0, to = 1, by = 0.25)                                        # ylim:     Set ylim based on the range, seq(starting value,  end value, number of increment of the sequence)
 
 
-
-
-#- 
+#- Function:
 
 # Extract data from fit
 data <- as.data.frame(eval(fit$call$data)) 
@@ -55,7 +53,7 @@ if (is.null(col)){
 
 
 # KM-Plot
-plot(
+base::plot(
   ## Plot the survival curve
   fit,
   col = col,                               
@@ -74,7 +72,7 @@ plot(
 )
 
 # Customize the x coordinates
-axis(
+graphics::axis(
   side = 1,                                # Specifies the side (1,2,3,4)
      las = 0,                              # Rotate the labels
      mgp = c(3,0.50,0),                    # Adjust the label position (axis title, axis label, axis line)
@@ -83,7 +81,7 @@ axis(
 )
 
 # Customize the y coordinates
-axis(side = 2,                             # Specifies the side (1,2,3,4)
+graphics::axis(side = 2,                             # Specifies the side (1,2,3,4)
      las = 1,                              # Rotate the labels 
      mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
      at = ylim,                            # Specify tick mark position
