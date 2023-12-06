@@ -26,7 +26,7 @@
 # adjustable parameters for the function
 
 fit <- survobject                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton. 
-grid <- TRUE                                                                    # gird:     A logical value for drawing Grid. (TRUE or FALSE) 
+grid <- FALSE                                                                   # gird:     A logical value for drawing Grid. (TRUE or FALSE) 
 col <- NULL                                                                     # col:      Can accept a single value for color, or a vector of color values to set color(s)
 # Layout options
 main <- NULL                                                                    # main:     Title
@@ -35,6 +35,7 @@ xlab <- "Time"                                                                  
 ylab <- "Estiamted Survival Probability"                                        # ylab:     Label given to y-axis
 cex.lab <- 1                                                                    # cex.lab   A numeric value specifying the size of the xlab and ylab.
 cex.axis <- 0.75                                                                # cex.axis  A numeric values specifying the size of the axis size. 
+bty <- "l"                                                                      # bty       The type of box to be drawn around the plot ("n","o","7","L","C","U")
 lty <- "solid"                                                                  # lty:      A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
 lwd <- 1                                                                        # lwd:      A vector of numeric values for line widths.
 xlim <- seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time)))       # xlim:     Set xlim based on the range, seq(starting value,  end value, number of increment of the sequence)
@@ -90,7 +91,7 @@ base::plot(
   ## Modify Layout
   xaxs = "i", yaxs = "i",                  # Start axis exactly from zero origin
   xaxt = "n", yaxt = "n",                  # Remove the original axes
-  bty = "l",                               # Remove borders
+  bty = bty,                               # Remove borders
   ylim = range(ylim),                      # Set y-axis limits 
   xlim = range(xlim),                      # Set x-axis limits
   xlab = xlab,                             # Draw x label
@@ -99,15 +100,13 @@ base::plot(
 )
 
 # Draw grid
-grid <- 2
 if (is.logical(grid)) {
   if (grid == TRUE) {
-    grid()
+    grid(nx = length(xlim)-1, ny = length(ylim)-1)
   } 
 } else {
-  warning("Warning: gird option expecting TRUE or FALSE as an argument!")
+  stop("`gird` expecting TRUE or FALSE as an argument!")
 }
-
 
 # Customize the x coordinates
 graphics::axis(
@@ -130,11 +129,11 @@ graphics::axis(side = 2,                   # Specifies the side (1,2,3,4)
 
 # Add legend to plot
 if (show.legend == TRUE){
-legend(x = legend.position[1],
-       y = legend.position[2],
-       legend = legend.legend ,
-       bty = "n",
-       col = col,
+legend(x = legend.position[1],             # the x coordinates to positon the legend
+       y = legend.position[2],             # the y coordinates to positoin the legend
+       legend = legend.legend ,            # the text of the legend
+       bty = "n",                          # boarder type for legend fixed as "none"
+       col = col,                           
        lty = lty,
        text.font = legend.text.font,
        title = legend.title,
