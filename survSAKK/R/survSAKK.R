@@ -26,6 +26,7 @@
 # adjustable parameters for the function
 
 fit <- survobject                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton. 
+grid <- TRUE                                                                    # gird:     A logical value for drawing Grid. (TRUE or FALSE) 
 col <- NULL                                                                     # col:      Can accept a single value for color, or a vector of color values to set color(s)
 # Layout options
 main <- NULL                                                                    # main:     Title
@@ -43,9 +44,10 @@ show.legend <- TRUE                                                             
 legend.position <- "topright"                                                   # legend.position    Position of the legend, c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center".
 legend.legend <- NULL                                                           # legend.legend      A vector of string given to legend.
 legend.text.font <- 1                                                           # legend.text.font   An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic)
-legend.cex <- 0.75                                                                 # legend.cex         expansion factor for legend text.
+legend.cex <- 0.75                                                              # legend.cex         expansion factor for legend text.
 legend.title <- NULL                                                            # legend.title       The title of the legend
 legend.title.cex <- 1                                                           # legend.title.cex   expansion factor for legend title. 
+#...                                                                            # Other graphical parameters of the plot() function arguments
 
 #- Function:
 
@@ -88,13 +90,24 @@ base::plot(
   ## Modify Layout
   xaxs = "i", yaxs = "i",                  # Start axis exactly from zero origin
   xaxt = "n", yaxt = "n",                  # Remove the original axes
-  bty = "n",                               # Remove borders
+  bty = "l",                               # Remove borders
   ylim = range(ylim),                      # Set y-axis limits 
   xlim = range(xlim),                      # Set x-axis limits
   xlab = xlab,                             # Draw x label
   ylab = ylab,                             # Draw y label
   cex.lab = cex.lab                        # Label size
 )
+
+# Draw grid
+grid <- 2
+if (is.logical(grid)) {
+  if (grid == TRUE) {
+    grid()
+  } 
+} else {
+  warning("Warning: gird option expecting TRUE or FALSE as an argument!")
+}
+
 
 # Customize the x coordinates
 graphics::axis(
