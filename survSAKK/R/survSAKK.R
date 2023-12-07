@@ -28,7 +28,10 @@
 
 fit <- survobject                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
 conf.int <- TRUE                                                                # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals. 
-                                                                                #           Alternatively, this can be a numeric value giving the desired confidence level.
+                                                                                # Alternatively, this can be a numeric value giving the desired confidence level.
+conf.band <- FALSE                                                              # conf.band: Mapping the specified coverage probability
+conf.band.col <- NULL                                                           # conf.band.col: Can accept a single value for color, or a vector of color values to set color(s)
+conf.band.alpha <- 0.25                                                         # conf.band.alpha: Modiy color transparency for the confidence band.
 conf.type = "log-log"                                                           # conf.type Specifies the transformation. Default: "log-log". Options ("log", "log-log", "plain", "logit", "arcsin")
 grid <- FALSE                                                                   # gird:     A logical value for drawing Grid. (TRUE or FALSE) 
 col <- NULL                                                                     # col:      Can accept a single value for color, or a vector of color values to set color(s)
@@ -56,12 +59,12 @@ legend.title.cex <- 1                                                           
 
 #- Function:
 
-# Preparation
+# Preparation 
 
-# Extract data from fit
-data <- as.data.frame(eval(fit$call$data)) 
+data <- as.data.frame(eval(fit$call$data))                              # Extract data from fit
+stratum <- max(1, length(fit$strata))                                   # Extract no. of stratum
 
-# Define color for KM-Plot if not manually specified
+# Define colour for KM-Plot if not manually specified
 if (is.null(col)){
   if(is.null(fit$strata)){
     col <- "black"
@@ -70,7 +73,7 @@ if (is.null(col)){
   }
 } 
 
-# Extract Group names for legend if not manually specifed
+# Extract Group names for legend if not manually specified
 if(is.null(fit$strata)){
   group <- "Cohort"
   legend.legend <- group                                                          
@@ -80,7 +83,9 @@ if(is.null(fit$strata)){
 }
 
 
-# KM-Plot
+# KM-Plot ####
+
+## Base Plot ####
 base::plot(
   ## Plot the survival curve
   fit,
@@ -103,15 +108,6 @@ base::plot(
   cex.lab = cex.lab                        # Label size
 )
 
-# Draw grid
-if (is.logical(grid)) {
-  if (grid == TRUE) {
-    grid(nx = length(xlim)-1, ny = length(ylim)-1)
-  } 
-} else {
-  stop("`gird` expecting TRUE or FALSE as an argument!")
-}
-
 # Customize the x coordinates
 graphics::axis(
   side = 1,                                # Specifies the side (1,2,3,4)
@@ -131,26 +127,96 @@ graphics::axis(side = 2,                   # Specifies the side (1,2,3,4)
                cex.axis = cex.axis                   # Axis size  
 )
 
-# Add 95% CI
+## Add confidence band ####
+
+if(conf.band == TRUE){
+  # Check if conf.band.col is defined otherwise print error.
+  if(is.null(conf.band.col)){
+    stop("Please specify `conf.band.col` to display the confidence band")
+  } else {
+    mapping <- 0 
+    # Loop for drawing polygons
+    for (i in 1:stratum) {
+      # More than 1 group
+      if(stratum >1){
+        mapping[length(mapping)+1] <- mapping[i]+fit$strata[i]
+      }    
+      # Only 1 group
+      if(stratum == 1){
+        mapping[length(mapping)+1] <- length(fit$time)
+      }              
+      
+      # Extract x_coordinates from survfit object
+      # Creates empty vector to store x coordiantes and
+      # put the same 'x_values' in two subsequent element of the vector
+      x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
+      x_coordinates <- rep(NA, length(x_values)*2)                                       
+      x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values       
+      x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
+      # Insert value in the last element of the vector 
+      x_coordinates[length(x_coordinates)] <- x_values[length(x_values)] 
+      x_coordinates <- c(x_coordinates, rev(x_coordinates))
+      
+      # Extract y_coordiantes from surfvit object
+      # Creates empty vector to store y coordiantes and
+      # put the same 'lower' in two subsequent element of the vector
+      lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
+      y_coordinates_lwr <- rep(NA, length(lower)*2)
+      y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
+      y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
+      
+      # Creates empty vector to store y coordiantes and
+      # put the same 'upper' in two subsequent element of the vector
+      upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
+      y_coordinates_upr <- rep(NA, length(upper)*2)
+      y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
+      y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
+      y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
+      
+      y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T) # wieso ?
+      
+      # Draw CI band
+      polygon(x = x_coordinates,
+              y = y_coordinates,
+              col = adjustcolor(conf.band.col[i], alpha.f =  conf.band.alpha), border = FALSE)
+      # Draw CI band
+    }
+  }
+}
 
 
 # Add median line
-median_time <- median(fit$time[fit$surv == 0.5])
+#median_time <- median(fit$time[fit$surv == 0.5])
 
-# Add legend to plot
-if (show.legend == TRUE){
-  legend(x = legend.position[1],             # the x coordinates to positon the legend
-         y = legend.position[2],             # the y coordinates to positoin the legend
-         legend = legend.legend ,            # the text of the legend
-         bty = "n",                          # boarder type for legend fixed as "none"
-         col = col,                           
-         lty = "solid",                      # line type for legend fixed as "solid"
-         text.font = legend.text.font,
-         title = legend.title,
-         cex = legend.cex,
-         title.cex = legend.title.cex
-  )
+
+## Draw grid #### 
+if (is.logical(grid)) {
+  if (grid == TRUE) {
+    grid(nx = length(xlim)-1, ny = length(ylim)-1)
+  } 
+} else {
+  stop("`gird` expecting TRUE or FALSE as an argument!")
 }
+
+## Add legend to plot  ####
+if (is.logical(show.legend)){
+  if(show.legend == TRUE){
+    legend(x = legend.position[1],             # the x coordinates to positon the legend
+           y = legend.position[2],             # the y coordinates to positoin the legend
+           legend = legend.legend ,            # the text of the legend
+           bty = "n",                          # boarder type for legend fixed as "none"
+           col = col,                           
+           lty = "solid",                      # line type for legend fixed as "solid"
+           text.font = legend.text.font,
+           title = legend.title,
+           cex = legend.cex,
+           title.cex = legend.title.cex
+    )
+  }
+} else {
+  stop("`show.legend` expecting TRUE or FAlSE as an argument!")
+}
+
 
 # Draw risk table
 # text(x = 0:xlim[2],                      # Starting point of the x values
@@ -179,3 +245,4 @@ survobject <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
 survobject <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
 
 survobject <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
+
