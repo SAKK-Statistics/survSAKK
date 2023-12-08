@@ -54,16 +54,16 @@ legend.legend <- NULL                                                           
 legend.text.font <- 1                                                           # legend.text.font   An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic)
 legend.cex <- 0.75                                                              # legend.cex         expansion factor for legend text.
 legend.title <- NULL                                                            # legend.title       The title of the legend
-legend.title.cex <- 1                                                           # legend.title.cex   expansion factor for legend title. 
-#...                                                                            # Other graphical parameters of the plot() function arguments
+legend.title.cex <- 1                                                           # legend.title.cex   expansion factor for legend title.                                                                     # Other graphical parameters of the plot() function arguments
 
 #- Function:
 
-# Preparation 
+# Preparation ####
 
-data <- as.data.frame(eval(fit$call$data))                              # Extract data from fit
-stratum <- max(1, length(fit$strata))                                   # Extract no. of stratum
-
+# Extract data from fit
+data <- as.data.frame(eval(fit$call$data))                              
+# Extract no. of stratum
+stratum <- max(1, length(fit$strata))                                   
 # Define colour for KM-Plot if not manually specified
 if (is.null(col)){
   if(is.null(fit$strata)){
