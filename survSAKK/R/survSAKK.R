@@ -77,14 +77,15 @@ if (is.null(col)){
 
 
 # Extract Group names for legend if not manually specified
-if(is.null(fit$strata)){
-  group <- "Cohort"
-  legend.legend <- group
-} else {
-  group <- levels(as.factor(names(fit$strata)))
-  legend.legend <- group
+if (is.null(legend.legend)){
+  if(is.null(fit$strata)){
+    group <- "Cohort"
+    legend.legend <- group
+  } else {
+    group <- levels(as.factor(names(fit$strata)))
+    legend.legend <- group
+  }
 }
-
 
 # Main Function ####
 
@@ -218,20 +219,11 @@ if (is.logical(show.legend)){
 ## Add Segments ####
 
 # optional parameter
-segment.fixed_timepoint <-  NULL                  # segment.fixed_timepoint: Draw segment(s) at a fixed time point (e.g. "6 month")
-segment.fixed_quantile <- NULL                    # segment.fixed_quantile: Draw segment(s) at a fixed quantile (e.g. "median")
-segment.col <- "black"                            # segment.col:
-segment.lty <- "dashed"                           # segment.lty:
-segment.lwd <- 1                                  # segment.lwd:
-
-
-## Add Segments ####
-
-# optional parameter
 segment.type <- 1                           # segment.tye: A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)
 segment.timepoint <-  NULL                  # segment.timepoint: Draw segment(s) at a fixed time point (e.g. "6 month")
 segment.quantile <- NULL                    # segment.quantile: Draw segment(s) at a fixed quantile (e.g. "median")
 segment.col <- "black"                      # segment.col: Can accept a single value for color, or a vector of color values to set color(s)
+segment.text.col <- "black"                 # segment.text.col: Can accept a single value for color, or a vector of color values to set color(s)
 segment.lty <- "dashed"                     # segment.lty: A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
 segment.lwd <- 1                            # segment.lwd: A vector of numeric values for line widths
 
@@ -276,7 +268,7 @@ if (segment.type == 3){
                          round(segment_x$upper,digits = 2),
                          "]"),
          pos = 4,
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
   # Code for segment at a specific time point
@@ -313,7 +305,7 @@ if (segment.type == 3){
                          round(segment_y$upper, digits = 2),
                          "]"),
          pos = 4,  # Position the text to the left of the point
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
@@ -346,7 +338,7 @@ if (segment.type == 3){
                          round(segment_x$upper,digits = 2),
                          "]"),
          pos = 4,
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -407,7 +399,7 @@ if (segment.type == 3){
                          round(segment_x$upper,digits = 2),
                          "]"),
          pos = 4,
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -435,7 +427,7 @@ if (segment.type == 3){
                          round(segment_y$upper, digits = 2),
                          "]"),
          pos = 4,  # Position the text to the left of the point
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
@@ -468,7 +460,7 @@ if (segment.type == 3){
                          round(segment_x$upper,digits = 2),
                          "]"),
          pos = 4,
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -496,7 +488,7 @@ if (segment.type == 3){
                          round(segment_y$upper, digits = 2),
                          "]"),
          pos = 4,  # Position the text to the left of the point
-         col = segment.col,
+         col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
