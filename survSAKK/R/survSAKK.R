@@ -27,7 +27,7 @@
 # adjustable parameters for the function
 
 fit <- survobject                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
-conf.int <- 0.95                                                                # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
+conf.int <- fit$conf.int                                                                # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
                                                                                 # Alternatively, this can be a numeric value giving the desired confidence level.
 conf.band <- FALSE                                                              # conf.band: Mapping the specified coverage probability
 conf.band.col <- NULL                                                           # conf.band.col: Can accept a single value for color, or a vector of color values to set color(s)
@@ -217,90 +217,290 @@ if (is.logical(show.legend)){
 
 ## Add Segments ####
 
-#NOTE: Im moment CI statistik nur für 0.95 wird berechnet. Drawing aber für unterschiedliche CI möglich
-# Als nächster Schritt anpassen. durch call(fit) und dann das mit dem korrekten CI berechnen.
-
 # optional parameter
 segment.fixed_timepoint <-  NULL                  # segment.fixed_timepoint: Draw segment(s) at a fixed time point (e.g. "6 month")
 segment.fixed_quantile <- NULL                    # segment.fixed_quantile: Draw segment(s) at a fixed quantile (e.g. "median")
-segment.col <- "black"                         # segment.col:
+segment.col <- "black"                            # segment.col:
 segment.lty <- "dashed"                           # segment.lty:
 segment.lwd <- 1                                  # segment.lwd:
 
 
-if (!is.null(segment.fixed_quantile ) & is.null(segment.fixed_timepoint)){
-  # Code for segment at a specific quantile
-  segment_y <- segment.fixed_quantile
-  segment_x <- quantile(fit,probs = 1 - segment_y)
+## Add Segments ####
 
-  # Vertical Line
-  segments(x0 = segment_x$quantile,
-           y0 = 0,
-           x1 = segment_x$quantile,
-           y1 = segment_y,
-           col = segment.col,
-           lty = segment.lty,
-           lwd = segment.lwd)
+# optional parameter
+segment.type <- 1                           # segment.tye: A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)
+segment.timepoint <-  NULL                  # segment.timepoint: Draw segment(s) at a fixed time point (e.g. "6 month")
+segment.quantile <- NULL                    # segment.quantile: Draw segment(s) at a fixed quantile (e.g. "median")
+segment.col <- "black"                      # segment.col: Can accept a single value for color, or a vector of color values to set color(s)
+segment.lty <- "dashed"                     # segment.lty: A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
+segment.lwd <- 1                            # segment.lwd: A vector of numeric values for line widths
 
-  # Horizontal Line
-  segments(x0 = 0,
-           y0 = segment_y,
-           x1 = segment_x$quantile,
-           y1 = segment_y,
-           col = segment.col,
-           lty = segment.lty,
-           lwd = segment.lwd )
-  # Annotate the segment (Survival time at specific quantile)
-  text(x = segment_x$quantile - 0.05,
-       y = segment_y + 0.01,
-       labels = paste0("Survival rate [", conf.int, "%]",
-                       "\n",
-                       round(segment_x$quantile,digits = 2),
-                       " [",
-                       round(segment_x$lower,digits = 2),
-                       ",",
-                       round(segment_x$upper,digits = 2),
-                       "]"),
-       pos = 4,
-       col = segment.col,
-       cex = 0.75) #legend.cex? or segment.cex?
-} else if (is.null(segment.fixed_quantile ) & !is.null(segment.fixed_timepoint)){
+
+segment.quantile <- 0.5
+#segment.timepoint <- 1.5
+
+if (segment.type == 3){
+  ### Draw vertical and horizontal segment. ####
+  if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
+    # Code for segment at a specific quantile
+    segment_y <- segment.quantile
+    segment_x <- quantile(fit,probs = 1 - segment_y)
+
+    # Vertical Line
+    segments(x0 = segment_x$quantile,
+             y0 = 0,
+             x1 = segment_x$quantile,
+             y1 = segment_y,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd)
+
+    # Horizontal Line
+    segments(x0 = 0,
+             y0 = segment_y,
+             x1 = segment_x$quantile,
+             y1 = segment_y,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd )
+
+    # Annotate the segment (Survival time at specific quantile)
+    text(x = segment_x$quantile - 0.05,
+         y = segment_y + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_x$quantile,digits = 2),
+                         " [",
+                         round(segment_x$lower,digits = 2),
+                         ",",
+                         round(segment_x$upper,digits = 2),
+                         "]"),
+         pos = 4,
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
   # Code for segment at a specific time point
-  segment_x <- segment.fixed_timepoint
-  segment_y <- summary(fit,time = segment_x)
+    segment_x <- segment.timepoint
+    segment_y <- summary(fit,time = segment_x)
 
-  # Vertical Line
-  segments(x0 = segment_x,
-           y0 = 0,
-           x1 = segment_x,
-           y1 = segment_y$surv,
-           col = segment.col,
-           lty = segment.lty,
-           lwd = segment.lwd)
-  # Horizontal Line
-  segments(x0 = 0,
-           y0 = segment_y$surv,
-           x1 = segment_x,
-           y1 = segment_y$surv,
-           col = segment.col,
-           lty = segment.lty,
-           lwd = segment.lwd )
-  # Annotate the segment (Survival rate at specific timepoint)
-  text(x = segment_x - 0.05,
-       y = segment_y$surv + 0.01,
-       labels = paste0("Survival rate [", segment_y$conf.int, "%]",
-                       "\n",
-                       round(segment_y$surv, digits = 2),
-                       " [",
-                       round(segment_y$lower, digits = 2),
-                       ",",
-                       round(segment_y$upper, digits = 2),
-                       "]"),
-       pos = 4,  # Position the text to the left of the point
-       col = segment.col,
-       cex = 0.75) #legend.cex? or segment.cex?
-} else if (!is.null(segment.fixed_quantile) & !is.null(segment.fixed_timepoint)) {
-  stop("`segment.fixed_timepoint` AND `segment.fixed_quantile ` not applicable! Choose one of the two options.")
+    # Vertical Line
+    segments(x0 = segment_x,
+             y0 = 0,
+             x1 = segment_x,
+             y1 = segment_y$surv,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd)
+
+    # Horizontal Line
+    segments(x0 = 0,
+             y0 = segment_y$surv,
+             x1 = segment_x,
+             y1 = segment_y$surv,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd )
+
+    # Annotate the segment (Survival rate at specific timepoint)
+    text(x = segment_x - 0.05,
+         y = segment_y$surv + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_y$surv, digits = 2),
+                         " [",
+                         round(segment_y$lower, digits = 2),
+                         ",",
+                         round(segment_y$upper, digits = 2),
+                         "]"),
+         pos = 4,  # Position the text to the left of the point
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
+    stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
+  }
+} else if (segment.type == 2){
+  ### Draw specified segment ####
+  if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
+    # Code for segment at a specific quantile
+    segment_y <- segment.quantile
+    segment_x <- quantile(fit,probs = 1 - segment_y)
+
+    # Horizontal Line
+    segments(x0 = 0,
+             y0 = segment_y,
+             x1 = segment_x$quantile,
+             y1 = segment_y,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd )
+
+    # Annotate the segment (Survival time at specific quantile)
+    text(x = segment_x$quantile - 0.05,
+         y = segment_y + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_x$quantile,digits = 2),
+                         " [",
+                         round(segment_x$lower,digits = 2),
+                         ",",
+                         round(segment_x$upper,digits = 2),
+                         "]"),
+         pos = 4,
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
+    # Code for segment at a specific time point
+    segment_x <- segment.timepoint
+    segment_y <- summary(fit,time = segment_x)
+
+    # Vertical Line
+    segments(x0 = segment_x,
+             y0 = 0,
+             x1 = segment_x,
+             y1 = segment_y$surv,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd)
+
+    # Annotate the segment (Survival rate at specific timepoint)
+    text(x = segment_x - 0.05,
+         y = segment_y$surv + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_y$surv, digits = 2),
+                         " [",
+                         round(segment_y$lower, digits = 2),
+                         ",",
+                         round(segment_y$upper, digits = 2),
+                         "]"),
+         pos = 4,  # Position the text to the left of the point
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
+    stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
+  }
+}else if (segment.type == 2){
+  ### Draws specified segment ####
+  if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
+    # Code for segment at a specific quantile
+    segment_y <- segment.quantile
+    segment_x <- quantile(fit,probs = 1 - segment_y)
+
+    # Horizontal Line
+    segments(x0 = 0,
+             y0 = segment_y,
+             x1 = segment_x$quantile,
+             y1 = segment_y,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd )
+
+    # Annotate the segment (Survival time at specific quantile)
+    text(x = segment_x$quantile - 0.05,
+         y = segment_y + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_x$quantile,digits = 2),
+                         " [",
+                         round(segment_x$lower,digits = 2),
+                         ",",
+                         round(segment_x$upper,digits = 2),
+                         "]"),
+         pos = 4,
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
+    # Code for segment at a specific time point
+    segment_x <- segment.timepoint
+    segment_y <- summary(fit,time = segment_x)
+
+    # Vertical Line
+    segments(x0 = segment_x,
+             y0 = 0,
+             x1 = segment_x,
+             y1 = segment_y$surv,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd)
+
+    # Annotate the segment (Survival rate at specific time point)
+    text(x = segment_x - 0.05,
+         y = segment_y$surv + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_y$surv, digits = 2),
+                         " [",
+                         round(segment_y$lower, digits = 2),
+                         ",",
+                         round(segment_y$upper, digits = 2),
+                         "]"),
+         pos = 4,  # Position the text to the left of the point
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
+    stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
+  }
+} else if (segment.type == 1){
+  ## Draws specified segment (full bandwidth).
+  if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
+    # Code for segment at a specific quantile
+    segment_y <- segment.quantile
+    segment_x <- quantile(fit,probs = 1 - segment_y)
+
+    # Horizontal Line
+    segments(x0 = 0,
+             y0 = segment_y,
+             x1 = max(xlim),
+             y1 = segment_y,
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd )
+
+    # Annotate the segment (Survival time at specific quantile)
+    text(x = segment_x$quantile - 0.05,
+         y = segment_y + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_x$quantile,digits = 2),
+                         " [",
+                         round(segment_x$lower,digits = 2),
+                         ",",
+                         round(segment_x$upper,digits = 2),
+                         "]"),
+         pos = 4,
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
+    # Code for segment at a specific time point
+    segment_x <- segment.timepoint
+    segment_y <- summary(fit,time = segment_x)
+
+    # Vertical Line
+    segments(x0 = segment_x,
+             y0 = 0,
+             x1 = segment_x,
+             y1 = max(ylim),
+             col = segment.col,
+             lty = segment.lty,
+             lwd = segment.lwd)
+
+    # Annotate the segment (Survival rate at specific timepoint)
+    text(x = segment_x - 0.05,
+         y = segment_y$surv + 0.01,
+         labels = paste0("Survival rate [", fit$conf.int, "%]",
+                         "\n",
+                         round(segment_y$surv, digits = 2),
+                         " [",
+                         round(segment_y$lower, digits = 2),
+                         ",",
+                         round(segment_y$upper, digits = 2),
+                         "]"),
+         pos = 4,  # Position the text to the left of the point
+         col = segment.col,
+         cex = 0.75) #legend.cex? or segment.cex?
+  } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
+    stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
+  }
 }
 
 ## Draw risk table ####
@@ -319,8 +519,8 @@ lung$sex <- factor(lung$sex,
 
 survobject <- survival::survfit(Surv(time_mt, status) ~ sex, data = lung)
 
-survobject <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
-
 survobject <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
 
 survobject <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
+
+survobject <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
