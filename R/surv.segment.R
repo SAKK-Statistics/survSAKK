@@ -8,11 +8,11 @@ segment.text.col <- col                     # segment.text.col: Can accept a sin
 segment.lty <- "dashed"                     # segment.lty: A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
 segment.lwd <- 1                            # segment.lwd: A vector of numeric values for line widths
 segment.text.cex <- 0.75                    # segment.text.cex: A numeric values specifying the size of the segment text size
-segment.text.main <- NULL
-segment.text.position <- c("right")    # segment.text.position: Position of the legend, c(x,y), "bottomleft"
+segment.text.main <- NULL                   # Title of segment text
+segment.text.position <- "bottomleft"         # segment.text.position: Position of the legend, c(x,y), "bottomleft"
 segment.text.space <- 0.03                  # segment.text.space: Spacing between the text
 
-#segment.quantile <- 0.30
+segment.quantile <- 0.50
 #segment.text.main <- c("Survival time (95%) ")
 
 # Define different options for segment text  ####
@@ -39,13 +39,18 @@ if (length(segment.text.position) == 2) {
 }
 
 # Determining the y coordinate for each segment text ####
-for (i in 2:stratum){
-  text_ypos[i] <- text_ypos[i-1]+ segment.text.space
+if (stratum == 1){
+  text_ypos[i] <- text_ypos
+} else {
+  for (i in stratum-1){
+  text_ypos[i+1] <- text_ypos[i]+ segment.text.space
+  }
 }
+
 
 # Draw segments ####
 if (segment.type == 3){
-  ### Drawing vertical and horizontal segments ####
+  ###segment.type 3: Drawing vertical and horizontal segments ####
   if (!is.null(segment.quantile) & is.null(segment.timepoint)){
     # Code for segment at a specific quantile
     segment_y <- segment.quantile
@@ -120,7 +125,7 @@ if (segment.type == 3){
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
   }
 } else if (segment.type == 2){
-  ### Draw specified segment ####
+  ### segment.type 2: Draw specified segment ####
   if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
     # Code for segment at a specific quantile
     segment_y <- segment.quantile
@@ -176,7 +181,7 @@ if (segment.type == 3){
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
   }
 } else if (segment.type == 1){
-  ### Drawing specified segment (full bandwidth) ####
+  ### segment.type 1: Drawing specified segment (full bandwidth) ####
   if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
     # Code for segment at a specific quantile
     segment_y <- segment.quantile

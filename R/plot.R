@@ -1,7 +1,7 @@
-fit <- survobject                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
+fit <- survobject1                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
 conf.int <- fit$conf.int                                                                # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
 # Alternatively, this can be a numeric value giving the desired confidence level.
-conf.band <- FALSE                                                              # conf.band: Mapping the specified coverage probability
+conf.band <- TRUE                                                              # conf.band: Mapping the specified coverage probability
 conf.band.col <- NULL                                                           # conf.band.col: Can accept a single value for color, or a vector of color values to set color(s)
 conf.band.alpha <- 0.25                                                         # conf.band.alpha: Modiy color transparency for the confidence band.
 conf.type = "log-log"                                                           # conf.type Specifies the transformation. Default: "log-log". Options ("log", "log-log", "plain", "logit", "arcsin")
@@ -28,7 +28,6 @@ legend.cex <- 0.75                                                              
 legend.title <- NULL                                                            # legend.title       The title of the legend
 legend.title.cex <- 1                                                           # legend.title.cex   expansion factor for legend title.
 
-xlim <- seq(0,3)
 #- Function:
 
 # Preparation ####
@@ -110,58 +109,61 @@ graphics::axis(side = 2,                   # Specifies the side (1,2,3,4)
 
 ## Add confidence band ####
 if(conf.band == TRUE){
-  # Check if conf.band.col is defined otherwise print error.
-  if(is.null(conf.band.col)){
-    stop("Please specify `conf.band.col` to display the confidence band")
-  } else {
-    mapping <- 0
-    # Loop for drawing polygons
-    for (i in 1:stratum) {
-      # More than 1 group
-      if(stratum >1){
-        mapping[length(mapping)+1] <- mapping[i]+fit$strata[i]
-      }
-      # Only 1 group
-      if(stratum == 1){
-        mapping[length(mapping)+1] <- length(fit$time)
-      }
+  mapping <- 0
+  # Loop for drawing polygons
+  for (i in 1:stratum) {
+    # More than 1 group
+    if(stratum >1){
+      mapping[length(mapping)+1] <- mapping[i]+fit$strata[i]
+    }
+    # Only 1 group
+    if(stratum == 1){
+      mapping[length(mapping)+1] <- length(fit$time)
+    }
 
-      # Extract x_coordinates from survfit object
-      # Creates empty vector to store x coordiantes and
-      # put the same 'x_values' in two subsequent element of the vector
-      x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
-      x_coordinates <- rep(NA, length(x_values)*2)
-      x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
-      x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
-      # Insert value in the last element of the vector
-      x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
-      x_coordinates <- c(x_coordinates, rev(x_coordinates))
+    # Extract x_coordinates from survfit object
+    # Creates empty vector to store x coordiantes and
+    # put the same 'x_values' in two subsequent element of the vector
+    x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
+    x_coordinates <- rep(NA, length(x_values)*2)
+    x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
+    x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
+    # Insert value in the last element of the vector
+    x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
+    x_coordinates <- c(x_coordinates, rev(x_coordinates))
 
-      # Extract y_coordiantes from surfvit object
-      # Creates empty vector to store y coordiantes and
-      # put the same 'lower' in two subsequent element of the vector
-      lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
-      y_coordinates_lwr <- rep(NA, length(lower)*2)
-      y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
-      y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
+    # Extract y_coordiantes from surfvit object
+    # Creates empty vector to store y coordiantes and
+    # put the same 'lower' in two subsequent element of the vector
+    lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
+    y_coordinates_lwr <- rep(NA, length(lower)*2)
+    y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
+    y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
 
-      # Creates empty vector to store y coordiantes and
-      # put the same 'upper' in two subsequent element of the vector
-      upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
-      y_coordinates_upr <- rep(NA, length(upper)*2)
-      y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
-      y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
-      y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
+    # Creates empty vector to store y coordiantes and
+    # put the same 'upper' in two subsequent element of the vector
+    upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
+    y_coordinates_upr <- rep(NA, length(upper)*2)
+    y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
+    y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
+    y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
 
-      y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T) # wieso ?
+    y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T) # wieso ?
 
-      # Draw CI band
-      polygon(x = x_coordinates,
-              y = y_coordinates,
-              col = adjustcolor(conf.band.col[i], alpha.f =  conf.band.alpha), border = FALSE)
+    # Draw CI band
+    if(is.null(conf.band.col)){
+      graphics::polygon(x = x_coordinates,
+                        y = y_coordinates,
+                        col = adjustcolor(col = col[i], alpha.f =  conf.band.alpha), border = FALSE)
+    }
+    else{
+      graphics::polygon(x = x_coordinates,
+                        y = y_coordinates,
+                        col = adjustcolor(col = conf.band.col[i], alpha.f =  conf.band.alpha), border = FALSE)
     }
   }
 }
+
 
 ## Draw grid ####
 if (is.logical(grid)) {
@@ -209,5 +211,23 @@ survobject3 <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
 survobject4 <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
 
 # test through Package
-surv.plot(fit = survobject1,conf.band = TRUE, conf.band.col = c("black","red"))
+survSAKK::surv.plot(fit = survobject1)
+survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3))
+survSAKK::surv.plot(fit = survobject3, xlim = seq(0,3))
+survSAKK::surv.plot(fit = survobject4)
+survSAKK::surv.plot(fit = survobject2,segment.type = 3, segment.quantile = 0.5, segment.text.position = "bottomleft")
+survSAKK::surv.plot(fit = survobject2,segment.type = 3, segment.quantile = 0.25, segment.text.position =c(0.5,0.25))
+surv.plot(fit = survobject2, 
+          col =c("pink","lightblue"),
+          segment.type = 3, 
+          segment.quantile = 0.5, 
+          segment.text.position = "right")
+
+surv.plot(fit = survobject2, 
+          col =c("purple","green"),
+          segment.type = 3, 
+          segment.timepoint = 1.5, 
+          segment.text.position = "right", 
+          segment.col = c("black","grey"),
+          conf.band.col = c("red","yellow"))
           
