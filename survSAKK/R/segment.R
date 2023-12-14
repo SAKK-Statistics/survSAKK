@@ -12,9 +12,9 @@ segment.text.main <- NULL
 segment.text.position <- c("right")    # segment.text.position: Position of the legend, c(x,y), "bottomleft"
 segment.text.space <- 0.03                  # segment.text.space: Spacing between the text
 
-segment.quantile <- 0.50
-#segment.timepoint <- 1.5
-segment.text.main <- c("Survival time (95%) ")
+#segment.quantile <- 0.30
+segment.timepoint <- 1.5
+#segment.text.main <- c("Survival time (95%) ")
 
 # Define different options for segment text  ####
 if (length(segment.text.position) == 2) {
@@ -239,7 +239,17 @@ if (segment.type == 3){
 if (!is.null(segment.text.main)){
   text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
        col = "black", cex = segment.text.cex)
-}
+} else if (is.null(segment.text.main) & !is.null(segment.quantile)){
+  if (segment.quantile == 0.5){
+    text(text_xpos, max(text_ypos) + segment.text.space, label = paste0("Median [95%]"), pos = pos,
+         col = "black", cex = segment.text.cex)
+  } else {text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
+       col = "black", cex = segment.text.cex)
+  }
+} else if (is.null(segment.text.main) & !is.null(segment.timepoint)){
+    text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+         col = "black", cex = segment.text.cex)
+  }
 
 
 
