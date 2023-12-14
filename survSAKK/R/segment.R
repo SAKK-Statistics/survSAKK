@@ -1,6 +1,6 @@
 
 # optional parameter
-segment.type <- 1                           # segment.tye: A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)
+segment.type <- 3                           # segment.tye: A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)
 segment.timepoint <-  NULL                  # segment.timepoint: Draw segment(s) at a fixed time point (e.g. "6 month")
 segment.quantile <- NULL                    # segment.quantile: Draw segment(s) at a fixed quantile (e.g. "median")
 segment.col <- "#666666"                    # segment.col: Can accept a single value for color, or a vector of color values to set color(s)
@@ -9,28 +9,42 @@ segment.lty <- "dashed"                     # segment.lty: A vector of string sp
 segment.lwd <- 1                            # segment.lwd: A vector of numeric values for line widths
 segment.text.cex <- 0.75                    # segment.text.cex: A numeric values specifying the size of the segment text size
 segment.text.main <- NULL
-segment.text.position <- c("bottomleft")    # segment.text.position: Position of the legend, c(x,y), "bottomleft"
+segment.text.position <- c("right")    # segment.text.position: Position of the legend, c(x,y), "bottomleft"
 segment.text.space <- 0.03                  # segment.text.space: Spacing between the text
 
-#segment.quantile <- 0.50
-segment.timepoint <- 1.5
-segment.text.main <- c("Survival Time (95%) ")
+segment.quantile <- 0.50
+#segment.timepoint <- 1.5
+segment.text.main <- c("Survival time (95%) ")
 
-# Annotate the segment
+# Define different options for segment text  ####
 if (length(segment.text.position) == 2) {
   # If it's a numeric vector (x, y coordinates)
   text_xpos <- segment.text.position[1]
   text_ypos <- segment.text.position[2]
+  # Position the text below of the specified (x,y)
+  pos <- 1
 } else if (segment.text.position == "bottomleft") {
-  # If it's a string "bottomleft"
-  text_ypos <- 0.05
-  text_xpos <- 0
+  text_ypos <- 0.03
+  text_xpos <- min(xlim)
+  # Position the text to the right of the specified (x,y)
+  pos <- 4
+} else if (segment.text.position == "left"){
+  text_ypos <- 0.53
+  text_xpos <- min(xlim)
+  pos <- 4
+} else if (segment.text.position == "right"){
+  text_ypos <- 0.53
+  text_xpos <- max(xlim)
+  # Position the text to the left of the specified (x,y)
+  pos <- 2
 }
 
+# Determining the y coordinate for each segment text ####
 for (i in 2:stratum){
   text_ypos[i] <- text_ypos[i-1]+ segment.text.space
 }
 
+# Draw segments ####
 if (segment.type == 3){
   ### Drawing vertical and horizontal segments ####
   if (!is.null(segment.quantile) & is.null(segment.timepoint)){
@@ -65,7 +79,7 @@ if (segment.type == 3){
                          ",",
                          round(segment_x$upper,digits = 2),
                          "]"),
-         pos = 4,                                                               # position to the right of the specifiex (x,y)
+         pos = pos,
          col = segment.text.col,
          cex = segment.text.cex)
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
@@ -100,7 +114,7 @@ if (segment.type == 3){
                          ",",
                          round(segment_y$upper, digits = 2),
                          "]"),
-         pos = 4,  # Position the text to the left of the point
+         pos = pos,
          col = segment.text.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
@@ -130,7 +144,7 @@ if (segment.type == 3){
                          ",",
                          round(segment_x$upper,digits = 2),
                          "]"),
-         pos = 4,                                                               # position to the left of the specifiex (x,y)
+         pos = pos,
          col = segment.text.col,
          cex = segment.text.cex)
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
@@ -156,7 +170,7 @@ if (segment.type == 3){
                          ",",
                          round(segment_y$upper, digits = 2),
                          "]"),
-         pos = 4,  # Position the text to the left of the point
+         pos = pos,
          col = segment.col,
          cex = 0.75) #legend.cex? or segment.cex?
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
@@ -187,7 +201,7 @@ if (segment.type == 3){
                          ",",
                          round(segment_x$upper,digits = 2),
                          "]"),
-         pos = 4,                                                               # Position the text to the right of the specified (x,y)
+         pos = pos,
          col = segment.text.col,
          cex = segment.text.cex)
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
@@ -213,7 +227,7 @@ if (segment.type == 3){
                          ",",
                          round(segment_y$upper, digits = 2),
                          "]"),
-         pos = 4,                                                               # Position the text to the left of the specified (x,y)
+         pos = pos,                                                               # Position the text to the left of the specified (x,y)
          col = segment.text.col,
          cex = segment.text.cex)
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
@@ -221,9 +235,9 @@ if (segment.type == 3){
   }
 }
 
-# Draw title stat
+# Draw title for segment text ####
 if (!is.null(segment.text.main)){
-  text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = 4,
+  text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
        col = "black", cex = segment.text.cex)
 }
 
