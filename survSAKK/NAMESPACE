@@ -3,3 +3,6 @@
 export(surv.plot)
 import(survival)
 importFrom(grDevices,adjustcolor)
+importFrom(graphics,segments)
+importFrom(graphics,text)
+importFrom(stats,quantile)

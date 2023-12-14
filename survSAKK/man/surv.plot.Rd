@@ -7,7 +7,7 @@
 surv.plot(
   fit,
   conf.int = fit$conf.int,
-  conf.band = FALSE,
+  conf.band = TRUE,
   conf.band.col = NULL,
   conf.band.alpha = 0.25,
   conf.type = "log-log",
@@ -30,7 +30,18 @@ surv.plot(
   legend.text.font = 1,
   legend.cex = 0.75,
   legend.title = NULL,
-  legend.title.cex = 1
+  legend.title.cex = 1,
+  segment.type = 3,
+  segment.timepoint = NULL,
+  segment.quantile = NULL,
+  segment.text.main = NULL,
+  segment.text.position = "right",
+  segment.col = "#666666",
+  segment.text.col = col,
+  segment.lty = "dashed",
+  segment.lwd = 1,
+  segment.text.cex = 0.75,
+  segment.text.space = 0.03
 )
 }
 \arguments{
@@ -85,6 +96,28 @@ surv.plot(
 \item{legend.title}{The title of the legend}
 
 \item{legend.title.cex}{Expansion factor for legend title}
+
+\item{segment.type}{A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)}
+
+\item{segment.timepoint}{A single value or a vector of fixed time points of segment(s)}
+
+\item{segment.quantile}{A single value ore a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)}
+
+\item{segment.text.main}{Title of segment text}
+
+\item{segment.text.position}{Position of the legend (c(x,y), "bottomleft", "left", "right")}
+
+\item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+
+\item{segment.text.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+
+\item{segment.lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)}
+
+\item{segment.lwd}{A vector of numeric values for line widths}
+
+\item{segment.text.cex}{A numeric values specifying the size of the segment text size}
+
+\item{segment.text.space}{Spacing between the text in unit of x-coordinates}
 }
 \description{
 Plot publication ready Kaplan-Meier plot using the results from \code{survival::survfit()}.
