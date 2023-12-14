@@ -8,7 +8,7 @@ surv.plot(
   fit,
   conf.int = fit$conf.int,
   conf.band = TRUE,
-  conf.band.col = NULL,
+  conf.band.col = col,
   conf.band.alpha = 0.25,
   conf.type = "log-log",
   grid = FALSE,
