@@ -1,12 +1,12 @@
 fit <- survobject1                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
-conf.int <- fit$conf.int                                                                # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
+conf.int <- fit$conf.int                                                         # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
 # Alternatively, this can be a numeric value giving the desired confidence level.
-conf.band <- TRUE                                                              # conf.band: Mapping the specified coverage probability
-conf.band.col <- NULL                                                           # conf.band.col: Can accept a single value for color, or a vector of color values to set color(s)
-conf.band.alpha <- 0.25                                                         # conf.band.alpha: Modiy color transparency for the confidence band.
+conf.band <- TRUE                                                               # conf.band: Mapping the specified coverage probability
+conf.band.col <- NULL                                                           # conf.band.col: Can accept a single value for colour, or a vector of colour values to set color(s)
+conf.band.alpha <- 0.25                                                         # conf.band.alpha: Modify colour transparency for the confidence band.
 conf.type = "log-log"                                                           # conf.type Specifies the transformation. Default: "log-log". Options ("log", "log-log", "plain", "logit", "arcsin")
 grid <- FALSE                                                                   # gird:     A logical value for drawing Grid. (TRUE or FALSE)
-col <- NULL                                                                     # col:      Can accept a single value for color, or a vector of color values to set color(s)
+col <- NULL                                                                     # col:      Can accept a single value for colour, or a vector of colour values to set colour(s)
 # Layout options
 main <- NULL                                                                    # main:     Title
 sub <- NULL                                                                     # sub:      Subtitle
@@ -32,10 +32,19 @@ legend.title.cex <- 1                                                           
 
 # Preparation ####
 
-# Extract data from fit
+## Extract data from fit ####
 data <- as.data.frame(eval(fit$call$data))
 
-# Extract no. of stratum
+## Recalculate survival object ####
+# Note: Recalculation is done to be sure that the survival object is correct
+# for plotting with the desired CI and transformation.
+
+  # recalculate the fit object based on defined `conf.type`
+  fit$call$conf.type <- conf.type
+  # recaclulate the fit object based on defined `conf.int`
+  fit$call$conf.int <- conf.int
+
+## Extract no. of stratum ####
 stratum <- max(1, length(fit$strata))
 
 # Define colour for KM-Plot if not manually specified
@@ -215,16 +224,16 @@ survSAKK::surv.plot(fit = survobject1)
 survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), legend.legend = c("Female","Male"))
 survSAKK::surv.plot(fit = survobject3, xlim = seq(0,3))
 survSAKK::surv.plot(fit = survobject4)
-survSAKK::surv.plot(fit = survobject2,segment.type = 3, segment.timepoint = 0.5, segment.text.position = "left")
-survSAKK::surv.plot(fit = survobject2,segment.type = 3, segment.quantile = 0.5, segment.text.position = "bottomleft")
-survSAKK::surv.plot(fit = survobject2,segment.type = 3, segment.quantile = 0.25, segment.text.position =c(0.5,0.25))
-surv.plot(fit = survobject2, 
+survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.timepoint = 0.5, segment.text.position = "left")
+survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.quantile = 0.5, segment.text.position = "bottomleft")
+survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.quantile = 0.25, segment.text.position =c(0.35,0.4))
+survSAKK::surv.plot(fit = survobject2, 
           col =c("pink","lightblue"),
           segment.type = 3, 
           segment.quantile = 0.5, 
           segment.text.position = "right")
 
-surv.plot(fit = survobject2, 
+survSAKK::surv.plot(fit = survobject2, 
           col =c("purple","green"),
           segment.type = 3, 
           segment.timepoint = 1.5, 

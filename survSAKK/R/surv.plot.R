@@ -9,7 +9,7 @@
 #'
 #' Plot publication ready Kaplan-Meier plot using the results from `survival::survfit()`.
 #'
-#' @param fit An object of class `survfit`, usually returned by the `survfit` function.
+#' @param fit An object of class `survfit`, usually returned by the `survfit` function
 #' @param conf.int specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.
 #' @param conf.band Mapping the specified coverage probability
 #' @param conf.band.col Can accept a single value for colour, or a vector of colour values to set colour(s)
@@ -37,7 +37,7 @@
 #' @param legend.title.cex Expansion factor for legend title
 #' @param segment.type A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)
 #' @param segment.timepoint A single value or a vector of fixed time points of segment(s)
-#' @param segment.quantile A single value ore a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)
+#' @param segment.quantile A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)
 #' @param segment.col Can accept a single value for colour, or a vector of colour values to set colour(s)
 #' @param segment.text.col Can accept a single value for colour, or a vector of colour values to set colour(s)
 #' @param segment.lty A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)
@@ -107,6 +107,15 @@ surv.plot <- function(
 
   ## Extract data from fit ####
   data <- as.data.frame(eval(fit$call$data))
+
+  ## Recalculate survival object ####
+  # Note: Recalculation is done to be sure that the survival object is correct
+  # for plotting with the desired CI and transformation.
+
+    # recalculate the fit object based on defined `conf.type`
+    fit$call$conf.type <- conf.type
+    # recalculate the fit object based on defined `conf.int`
+    fit$call$conf.int <- conf.int
 
   ## Extract no. of stratum ####
   stratum <- max(1, length(fit$strata))
