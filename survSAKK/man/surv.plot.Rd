@@ -45,7 +45,7 @@ surv.plot(
 )
 }
 \arguments{
-\item{fit}{An object of class \code{survfit}, usually returned by the \code{survfit} function.}
+\item{fit}{An object of class \code{survfit}, usually returned by the \code{survfit} function}
 
 \item{conf.int}{specifies the coverage probability. (FALSE, TRUE using 95\% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.}
 
@@ -101,7 +101,7 @@ surv.plot(
 
 \item{segment.timepoint}{A single value or a vector of fixed time points of segment(s)}
 
-\item{segment.quantile}{A single value ore a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)}
+\item{segment.quantile}{A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)}
 
 \item{segment.text.main}{Title of segment text}
 
