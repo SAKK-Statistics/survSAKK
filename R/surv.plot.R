@@ -1,4 +1,5 @@
-fit <- survobject1                                                               # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
+fit <- survobject1                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
+mark.censoring <- TRUE                                                          # mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
 conf.int <- fit$conf.int                                                         # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
 # Alternatively, this can be a numeric value giving the desired confidence level.
 conf.band <- TRUE                                                               # conf.band: Mapping the specified coverage probability
@@ -43,6 +44,9 @@ data <- as.data.frame(eval(fit$call$data))
   fit$call$conf.type <- conf.type
   # recaclulate the fit object based on defined `conf.int`
   fit$call$conf.int <- conf.int
+  
+
+fit <- eval(fit$call)
 
 ## Extract no. of stratum ####
 stratum <- max(1, length(fit$strata))
@@ -85,6 +89,8 @@ base::plot(
   lty = lty,
   lwd = lwd,
   ## Add censoring information with ticks
+  mark.time = mark.censoring,
+  pch = c("I"),
   ## Modify Layout
   xaxs = "i", yaxs = "i",                  # Start axis exactly from zero origin
   xaxt = "n", yaxt = "n",                  # Remove the original axes
@@ -203,7 +209,7 @@ if (is.logical(show.legend)){
 }
 
 
-# For testing Puropose
+# For testing Puropose ---------------------------------------------------------
 
 lung <- survival::lung
 lung$time_yr <- lung$time/365.25
@@ -227,11 +233,13 @@ survSAKK::surv.plot(fit = survobject4)
 survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.timepoint = 0.5, segment.text.position = "left")
 survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.quantile = 0.5, segment.text.position = "bottomleft")
 survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.quantile = 0.25, segment.text.position =c(0.35,0.4))
-survSAKK::surv.plot(fit = survobject2, 
+survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), 
           col =c("pink","lightblue"),
           segment.type = 3, 
           segment.quantile = 0.5, 
-          segment.text.position = "right")
+          segment.text.position = "none")
+
+survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.timepoint = 0.5, segment.text.position = "none")
 
 survSAKK::surv.plot(fit = survobject2, 
           col =c("purple","green"),
@@ -240,4 +248,3 @@ survSAKK::surv.plot(fit = survobject2,
           segment.text.position = "right", 
           segment.col = c("black","grey"),
           conf.band.col = c("red","yellow"))
-          

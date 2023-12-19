@@ -9,10 +9,11 @@ segment.lty <- "dashed"                     # segment.lty: A vector of string sp
 segment.lwd <- 1                            # segment.lwd: A vector of numeric values for line widths
 segment.text.cex <- 0.75                    # segment.text.cex: A numeric values specifying the size of the segment text size
 segment.text.main <- NULL                   # Title of segment text
-segment.text.position <- "bottomleft"         # segment.text.position: Position of the legend, c(x,y), "bottomleft"
+segment.text.position <- "none"             # segment.text.position: Position of the legend, c(x,y), "bottomleft", ...
 segment.text.space <- 0.03                  # segment.text.space: Spacing between the text
 
-segment.quantile <- 0.50
+segment.timepoint <- 10
+#segment.quantile <- 0.50
 #segment.text.main <- c("Survival time (95%) ")
 
 # Define different options for segment text  ####
@@ -74,18 +75,20 @@ if (segment.type == 3){
              lty = segment.lty,
              lwd = segment.lwd )
 
-    # Annotate the segment (Survival time at specific quantile)
-    text(x = text_xpos,
-         y = text_ypos,
-         labels = paste0(round(segment_x$quantile,digits = 2),
-                         " [",
-                         round(segment_x$lower,digits = 2),
-                         ",",
-                         round(segment_x$upper,digits = 2),
-                         "]"),
-         pos = pos,
-         col = segment.text.col,
-         cex = segment.text.cex)
+    # Annotate the segment
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_x$quantile,digits = 2),
+                             " [",
+                             round(segment_x$lower,digits = 2),
+                             ",",
+                             round(segment_x$upper,digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.text.col,
+             cex = segment.text.cex)
+      }
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
     segment_x <- segment.timepoint
@@ -110,17 +113,19 @@ if (segment.type == 3){
              lwd = segment.lwd )
 
     # Annotate the segment
-    text(x = text_xpos,
-         y = text_ypos,
-         labels = paste0(round(segment_y$surv, digits = 2),
-                         " [",
-                         round(segment_y$lower, digits = 2),
-                         ",",
-                         round(segment_y$upper, digits = 2),
-                         "]"),
-         pos = pos,
-         col = segment.text.col,
-         cex = 0.75) #legend.cex? or segment.cex?
+    if (segment.text.position != "none"){
+      text(x = text_xpos,
+           y = text_ypos,
+           labels = paste0(round(segment_y$surv, digits = 2),
+                           " [",
+                           round(segment_y$lower, digits = 2),
+                           ",",
+                           round(segment_y$upper, digits = 2),
+                           "]"),
+           pos = pos,
+           col = segment.text.col,
+           cex = 0.75)
+    }
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
   }
@@ -139,18 +144,19 @@ if (segment.type == 3){
              col = segment.col,
              lty = segment.lty,
              lwd = segment.lwd )
-
-    text(x = text_xpos,
-         y = text_ypos,
-         labels = paste0(round(segment_x$quantile,digits = 2),
-                         " [",
-                         round(segment_x$lower,digits = 2),
-                         ",",
-                         round(segment_x$upper,digits = 2),
-                         "]"),
-         pos = pos,
-         col = segment.text.col,
-         cex = segment.text.cex)
+    if (segment.text.position != "none"){
+      text(x = text_xpos,
+           y = text_ypos,
+           labels = paste0(round(segment_x$quantile,digits = 2),
+                           " [",
+                           round(segment_x$lower,digits = 2),
+                           ",",
+                           round(segment_x$upper,digits = 2),
+                           "]"),
+           pos = pos,
+           col = segment.text.col,
+           cex = segment.text.cex)
+    }
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
     segment_x <- segment.timepoint
@@ -165,18 +171,20 @@ if (segment.type == 3){
              lty = segment.lty,
              lwd = segment.lwd)
 
-    # Annotate the segment (Survival rate at specific timepoint)
-    text(x = text_xpos,
-         y = text_ypos,
-         labels = paste0(round(segment_y$surv, digits = 2),
-                         " [",
-                         round(segment_y$lower, digits = 2),
-                         ",",
-                         round(segment_y$upper, digits = 2),
-                         "]"),
-         pos = pos,
-         col = segment.col,
-         cex = 0.75) #legend.cex? or segment.cex?
+    # Annotate the segment
+    if (segment.text.position != "none"){
+      text(x = text_xpos,
+           y = text_ypos,
+           labels = paste0(round(segment_y$surv, digits = 2),
+                           " [",
+                           round(segment_y$lower, digits = 2),
+                           ",",
+                           round(segment_y$upper, digits = 2),
+                           "]"),
+           pos = pos,
+           col = segment.col,
+           cex = 0.75)
+    }
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
   }
@@ -197,17 +205,19 @@ if (segment.type == 3){
              lwd = segment.lwd )
 
     # Annotate the segment
-    text(x = text_xpos,
-         y = text_ypos,
-         labels = paste0(round(segment_x$quantile,digits = 2),
-                         " [",
-                         round(segment_x$lower,digits = 2),
-                         ",",
-                         round(segment_x$upper,digits = 2),
-                         "]"),
-         pos = pos,
-         col = segment.text.col,
-         cex = segment.text.cex)
+    if (segment.text.position != "none"){
+      text(x = text_xpos,
+           y = text_ypos,
+           labels = paste0(round(segment_x$quantile,digits = 2),
+                           " [",
+                           round(segment_x$lower,digits = 2),
+                           ",",
+                           round(segment_x$upper,digits = 2),
+                           "]"),
+           pos = pos,
+           col = segment.text.col,
+           cex = segment.text.cex)
+    }
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
     segment_x <- segment.timepoint
@@ -223,37 +233,40 @@ if (segment.type == 3){
              lwd = segment.lwd)
 
     # Annotate the segment
-    text(x = text_xpos,
-         y = text_ypos,
-         labels = paste0(round(segment_y$surv, digits = 2),
-                         " [",
-                         round(segment_y$lower, digits = 2),
-                         ",",
-                         round(segment_y$upper, digits = 2),
-                         "]"),
-         pos = pos,                                                               # Position the text to the left of the specified (x,y)
-         col = segment.text.col,
-         cex = segment.text.cex)
+    if (segment.text.position != "none"){
+      text(x = text_xpos,
+           y = text_ypos,
+           labels = paste0(round(segment_y$surv, digits = 2),
+                           " [",
+                           round(segment_y$lower, digits = 2),
+                           ",",
+                           round(segment_y$upper, digits = 2),
+                           "]"),
+           pos = pos,                                                               # Position the text to the left of the specified (x,y)
+           col = segment.text.col,
+           cex = segment.text.cex)
+    }
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
   }
 }
 
 # Draw title for segment text ####
-if (!is.null(segment.text.main)){
-  text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
-       col = "black", cex = segment.text.cex)
-} else if (is.null(segment.text.main) & !is.null(segment.quantile)){
-  if (segment.quantile == 0.5){
-    text(text_xpos, max(text_ypos) + segment.text.space, label = paste0("Median [95%]"), pos = pos,
+if (segment.text.position != "none"){
+  if (!is.null(segment.text.main)){
+    text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
          col = "black", cex = segment.text.cex)
-  } else {text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
-       col = "black", cex = segment.text.cex)
-  }
-} else if (is.null(segment.text.main) & !is.null(segment.timepoint)){
-    text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+  } else if (is.null(segment.text.main) & !is.null(segment.quantile)){
+    if (segment.quantile == 0.5){
+      text(text_xpos, max(text_ypos) + segment.text.space, label = paste0("Median [95%]"), pos = pos,
+           col = "black", cex = segment.text.cex)
+    } else {text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
          col = "black", cex = segment.text.cex)
+    }
+  } else if (is.null(segment.text.main) & !is.null(segment.timepoint)){
+      text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+           col = "black", cex = segment.text.cex)
   }
-
+}
 
 

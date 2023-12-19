@@ -10,7 +10,8 @@
 #' Plot publication ready Kaplan-Meier plot using the results from `survival::survfit()`.
 #'
 #' @param fit An object of class `survfit`, usually returned by the `survfit` function
-#' @param conf.int specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.
+#' @param mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
+#' @param conf.int Specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.
 #' @param conf.band Mapping the specified coverage probability
 #' @param conf.band.col Can accept a single value for colour, or a vector of colour values to set colour(s)
 #' @param conf.band.alpha Modify colour transparency for the confidence band
@@ -44,7 +45,7 @@
 #' @param segment.lwd A vector of numeric values for line widths
 #' @param segment.text.cex A numeric values specifying the size of the segment text size
 #' @param segment.text.main Title of segment text
-#' @param segment.text.position Position of the legend (c(x,y), "bottomleft", "left", "right")
+#' @param segment.text.position Position of the legend (c(x,y), "bottomleft", "left", "right", "none")
 #' @param segment.text.space Spacing between the text in unit of x-coordinates
 #'
 #' @export
@@ -61,6 +62,7 @@
 
 surv.plot <- function(
     fit,
+    mark.censoring = TRUE,
     # Confidence Interval options
     conf.int = fit$conf.int,
     conf.band = TRUE,
@@ -103,8 +105,23 @@ surv.plot <- function(
     segment.text.space = 0.03
 ){
 
-  # Extract Information from survfit object ####
+  # Function for rounding p-value ####
+  ## two significant digit e.g. p = 0.43 or 0.057
+  ## if 0.001 > p > 0.0001, then round to one significant digit
+  ## else p < 0.0001
 
+  round.pval <- function(x){
+    if (x < 0.0001){
+      pval <- "< 0.0001"
+    } else if (x <= 0.001 && x >= 0.0001){
+      pval <- format(signif(x, digits = 1), scientific = FALSE)
+    } else {
+      pval <- format(signif(x, digits = 2), scientific = FALSE)
+    }
+    return(pval)
+  }
+
+  # Extract Information from survfit object ####
   ## Extract data from fit ####
   data <- as.data.frame(eval(fit$call$data))
 
@@ -116,6 +133,8 @@ surv.plot <- function(
     fit$call$conf.type <- conf.type
     # recalculate the fit object based on defined `conf.int`
     fit$call$conf.int <- conf.int
+
+    fit <- eval(fit$call)
 
   ## Extract no. of stratum ####
   stratum <- max(1, length(fit$strata))
@@ -154,6 +173,9 @@ surv.plot <- function(
     col = col,
     lty = lty,
     lwd = lwd,
+    ## Add censoring information with ticks
+    mark.time = mark.censoring,
+    pch = c("I"),
     ## Modify Layout
     xaxs = "i", yaxs = "i",                  # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",                  # Remove the original axes
@@ -253,8 +275,8 @@ surv.plot <- function(
 # Add legend to plot  ####
   if (is.logical(show.legend)){
     if(show.legend == TRUE){
-      graphics::legend(x = legend.position[1],             # the x coordinates to positon the legend
-             y = legend.position[2],             # the y coordinates to positoin the legend
+      graphics::legend(x = legend.position[1],   # the x coordinates to position the legend
+             y = legend.position[2],             # the y coordinates to position the legend
              legend = legend.legend ,            # the text of the legend
              bty = "n",                          # boarder type for legend fixed as "none"
              col = col,
@@ -272,7 +294,7 @@ surv.plot <- function(
 # Add Segment ####
   ## Define different options to display the segment text  ####
   if (length(segment.text.position) == 2) {
-    # If it's a numeric vector (x, y coordinates)
+    # Checks if it's a numeric vector (x, y coordinates)
     text_xpos <- segment.text.position[1]
     text_ypos <- segment.text.position[2]
     # Position the text below of the specified (x,y)
@@ -330,17 +352,19 @@ surv.plot <- function(
                lwd = segment.lwd )
 
       # Annotate the segment (Survival time at specific quantile)
-      text(x = text_xpos,
-           y = text_ypos,
-           labels = paste0(round(segment_x$quantile,digits = 2),
-                           " [",
-                           round(segment_x$lower,digits = 2),
-                           ",",
-                           round(segment_x$upper,digits = 2),
-                           "]"),
-           pos = pos,
-           col = segment.text.col,
-           cex = segment.text.cex)
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_x$quantile,digits = 2),
+                             " [",
+                             round(segment_x$lower,digits = 2),
+                             ",",
+                             round(segment_x$upper,digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.text.col,
+             cex = segment.text.cex)
+      }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
       # Code for segment at a specific time point
       segment_x <- segment.timepoint
@@ -362,20 +386,22 @@ surv.plot <- function(
                y1 = segment_y$surv,
                col = segment.col,
                lty = segment.lty,
-               lwd = segment.lwd )
+               lwd = segment.lwd)
 
       # Annotate the segment
-      text(x = text_xpos,
-           y = text_ypos,
-           labels = paste0(round(segment_y$surv, digits = 2),
-                           " [",
-                           round(segment_y$lower, digits = 2),
-                           ",",
-                           round(segment_y$upper, digits = 2),
-                           "]"),
-           pos = pos,
-           col = segment.text.col,
-           cex = 0.75) #legend.cex? or segment.cex?
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_y$surv, digits = 2),
+                             " [",
+                             round(segment_y$lower, digits = 2),
+                             ",",
+                             round(segment_y$upper, digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.text.col,
+             cex = segment.text.cex)
+      }
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
@@ -393,19 +419,22 @@ surv.plot <- function(
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
-               lwd = segment.lwd )
+               lwd = segment.lwd)
 
-      text(x = text_xpos,
-           y = text_ypos,
-           labels = paste0(round(segment_x$quantile,digits = 2),
-                           " [",
-                           round(segment_x$lower,digits = 2),
-                           ",",
-                           round(segment_x$upper,digits = 2),
-                           "]"),
-           pos = pos,
-           col = segment.text.col,
-           cex = segment.text.cex)
+      # Annotate the segment
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_x$quantile,digits = 2),
+                             " [",
+                             round(segment_x$lower,digits = 2),
+                             ",",
+                             round(segment_x$upper,digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.text.col,
+             cex = segment.text.cex)
+      }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
       # Code for segment at a specific time point
       segment_x <- segment.timepoint
@@ -420,18 +449,20 @@ surv.plot <- function(
                lty = segment.lty,
                lwd = segment.lwd)
 
-      # Annotate the segment (Survival rate at specific timepoint)
-      text(x = text_xpos,
-           y = text_ypos,
-           labels = paste0(round(segment_y$surv, digits = 2),
-                           " [",
-                           round(segment_y$lower, digits = 2),
-                           ",",
-                           round(segment_y$upper, digits = 2),
-                           "]"),
-           pos = pos,
-           col = segment.col,
-           cex = 0.75) #legend.cex? or segment.cex?
+      # Annotate the segment
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_y$surv, digits = 2),
+                             " [",
+                             round(segment_y$lower, digits = 2),
+                             ",",
+                             round(segment_y$upper, digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.col,
+             cex = 0.75)
+      }
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
@@ -452,17 +483,19 @@ surv.plot <- function(
                lwd = segment.lwd )
 
       # Annotate the segment
-      text(x = text_xpos,
-           y = text_ypos,
-           labels = paste0(round(segment_x$quantile,digits = 2),
-                           " [",
-                           round(segment_x$lower,digits = 2),
-                           ",",
-                           round(segment_x$upper,digits = 2),
-                           "]"),
-           pos = pos,
-           col = segment.text.col,
-           cex = segment.text.cex)
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_x$quantile,digits = 2),
+                             " [",
+                             round(segment_x$lower,digits = 2),
+                             ",",
+                             round(segment_x$upper,digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.text.col,
+             cex = segment.text.cex)
+      }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
       # Code for segment at a specific time point
       segment_x <- segment.timepoint
@@ -478,35 +511,39 @@ surv.plot <- function(
                lwd = segment.lwd)
 
       # Annotate the segment
-      text(x = text_xpos,
-           y = text_ypos,
-           labels = paste0(round(segment_y$surv, digits = 2),
-                           " [",
-                           round(segment_y$lower, digits = 2),
-                           ",",
-                           round(segment_y$upper, digits = 2),
-                           "]"),
-           pos = pos,
-           col = segment.text.col,
-           cex = segment.text.cex)
+      if (segment.text.position != "none"){
+        text(x = text_xpos,
+             y = text_ypos,
+             labels = paste0(round(segment_y$surv, digits = 2),
+                             " [",
+                             round(segment_y$lower, digits = 2),
+                             ",",
+                             round(segment_y$upper, digits = 2),
+                             "]"),
+             pos = pos,
+             col = segment.text.col,
+             cex = segment.text.cex)
+      }
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
   }
 
   ## Draw title for segment text ####
-  if (!is.null(segment.text.main)){
-    text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
-         col = "black", cex = segment.text.cex)
-  } else if (is.null(segment.text.main) & !is.null(segment.quantile)){
-    if (segment.quantile == 0.5){
-      text(text_xpos, max(text_ypos) + segment.text.space, label = paste0("Median [95%]"), pos = pos,
+  if (segment.text.position != "none"){
+    if (!is.null(segment.text.main)){
+      text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
            col = "black", cex = segment.text.cex)
-    } else {text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
-                 col = "black", cex = segment.text.cex)
+    } else if (is.null(segment.text.main) & !is.null(segment.quantile)){
+      if (segment.quantile == 0.5){
+        text(text_xpos, max(text_ypos) + segment.text.space, label = paste0("Median [95%]"), pos = pos,
+             col = "black", cex = segment.text.cex)
+      } else {text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
+                   col = "black", cex = segment.text.cex)
+      }
+    } else if (is.null(segment.text.main) & !is.null(segment.timepoint)){
+      text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+           col = "black", cex = segment.text.cex)
     }
-  } else if (is.null(segment.text.main) & !is.null(segment.timepoint)){
-    text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
-         col = "black", cex = segment.text.cex)
   }
 } # final closer of the function
