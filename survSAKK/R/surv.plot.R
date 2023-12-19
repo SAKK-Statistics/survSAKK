@@ -11,7 +11,7 @@
 #'
 #' @param fit An object of class `survfit`, usually returned by the `survfit` function
 #' @param mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
-#' @param conf.int specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.
+#' @param conf.int Specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.
 #' @param conf.band Mapping the specified coverage probability
 #' @param conf.band.col Can accept a single value for colour, or a vector of colour values to set colour(s)
 #' @param conf.band.alpha Modify colour transparency for the confidence band
@@ -105,8 +105,23 @@ surv.plot <- function(
     segment.text.space = 0.03
 ){
 
-  # Extract Information from survfit object ####
+  # Function for rounding p-value ####
+  ## two significant digit e.g. p = 0.43 or 0.057
+  ## if 0.001 > p > 0.0001, then round to one significant digit
+  ## else p < 0.0001
 
+  round.pval <- function(x){
+    if (x < 0.0001){
+      pval <- "< 0.0001"
+    } else if (x <= 0.001 && x >= 0.0001){
+      pval <- format(signif(x, digits = 1), scientific = FALSE)
+    } else {
+      pval <- format(signif(x, digits = 2), scientific = FALSE)
+    }
+    return(pval)
+  }
+
+  # Extract Information from survfit object ####
   ## Extract data from fit ####
   data <- as.data.frame(eval(fit$call$data))
 
@@ -119,7 +134,7 @@ surv.plot <- function(
     # recalculate the fit object based on defined `conf.int`
     fit$call$conf.int <- conf.int
 
-fit <- eval(fit$call)
+    fit <- eval(fit$call)
 
   ## Extract no. of stratum ####
   stratum <- max(1, length(fit$strata))
@@ -260,8 +275,8 @@ fit <- eval(fit$call)
 # Add legend to plot  ####
   if (is.logical(show.legend)){
     if(show.legend == TRUE){
-      graphics::legend(x = legend.position[1],             # the x coordinates to positon the legend
-             y = legend.position[2],             # the y coordinates to positoin the legend
+      graphics::legend(x = legend.position[1],   # the x coordinates to position the legend
+             y = legend.position[2],             # the y coordinates to position the legend
              legend = legend.legend ,            # the text of the legend
              bty = "n",                          # boarder type for legend fixed as "none"
              col = col,
