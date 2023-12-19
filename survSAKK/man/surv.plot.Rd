@@ -6,6 +6,7 @@
 \usage{
 surv.plot(
   fit,
+  mark.censoring = TRUE,
   conf.int = fit$conf.int,
   conf.band = TRUE,
   conf.band.col = col,
@@ -46,6 +47,8 @@ surv.plot(
 }
 \arguments{
 \item{fit}{An object of class \code{survfit}, usually returned by the \code{survfit} function}
+
+\item{mark.censoring}{Curves are marked at each censoring time if TRUE otherwise FALSE.}
 
 \item{conf.int}{specifies the coverage probability. (FALSE, TRUE using 95\% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.}
 
@@ -105,7 +108,7 @@ surv.plot(
 
 \item{segment.text.main}{Title of segment text}
 
-\item{segment.text.position}{Position of the legend (c(x,y), "bottomleft", "left", "right")}
+\item{segment.text.position}{Position of the legend (c(x,y), "bottomleft", "left", "right", "none")}
 
 \item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
 
