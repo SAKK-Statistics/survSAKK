@@ -35,14 +35,15 @@ surv.plot(
   segment.type = 3,
   segment.timepoint = NULL,
   segment.quantile = NULL,
-  segment.text.main = NULL,
-  segment.text.position = "right",
+  segment.main = NULL,
+  segment.annotation = "right",
   segment.col = "#666666",
-  segment.text.col = col,
+  segment.annotation.col = col,
   segment.lty = "dashed",
   segment.lwd = 1,
-  segment.text.cex = 0.75,
-  segment.text.space = 0.03
+  segment.cex = 0.75,
+  segment.annotation.space = 0.03,
+  segment.font = 1
 )
 }
 \arguments{
@@ -106,21 +107,23 @@ surv.plot(
 
 \item{segment.quantile}{A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)}
 
-\item{segment.text.main}{Title of segment text}
+\item{segment.main}{Title of segment text}
 
-\item{segment.text.position}{Position of the legend (c(x,y), "bottomleft", "left", "right", "none")}
+\item{segment.annotation}{Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none")}
 
 \item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
 
-\item{segment.text.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{segment.annotation.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
 
 \item{segment.lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)}
 
 \item{segment.lwd}{A vector of numeric values for line widths}
 
-\item{segment.text.cex}{A numeric values specifying the size of the segment text size}
+\item{segment.cex}{A numeric values specifying the size of the segment annotation size}
 
-\item{segment.text.space}{Spacing between the text in unit of x-coordinates}
+\item{segment.annotation.space}{Spacing between the text in unit of x-coordinates}
+
+\item{segment.font}{A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)}
 }
 \description{
 Plot publication ready Kaplan-Meier plot using the results from \code{survival::survfit()}.
