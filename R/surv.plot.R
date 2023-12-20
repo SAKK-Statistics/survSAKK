@@ -1,4 +1,4 @@
-fit <- survobject1                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
+fit <- survobject2                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
 mark.censoring <- TRUE                                                          # mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
 conf.int <- fit$conf.int                                                         # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
 # Alternatively, this can be a numeric value giving the desired confidence level.
@@ -32,6 +32,22 @@ legend.title.cex <- 1                                                           
 #- Function:
 
 # Preparation ####
+
+## Function for rounding p-value ####
+# two significant digit e.g. p = 0.43 or 0.057
+# if 0.001 > p > 0.0001, then round to one significant digit
+# else p < 0.0001
+
+round.pval <- function(x){
+  if (x < 0.0001){
+    pval <- "p < 0.0001"
+  } else if (x <= 0.001 && x >= 0.0001){
+    pval <- paste("p =", format(signif(x, digits = 1), scientific = FALSE))
+  } else {
+    pval <- paste("p =", format(signif(x, digits = 2), scientific = FALSE))
+  }
+  return(pval)
+}
 
 ## Extract data from fit ####
 data <- as.data.frame(eval(fit$call$data))
