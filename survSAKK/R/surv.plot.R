@@ -44,21 +44,26 @@
 #' @param segment.lty A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)
 #' @param segment.lwd A vector of numeric values for line widths
 #' @param segment.cex A numeric values specifying the size of the segment annotation size
-#' @param segment.font A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)
+#' @param segment.font A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)
 #' @param segment.main Title of segment text
+#' @param segment.main.font A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)
 #' @param segment.annotation Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none")
 #' @param segment.annotation.space Spacing between the text in unit of x-coordinates
+#' @param stat  Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none")
+#' @param stat.position Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")
+#' @param stat.col Can accept a single value for colour
+#' @param stat.cex A numeric value specifying the size of the stat size
+#' @param stat.font The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)
 #'
 #' @export
 #'
 #' @example ./R/example.R
 #'
 #' @import survival
+#' @import graphics
+#' @import stats
 #' @importFrom grDevices adjustcolor
-#' @importFrom stats quantile
-#' @importFrom graphics segments
-#' @importFrom graphics text
-#'
+
 
 
 surv.plot <- function(
@@ -104,30 +109,91 @@ surv.plot <- function(
     segment.lwd = 1,
     segment.cex = 0.75,
     segment.annotation.space = 0.03,
-    segment.font = 1
+    segment.font = 1,
+    segment.main.font = 1,
+    # Stats options
+    stat = "none",
+    stat.position = "right",
+    stat.col = "black",
+    stat.cex = 0.75,
+    stat.font = 1
 ){
 
-  # Function for rounding p-value ####
-  ## two significant digit e.g. p = 0.43 or 0.057
-  ## if 0.001 > p > 0.0001, then round to one significant digit
-  ## else p < 0.0001
+# Preparation ####
+
+## Function for rounding p-value ####
+  # two significant digit e.g. p = 0.43 or 0.057
+  # if 0.001 > p > 0.0001, then round to one significant digit
+  # else p < 0.0001
 
   round.pval <- function(x){
     if (x < 0.0001){
-      pval <- "< 0.0001"
+      pval <- "p < 0.0001"
     } else if (x <= 0.001 && x >= 0.0001){
-      pval <- format(signif(x, digits = 1), scientific = FALSE)
+      pval <- paste("p =", format(signif(x, digits = 1), scientific = FALSE))
     } else {
-      pval <- format(signif(x, digits = 2), scientific = FALSE)
+      pval <- paste("p = ", format(signif(x, digits = 2), scientific = FALSE))
     }
     return(pval)
   }
 
-  # Extract Information from survfit object ####
-  ## Extract data from fit ####
+## Function to draw table into plot ####
+  # plottbl() function allows to plot reproducible different tables in the graphics
+  plottbl <- function (x, y,
+                       table, # A data frame, matrix or similar object that will be displayed
+                       cex = stat.cex,
+                       # Positioning for the table relative to ‘⁠x,y⁠’.
+                       xjust = 0,
+                       yjust = 1,
+                       # The amount of padding around text in the cells as a proportion
+                       # of the maximum width and height of the strings in each column
+                       xpad = 0.1,
+                       ypad = 0.5,
+                       text.col = stat.col,
+                       pos = pos,
+                       font = stat.font)
+  {
+    tabdim <- dim(table)
+    column.names <- colnames(table)
+    cellwidth <- rep(0, tabdim[2])
+
+    # Calculate cell widths for each column
+    for(column in 1:tabdim[2]){
+      cellwidth[column] <- max(strwidth(c(column.names[column], format(table[, column])),
+                                        cex = cex)) * (1 + xpad)
+    }
+
+    nvcells <- tabdim[1] + 1
+    cellheight <- max(strheight(c(column.names, as.vector(unlist(table))),
+                                cex = cex)) * (1 + ypad)
+    ytop <- y + yjust * nvcells * cellheight
+
+    # Draw column names
+    xleft <- x - xjust * (sum(cellwidth))
+    for (column in 1:tabdim[2]) {
+      text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
+           cex = cex, col = stat.col, font = stat.font)
+      xleft <- xleft + cellwidth[column]
+    }
+
+    # Draw tables cells
+    for (row in 1:tabdim[1]) {
+      xleft <- x - xjust * (sum(cellwidth))
+      for (column in 1:tabdim[2]) {
+        text(xleft + 0.5 * cellwidth[column],
+             ytop - (row + 0.5) * cellheight, table[row, column],
+             cex = cex, col = stat.col, font = stat.font)
+        xleft <- xleft + cellwidth[column]
+      }
+    }
+  }
+
+## Extract Information from survfit object ####
+
+  ### Extract data from fit ####
   data <- as.data.frame(eval(fit$call$data))
 
-  ## Recalculate survival object ####
+  ### Recalculate survival object ####
   # Note: Recalculation is done to be sure that the survival object is correct
   # for plotting with the desired CI and transformation.
 
@@ -138,10 +204,10 @@ surv.plot <- function(
 
     fit <- eval(fit$call)
 
-  ## Extract no. of stratum ####
+  ### Extract no. of stratum ####
   stratum <- max(1, length(fit$strata))
 
-  ## Define colour for KM-Plot if not manually specified ####
+## Define colour for KM-Plot if not manually specified ####
   if (is.null(col)){
     if(is.null(fit$strata)){
       col <- "#666666"
@@ -153,18 +219,19 @@ surv.plot <- function(
   }
 
 
-  ## Extract Group names for legend if not manually specified ####
+## Extract Group names for legend if not manually specified ####
   if (is.null(legend.legend)){
     if(is.null(fit$strata)){
       group <- "Cohort"
       legend.legend <- group
     } else {
-      group <- levels(as.factor(names(fit$strata)))
+      group <- names(fit$strata)
       legend.legend <- group
     }
   }
 
-# Base Plot ####
+# Surv.plot() Function ####
+  ## Main Plotting Function ####
   base::plot(
     ## Plot the survival curve
     fit,
@@ -201,14 +268,14 @@ surv.plot <- function(
 
   # Customize the y coordinates
   graphics::axis(side = 2,                   # Specifies the side (1,2,3,4)
-                 las = 1,                              # Rotate the labels
-                 mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
-                 at = ylim,                            # Specify tick mark position
-                 labels = ylim,                        # Draw labels
-                 cex.axis = cex.axis                   # Axis size
+                 las = 1,                    # Rotate the labels
+                 mgp = c(3,0.75,0),          # Adjust the label position (axis title, axis label, axis line)
+                 at = ylim,                  # Specify tick mark position
+                 labels = ylim,              # Draw labels
+                 cex.axis = cex.axis         # Axis size
   )
 
-# Draw grid ####
+## Option: Draw grid ####
   if (is.logical(grid)) {
     if (grid == TRUE) {
       grid(nx = length(xlim)-1, ny = length(ylim)-1)
@@ -217,7 +284,7 @@ surv.plot <- function(
     stop("`gird` expecting TRUE or FALSE as an argument!")
   }
 
-# Add confidence band ####
+## Option: Add confidence band ####
   if(conf.band == TRUE){
       mapping <- 0
       # Loop for drawing polygons
@@ -274,7 +341,7 @@ surv.plot <- function(
       }
     }
 
-# Add legend to plot  ####
+## Option: Add legend to plot  ####
   if (is.logical(show.legend)){
     if(show.legend == TRUE){
       graphics::legend(x = legend.position[1],   # the x coordinates to position the legend
@@ -293,14 +360,15 @@ surv.plot <- function(
     stop("`show.legend` expecting TRUE or FAlSE as an argument!")
   }
 
-# Add Segment ####
-  ## Define different options to display the segment text  ####
+# Surv.segment() Function ####
+
+## Define different options to display the segment text  ####
   if (length(segment.annotation) == 2) {
     # Checks if it's a numeric vector (x, y coordinates)
     text_xpos <- segment.annotation[1]
     text_ypos <- segment.annotation[2]
     # Position the text below of the specified (x,y)
-    pos <- 1
+    pos = 4
   } else if (segment.annotation == "bottomleft") {
     text_ypos <- 0.03
     text_xpos <- min(xlim)
@@ -317,7 +385,7 @@ surv.plot <- function(
     pos <- 2
   }
 
-  ## Determining the y coordinate for each text ####
+## Determining the y coordinate for each text ####
   if (stratum == 1){
     text_ypos[i] <- text_ypos
   } else {
@@ -327,7 +395,7 @@ surv.plot <- function(
   }
 
 
-  ## Draw segments ####
+## Draw segments ####
   if (segment.type == 3){
     ### Type 3: Drawing vertical and horizontal segments ####
     if (!is.null(segment.quantile) & is.null(segment.timepoint)){
@@ -354,7 +422,7 @@ surv.plot <- function(
                lwd = segment.lwd )
 
       # Annotate the segment (Survival time at specific quantile)
-      if (segment.annotation != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_x$quantile,digits = 2),
@@ -392,7 +460,7 @@ surv.plot <- function(
                lwd = segment.lwd)
 
       # Annotate the segment
-      if (segment.annotation != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_y$surv, digits = 2),
@@ -426,7 +494,7 @@ surv.plot <- function(
                lwd = segment.lwd)
 
       # Annotate the segment
-      if (segment.annotation != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_x$quantile,digits = 2),
@@ -455,7 +523,7 @@ surv.plot <- function(
                lwd = segment.lwd)
 
       # Annotate the segment
-      if (segment.annotation != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_y$surv, digits = 2),
@@ -489,7 +557,7 @@ surv.plot <- function(
                lwd = segment.lwd )
 
       # Annotate the segment
-      if (segment.annotation != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_x$quantile,digits = 2),
@@ -518,7 +586,7 @@ surv.plot <- function(
                lwd = segment.lwd)
 
       # Annotate the segment
-      if (segment.annotation != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_y$surv, digits = 2),
@@ -537,21 +605,127 @@ surv.plot <- function(
     }
   }
 
-  ## Draw title for segment text ####
-  if (segment.annotation != "none"){
+  ### Draw title for segment text ####
+  if (!("none" %in% segment.annotation)){
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
-           col = "black", cex = segment.cex)
+           col = "black", cex = segment.cex, font = segment.main.font)
     } else if (is.null(segment.main) & !is.null(segment.quantile)){
       if (segment.quantile == 0.5){
         text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [95%]"), pos = pos,
-             col = "black", cex = segment.cex)
+             col = "black", cex = segment.cex, font = segment.main.font)
       } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
-                   col = "black", cex = segment.cex)
+                   col = "black", cex = segment.cex, font = segment.main.font)
       }
     } else if (is.null(segment.main) & !is.null(segment.timepoint)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
-           col = "black", cex = segment.cex)
+           col = "black", cex = segment.cex, font = segment.main.font)
     }
+  }
+
+# Surv.stats() Function ####
+
+## Define different options for stat position ####
+  if (length(stat.position) == 2){
+    # If it's a numeric vector (x, y coordinates)
+    stat_xpos <- stat.position[1]
+    stat_ypos <- stat.position[2]
+    # Position the text below of the specified (x,y)
+    pos <- 4 #vorher 1
+  } else if (stat.position == "bottomleft"){
+    stat_ypos <- 0.03
+    stat_xpos <- min(xlim)
+    # Position the text to the right of the specified (x,y)
+    pos <- 4
+  } else if (stat.position == "left"){
+    stat_ypos <- 0.53
+    stat_xpos <- min(xlim)
+    pos <- 4
+  }else if (stat.position == "right"){
+    stat_ypos <- 0.53
+    stat_xpos <- max(xlim)
+    # Position the text to the left of the specified (x,y)
+    pos <- 2
+  }
+
+## Log rank test ####
+
+# To compare the survival curves of two or more groups
+  logrank <- fit$call                                   # Extract the call from survival object
+  logrank$conf.type <- NULL
+  logrank$conf.int <- NULL
+  logrank[1] <- call("survdiff")                        # Modify the call from survfit() to survdiff()
+  logrank <- eval(logrank)
+
+# Recalculating p-Value
+  logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
+  logrankpval <- round.pval(logrankpval)
+
+## Cox proportional hazard regression ####
+
+# To describe the effect of variables on survival
+  model <- fit$call                                     # Extract the call from survival object
+  model$conf.type <- NULL
+  model$conf.int <- NULL
+  model[1] <- call("coxph")                             # Modify the call from survfit() to coxph()
+  model <- summary(eval(model))
+
+## Display statistics in the plot ####
+
+  if(stat == "logrank"){
+    stats <- paste0("Logrank test: ", logrankpval)
+  } else if(stat == "coxph"){
+    stats <- paste0("HR ",
+                    round(model$conf.int[,"exp(coef)"], digits = 2),
+                    " (95% CI: ",
+                    round(model$conf.int[,"lower .95"], digits = 2),
+                    " to ",
+                    round(model$conf.int[,"upper .95"], digits = 2),
+                    ")")
+  } else if(stat == "coxmodel"){
+    if("right" %in% stat.position){
+      # table is always written from the specified x,y pos from left to right
+      # therefore stat.positon="right" position is outside of the border.
+      # It has to be corrected for tables.
+
+      # Extract infos and create data frame from model
+      tbl <- data.frame(N = model$n,
+                        Events = model$nevent,
+                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
+                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
+                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
+                        Logrank = logrankpval)
+      # Annotation
+      # plottbl() function was written to allow to plot different tables reproducible
+      plottbl(x = stat_xpos - max(xlim)/2,
+              y = stat_ypos,
+              tbl,
+              cex = stat.cex)
+    } else {
+      # Extract infos and create data frame from model
+      tbl <- data.frame(N = model$n,
+                        Events = model$nevent,
+                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
+                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
+                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
+                        Logrank = logrankpval)
+      # Annotation
+      # plottbl() function was written to allow to plot different tables reproducible
+      plottbl(x = stat_xpos,
+              y = stat_ypos,
+              tbl,
+              cex = stat.cex)
+    }
+  }
+
+  if (stat != "none" && stat != "coxmodel"){
+    # Annotate the stats in the plot when stat = "coxph, loglik etc.
+    text(x = stat_xpos,
+         y = stat_ypos,
+         labels = stats,
+         pos = pos,
+         col = stat.col,
+         cex = stat.cex,
+         font = stat.font)
   }
 } # final closer of the function
