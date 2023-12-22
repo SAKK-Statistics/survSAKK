@@ -1,0 +1,172 @@
+---
+title: "surv.plot"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{surv.plot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(survSAKK)
+library(survival)
+```
+
+# Data
+
+```{r}
+lung <- survival::lung
+lung$time_yr <- lung$time/365.25
+lung$time_mt <- lung$time_yr*12
+
+# Define the reference arm
+lung$sex <- factor(lung$sex,
+                    levels = c(1,2),
+                    labels = c("Male","Female"))
+
+# Survival Object with two arms
+survobject1 <- survival::survfit(Surv(time_mt, status) ~ sex, data = lung)
+survobject2 <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
+
+# Survival Object with one arm
+survobject3 <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
+survobject4 <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
+
+```
+
+
+# Base Plot
+
+```{r}
+survSAKK::surv.plot(fit = survobject1)
+```
+
+
+# Modify Colour
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    col = c("darkblue","pink"))
+```
+
+# Add a title and subtitle
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    main = "KM Curve of the Lung Cancer",
+                    sub = "Datasource - NCCTG Lung Cancer Data")
+```
+
+# Rename legend
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"))
+
+```
+
+# Modify x axis
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)")
+```
+
+# Add Segments
+
+```{r}
+# Median
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    # Defining Segment
+                    segment.annotation.space = 0.05,
+                    segment.quantile = 0.5)
+```
+
+
+# Survival at 12 month
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)h",
+                    # Defining Segment
+                    segment.timepoint = 12,
+                    segment.annotation.space = 0.05,
+                    segment.annotation = "bottomleft")
+
+```
+
+
+# Specifying the location of annotation manually
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    # Defining Stat
+                    segment.timepoint = 12,
+                    segment.annotation.space = 0.05,
+                    segment.annotation = c(3,0.25))
+```
+
+# Add statistics: Cox proportional hazard ratio
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    # Defining Segment
+                    segment.quantile = 0.5,
+                    segment.annotation.space = 0.05,
+                    # Defining Stat
+                    stat = "coxph",
+                    stat.position = "bottomleft")
+```
+
+# Add  statistics table
+
+```{r}
+survSAKK::surv.plot(fit = survobject1,
+                    legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    # Defining Segment
+                    legend.position = "bottomleft",
+                    segment.quantile = 0.5,
+                    segment.annotation = "left",
+                    segment.font = 1,
+                    segment.main.font = 2,
+                    segment.annotation.space = 0.05,
+                    # Definining Stat
+                    stat = "coxmodel",
+                    stat.position = c(19,0.90),
+                    stat.font = 1,
+                    stat.col = "black",
+                    stat.cex = 0.75)
+```
+
+# Different themes
+
+```{r}
+# survSAKK::surv.plot(fit = , theme =  )
+```
+
+
+
+
