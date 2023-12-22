@@ -35,14 +35,21 @@ surv.plot(
   segment.type = 3,
   segment.timepoint = NULL,
   segment.quantile = NULL,
-  segment.text.main = NULL,
-  segment.text.position = "right",
+  segment.main = NULL,
+  segment.annotation = "right",
   segment.col = "#666666",
-  segment.text.col = col,
+  segment.annotation.col = col,
   segment.lty = "dashed",
   segment.lwd = 1,
-  segment.text.cex = 0.75,
-  segment.text.space = 0.03
+  segment.cex = 0.75,
+  segment.annotation.space = 0.03,
+  segment.font = 1,
+  segment.main.font = 1,
+  stat = "none",
+  stat.position = "right",
+  stat.col = "black",
+  stat.cex = 0.75,
+  stat.font = 1
 )
 }
 \arguments{
@@ -106,83 +113,134 @@ surv.plot(
 
 \item{segment.quantile}{A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)}
 
-\item{segment.text.main}{Title of segment text}
+\item{segment.main}{Title of segment text}
 
-\item{segment.text.position}{Position of the legend (c(x,y), "bottomleft", "left", "right", "none")}
+\item{segment.annotation}{Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none")}
 
 \item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
 
-\item{segment.text.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{segment.annotation.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
 
 \item{segment.lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)}
 
 \item{segment.lwd}{A vector of numeric values for line widths}
 
-\item{segment.text.cex}{A numeric values specifying the size of the segment text size}
+\item{segment.cex}{A numeric values specifying the size of the segment annotation size}
 
-\item{segment.text.space}{Spacing between the text in unit of x-coordinates}
+\item{segment.annotation.space}{Spacing between the text in unit of x-coordinates}
+
+\item{segment.font}{A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)}
+
+\item{segment.main.font}{A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)}
+
+\item{stat}{Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none")}
+
+\item{stat.position}{Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")}
+
+\item{stat.col}{Can accept a single value for colour}
+
+\item{stat.cex}{A numeric value specifying the size of the stat size}
+
+\item{stat.font}{The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)}
 }
 \description{
 Plot publication ready Kaplan-Meier plot using the results from \code{survival::survfit()}.
 }
 \examples{
-#' Example
+#'  Example
 #'
-#'lung <- survival::lung
-#'lung$time_yr <- lung$time/365.25
-#'lung$time_mt <- lung$time_yr*12
-#'lung$sex <- factor(lung$sex,
-#'                   levels = c(1,2),
-#'                   labels = c("Male","Female"))
+#' lung <- survival::lung
+#' lung$time_yr <- lung$time/365.25
+#' lung$time_mt <- lung$time_yr*12
+#' lung$sex <- factor(lung$sex,
+#'                    levels = c(1,2),
+#'                    labels = c("Male","Female"))
 #'
-#' # Survival Object with two arms
-#'survobject1 <- survival::survfit(Surv(time_mt, status) ~ sex, data = lung)
-#'survobject2 <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
+#' #  Survival Object with two arms
+#' survobject1 <- survival::survfit(Surv(time_mt, status) ~ sex, data = lung)
+#' survobject2 <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
 #'
-#' # Survival Object with one arm
-#'survobject3 <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
-#'survobject4 <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
+#' #  Survival Object with one arm
+#' survobject3 <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
+#' survobject4 <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
 #'
 #'
-#'survSAKK::surv.plot(fit = survobject1)
+#'  # Base Plot
+#'  survSAKK::surv.plot(fit = survobject1)
 #'
-#'survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3),
-#'                    legend.legend = c("Female","Male"))
+#'  #  Modify Colour
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      col = c("pink", "#' 666666"))
 #'
-#'survSAKK::surv.plot(fit = survobject3, xlim = seq(0,3))
+#'  #  Add a title and subtitle
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      main = "KM Curve of the Lung Cancer",
+#'                      sub = "Datasource - NCCTG Lung Cancer Data")
 #'
-#'survSAKK::surv.plot(fit = survobject4)
+#'  #  Rename legend
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"))
 #'
-#'survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3),
-#'                    segment.type = 3,
-#'                    segment.timepoint = 0.5,
-#'                    segment.text.position = "left")
-#'survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3),
-#'                    segment.type = 3,
-#'                    segment.quantile = 0.5,
-#'                    segment.text.position = "bottomleft")
+#'  #  Modify x axis
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)")
+#'  #  Add Segments
+#'  #Median
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)",
+#'                      segment.quantile = 0.5)
 #'
-#'survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3),
-#'                    segment.type = 3,
-#'                    segment.quantile = 0.25,
-#'                    segment.text.position =c(0.35,0.4))
+#'  #  Survival at 12month
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)h",
+#'                      segment.timepoint = 12,
+#'                      segment.annotation = "bottomleft")
 #'
-#'survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3),
-#'                    col =c("pink","lightblue"),
-#'                    segment.type = 3,
-#'                    segment.quantile = 0.5,
-#'                    segment.text.position = "none")
+#'  #  Survival at 3, 6 and 12 month
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)",
+#'                      segment.timepoint = c(3, 6, 12),
+#'                      segment.col = c("darkred","darkblue","darkgreen"),
+#'                      segment.annotation = "none")
 #'
-#'survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3),
-#'                    segment.type = 3,
-#'                    segment.timepoint = 0.5,
-#'                    segment.text.position = "none")
+#'  #  Specifying the location of annotation manually
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)",
+#'                      segment.timepoint = 12,
+#'                      segment.annotation = c(3,0.25))
 #'
-#'survSAKK::surv.plot(fit = survobject2,
-#'                    col =c("purple","green"),
-#'                    segment.type = 3,
-#'                    segment.timepoint = 1.5,
-#'                    segment.text.position = "right",
-#'                    segment.col = c("black","grey"),
-#'                    conf.band.col = c("red","yellow"))
+#'  #  Add statistics: Cox proportional hazard ratio
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)",
+#'                      segment.quantile = 0.5,
+#'                      stat = "coxph",
+#'                      stat.position = "bottomleft")
+#'
+#'  # Add  statistics table
+#'  survSAKK::surv.plot(fit = survobject1,
+#'                      legend.legend = c("Male", "Female"),
+#'                      xlim = seq(0,35, 3),
+#'                      xlab = "Time (Month)",
+#'                      legend.position = "bottomleft",
+#'                      segment.quantile = 0.5,
+#'                      segment.annotation = "left",
+#'                      segment.font = 1,
+#'                      segment.main.font = 2,
+#'                      stat = "coxmodel",
+#'                      stat.position = c(19,0.95),
+#'                      stat.font = 1,
+#'                      stat.col = "black",
+#'                      stat.cex = 0.75)
 }

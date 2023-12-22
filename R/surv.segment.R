@@ -4,35 +4,39 @@ segment.type <- 3                           # segment.tye: A numeric value speci
 segment.timepoint <-  NULL                  # segment.timepoint: Draw segment(s) at a fixed time point (e.g. "6 month")
 segment.quantile <- NULL                    # segment.quantile: Draw segment(s) at a fixed quantile (e.g. "median")
 segment.col <- "#666666"                    # segment.col: Can accept a single value for color, or a vector of color values to set color(s)
-segment.text.col <- col                     # segment.text.col: Can accept a single value for color, or a vector of color values to set color(s)
+segment.annotation.col <- col               # segment.annotation.col: Can accept a single value for color, or a vector of color values to set color(s)
 segment.lty <- "dashed"                     # segment.lty: A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
 segment.lwd <- 1                            # segment.lwd: A vector of numeric values for line widths
-segment.text.cex <- 0.75                    # segment.text.cex: A numeric values specifying the size of the segment text size
-segment.text.main <- NULL                   # Title of segment text
-segment.text.position <- "none"             # segment.text.position: Position of the legend, c(x,y), "bottomleft", ...
-segment.text.space <- 0.03                  # segment.text.space: Spacing between the text
+segment.cex <- 0.75                         # segment.cex: A numeric values specifying the size of the segment text size
+segment.font <- 1                           # segment.font: A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)
+segment.main <- NULL                        # Title of segment text
+segment.main.font <- 2                      # segment.main.font A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)
+segment.annotation <- "none"                # segment.annotation: Position of the segment annotation, c(x,y), "bottomleft", ...
+segment.annotation.space <- 0.03            # segment.annotation.space: Spacing between the text
 
-segment.timepoint <- 10
-#segment.quantile <- 0.50
-#segment.text.main <- c("Survival time (95%) ")
+segment.quantile <- 0.50
+#segment.timepoint = c(3, 6, 12)
+segment.annotation <- "left"
+#segment.annotation <- "bottomleft"
+#segment.main <- c("Survival time (95%) ")
 
 # Define different options for segment text  ####
-if (length(segment.text.position) == 2) {
+if (length(segment.annotation) == 2) {
   # If it's a numeric vector (x, y coordinates)
-  text_xpos <- segment.text.position[1]
-  text_ypos <- segment.text.position[2]
+  text_xpos <- segment.annotation[1]
+  text_ypos <- segment.annotation[2]
   # Position the text below of the specified (x,y)
-  pos <- 1
-} else if (segment.text.position == "bottomleft") {
+  pos <- 4
+} else if (segment.annotation == "bottomleft") {
   text_ypos <- 0.03
   text_xpos <- min(xlim)
   # Position the text to the right of the specified (x,y)
   pos <- 4
-} else if (segment.text.position == "left"){
+} else if (segment.annotation == "left"){
   text_ypos <- 0.53
   text_xpos <- min(xlim)
   pos <- 4
-} else if (segment.text.position == "right"){
+} else if (segment.annotation == "right"){
   text_ypos <- 0.53
   text_xpos <- max(xlim)
   # Position the text to the left of the specified (x,y)
@@ -44,7 +48,7 @@ if (stratum == 1){
   text_ypos[i] <- text_ypos
 } else {
   for (i in stratum-1){
-  text_ypos[i+1] <- text_ypos[i]+ segment.text.space
+  text_ypos[i+1] <- text_ypos[i]+ segment.annotation.space
   }
 }
 
@@ -76,7 +80,7 @@ if (segment.type == 3){
              lwd = segment.lwd )
 
     # Annotate the segment
-      if (segment.text.position != "none"){
+      if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
              labels = paste0(round(segment_x$quantile,digits = 2),
@@ -86,8 +90,9 @@ if (segment.type == 3){
                              round(segment_x$upper,digits = 2),
                              "]"),
              pos = pos,
-             col = segment.text.col,
-             cex = segment.text.cex)
+             col = segment.annotation.col,
+             cex = segment.cex,
+             font = segment.font)
       }
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -113,7 +118,7 @@ if (segment.type == 3){
              lwd = segment.lwd )
 
     # Annotate the segment
-    if (segment.text.position != "none"){
+    if (!("none" %in% segment.annotation)){
       text(x = text_xpos,
            y = text_ypos,
            labels = paste0(round(segment_y$surv, digits = 2),
@@ -123,8 +128,9 @@ if (segment.type == 3){
                            round(segment_y$upper, digits = 2),
                            "]"),
            pos = pos,
-           col = segment.text.col,
-           cex = 0.75)
+           col = segment.annotation.col,
+           cex = segment.cex,
+           font = segment.font)
     }
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
@@ -144,7 +150,7 @@ if (segment.type == 3){
              col = segment.col,
              lty = segment.lty,
              lwd = segment.lwd )
-    if (segment.text.position != "none"){
+    if (!("none" %in% segment.annotation)){
       text(x = text_xpos,
            y = text_ypos,
            labels = paste0(round(segment_x$quantile,digits = 2),
@@ -154,8 +160,8 @@ if (segment.type == 3){
                            round(segment_x$upper,digits = 2),
                            "]"),
            pos = pos,
-           col = segment.text.col,
-           cex = segment.text.cex)
+           col = segment.annotation.col,
+           cex = segment.cex)
     }
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -172,7 +178,7 @@ if (segment.type == 3){
              lwd = segment.lwd)
 
     # Annotate the segment
-    if (segment.text.position != "none"){
+    if (!("none" %in% segment.annotation)){
       text(x = text_xpos,
            y = text_ypos,
            labels = paste0(round(segment_y$surv, digits = 2),
@@ -183,7 +189,8 @@ if (segment.type == 3){
                            "]"),
            pos = pos,
            col = segment.col,
-           cex = 0.75)
+           cex = segment.cex,
+           font = segment.font)
     }
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
@@ -205,7 +212,7 @@ if (segment.type == 3){
              lwd = segment.lwd )
 
     # Annotate the segment
-    if (segment.text.position != "none"){
+    if (!("none" %in% segment.annotation)){
       text(x = text_xpos,
            y = text_ypos,
            labels = paste0(round(segment_x$quantile,digits = 2),
@@ -215,8 +222,9 @@ if (segment.type == 3){
                            round(segment_x$upper,digits = 2),
                            "]"),
            pos = pos,
-           col = segment.text.col,
-           cex = segment.text.cex)
+           col = segment.annotation.col,
+           cex = segment.cex,
+           font = segment.font)
     }
   } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -233,7 +241,7 @@ if (segment.type == 3){
              lwd = segment.lwd)
 
     # Annotate the segment
-    if (segment.text.position != "none"){
+    if (!("none" %in% segment.annotation)){
       text(x = text_xpos,
            y = text_ypos,
            labels = paste0(round(segment_y$surv, digits = 2),
@@ -243,8 +251,8 @@ if (segment.type == 3){
                            round(segment_y$upper, digits = 2),
                            "]"),
            pos = pos,                                                               # Position the text to the left of the specified (x,y)
-           col = segment.text.col,
-           cex = segment.text.cex)
+           col = segment.annotation.col,
+           cex = segment.cex)
     }
   } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
     stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
@@ -252,20 +260,20 @@ if (segment.type == 3){
 }
 
 # Draw title for segment text ####
-if (segment.text.position != "none"){
-  if (!is.null(segment.text.main)){
-    text(text_xpos, max(text_ypos) + segment.text.space, label = segment.text.main, pos = pos,
-         col = "black", cex = segment.text.cex)
-  } else if (is.null(segment.text.main) & !is.null(segment.quantile)){
+if (!("none" %in% segment.annotation)){
+  if (!is.null(segment.main)){
+    text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
+         col = "black", cex = segment.cex, font = segment.main.font)
+  } else if (is.null(segment.main) & !is.null(segment.quantile)){
     if (segment.quantile == 0.5){
-      text(text_xpos, max(text_ypos) + segment.text.space, label = paste0("Median [95%]"), pos = pos,
-           col = "black", cex = segment.text.cex)
-    } else {text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
-         col = "black", cex = segment.text.cex)
+      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [95%]"), pos = pos,
+           col = "black", cex = segment.cex, font = segment.main.font)
+    } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
+         col = "black", cex = segment.cex, font = segment.main.font)
     }
-  } else if (is.null(segment.text.main) & !is.null(segment.timepoint)){
-      text(text_xpos, max(text_ypos) + segment.text.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
-           col = "black", cex = segment.text.cex)
+  } else if (is.null(segment.main) & !is.null(segment.timepoint)){
+      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+           col = "black", cex = segment.cex, font = segment.main.font)
   }
 }
 

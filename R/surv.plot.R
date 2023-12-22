@@ -1,7 +1,7 @@
 fit <- survobject1                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
 mark.censoring <- TRUE                                                          # mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
-conf.int <- fit$conf.int                                                         # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
-# Alternatively, this can be a numeric value giving the desired confidence level.
+conf.int <- fit$conf.int                                                        # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
+                                                                                # Alternatively, this can be a numeric value giving the desired confidence level.
 conf.band <- TRUE                                                               # conf.band: Mapping the specified coverage probability
 conf.band.col <- NULL                                                           # conf.band.col: Can accept a single value for colour, or a vector of colour values to set color(s)
 conf.band.alpha <- 0.25                                                         # conf.band.alpha: Modify colour transparency for the confidence band.
@@ -32,6 +32,22 @@ legend.title.cex <- 1                                                           
 #- Function:
 
 # Preparation ####
+
+## Function for rounding p-value ####
+# two significant digit e.g. p = 0.43 or 0.057
+# if 0.001 > p > 0.0001, then round to one significant digit
+# else p < 0.0001
+
+round.pval <- function(x){
+  if (x < 0.0001){
+    pval <- "p < 0.0001"
+  } else if (x <= 0.001 && x >= 0.0001){
+    pval <- paste("p =", format(signif(x, digits = 1), scientific = FALSE))
+  } else {
+    pval <- paste("p =", format(signif(x, digits = 2), scientific = FALSE))
+  }
+  return(pval)
+}
 
 ## Extract data from fit ####
 data <- as.data.frame(eval(fit$call$data))
@@ -69,7 +85,7 @@ if (is.null(legend.legend)){
     group <- "Cohort"
     legend.legend <- group
   } else {
-    group <- levels(as.factor(names(fit$strata)))
+    group <- names(fit$strata)
     legend.legend <- group
   }
 }
@@ -209,11 +225,12 @@ if (is.logical(show.legend)){
 }
 
 
-# For testing Puropose ---------------------------------------------------------
+# For testing Purpose ---------------------------------------------------------
 
 lung <- survival::lung
 lung$time_yr <- lung$time/365.25
 lung$time_mt <- lung$time_yr*12
+# Define male as the reference arm 
 lung$sex <- factor(lung$sex,
                    levels = c(1,2),
                    labels = c("Male","Female"))
@@ -225,26 +242,77 @@ survobject2 <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
 survobject3 <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
 survobject4 <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
 
-# test through Package
+
+## Example using the Package
+# Base Plot
 survSAKK::surv.plot(fit = survobject1)
-survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), legend.legend = c("Female","Male"))
-survSAKK::surv.plot(fit = survobject3, xlim = seq(0,3))
-survSAKK::surv.plot(fit = survobject4)
-survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.timepoint = 0.5, segment.text.position = "left")
-survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.quantile = 0.5, segment.text.position = "bottomleft")
-survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.quantile = 0.25, segment.text.position =c(0.35,0.4))
-survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), 
-          col =c("pink","lightblue"),
-          segment.type = 3, 
-          segment.quantile = 0.5, 
-          segment.text.position = "none")
 
-survSAKK::surv.plot(fit = survobject2, xlim = seq(0,3), segment.type = 3, segment.timepoint = 0.5, segment.text.position = "none")
+# Modify Colour
+survSAKK::surv.plot(fit = survobject1, col = c("pink", "#666666"))
 
-survSAKK::surv.plot(fit = survobject2, 
-          col =c("purple","green"),
-          segment.type = 3, 
-          segment.timepoint = 1.5, 
-          segment.text.position = "right", 
-          segment.col = c("black","grey"),
-          conf.band.col = c("red","yellow"))
+# Add a title and subtitle
+survSAKK::surv.plot(fit = survobject1, main = "KM Curve of the Lung Cancer", sub = "Datasource - NCCTG Lung Cancer Data")
+
+# Rename legend
+survSAKK::surv.plot(fit = survobject1,legend.legend = c("Male", "Female"))
+
+# Modify x axis
+survSAKK::surv.plot(fit = survobject1,legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)")
+# Add Segments
+  # Median
+survSAKK::surv.plot(fit = survobject1,legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    segment.quantile = 0.5)
+
+# Survival at 12month
+survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)h",
+                    segment.timepoint = 12,
+                    segment.annotation = "bottomleft")
+
+# Survival at 3, 6 and 12 month
+survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+xlim = seq(0,35, 3),
+xlab = "Time (Month)",
+segment.timepoint = c(3, 6, 12),
+segment.col = c("darkred","darkblue","darkgreen"),
+segment.annotation = "none")
+
+# Specifying the location of annotation manually
+survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    segment.timepoint = 12,
+                    segment.annotation = c(3,0.25))
+
+# Add statistics: Cox proportional hazard ratio
+survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    segment.quantile = 0.5,
+                    stat = "coxph",
+                    stat.position = "bottomleft")
+
+# Add  statistics table
+survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+                    xlim = seq(0,35, 3),
+                    xlab = "Time (Month)",
+                    legend.position = "bottomleft",
+                    segment.quantile = 0.5,
+                    segment.annotation = "left",
+                    segment.font = 1,
+                    segment.main.font = 2,
+                    stat = "coxmodel",
+                    stat.position = c(19,0.95),
+                    stat.font = 1,
+                    stat.col = "black",
+                    stat.cex = 0.75)
+
+# Different themes
+# survSAKK::surv.plot(fit = , theme =  )
+
+
