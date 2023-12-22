@@ -1,12 +1,66 @@
 # optional parameter
-stat <- "none"                                            # stat: Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none")
-stat.position <- "left"                            # stat.position: Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")
-stat.col <- "black"
-stat.cex <- 0.75
-stat.font <- 1
+stat <- "none"                                     # stat: Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none")
+stat.position <- c(18,0.75)                           # stat.position: Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")
+stat.col <- "red"                                # stat.col Can accept a single value for colour
+stat.cex <- 0.75                                   # stat.cex A numeric value specifying the size of the stat size
+stat.font <- 2                                     # stat.font The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)
 
 stat <- "coxmodel"
+#stat.position <- c(2,0.5)
 
+
+# Function to draw table into plot
+# plottbl() function allows to plot reproducible different tables in the graphics
+plottbl <- function (x, y,
+                     table,                                                  # A data frame, matrix or similar object that will be displayed
+                     cex = stat.cex,
+                     # Positioning for the table relative to ‘⁠x,y⁠’.
+                     xjust = 0,
+                     yjust = 1,
+                     # The amount of padding around text in the cells as a proportion
+                     # of the maximum width and height of the strings in each column
+                     xpad = 0.1,
+                     ypad = 0.5,
+                     text.col = stat.col,
+                     pos = pos,
+                     font = stat.font)
+{
+  tabdim <- dim(table)
+  column.names <- colnames(table)
+  cellwidth <- rep(0, tabdim[2])
+
+  # Calculate cell widths for each column
+  for(column in 1:tabdim[2]){
+    cellwidth[column] <- max(strwidth(c(column.names[column], format(table[, column])),
+                                      cex = cex)) * (1 + xpad)
+  }
+
+  nvcells <- tabdim[1] + 1
+  cellheight <- max(strheight(c(column.names, as.vector(unlist(table))),
+                              cex = cex)) * (1 + ypad)
+  ytop <- y + yjust * nvcells * cellheight
+
+  # Draw column names
+  xleft <- x - xjust * (sum(cellwidth))
+  for (column in 1:tabdim[2]) {
+    text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
+         cex = cex, col = stat.col, font = stat.font)
+    xleft <- xleft + cellwidth[column]
+  }
+
+  # Draw tables cells
+  for (row in 1:tabdim[1]) {
+    xleft <- x - xjust * (sum(cellwidth))
+    for (column in 1:tabdim[2]) {
+      text(xleft + 0.5 * cellwidth[column],
+           ytop - (row + 0.5) * cellheight, table[row, column],
+           cex = cex, col = stat.col, font = stat.font)
+      xleft <- xleft + cellwidth[column]
+    }
+  }
+}
+
+# surv.stat() Function:
 
 # Define different options for stat position ####
 if (length(stat.position) == 2){
@@ -14,7 +68,7 @@ if (length(stat.position) == 2){
   stat_xpos <- stat.position[1]
   stat_ypos <- stat.position[2]
   # Position the text below of the specified (x,y)
-  pos <- 1
+  pos <- 4
 } else if (stat.position == "bottomleft"){
   stat_ypos <- 0.03
   stat_xpos <- min(xlim)
@@ -52,7 +106,7 @@ model[1] <- call("coxph")                             # Modify the call from sur
 model <- summary(eval(model))
 
 if(stat == "logrank"){
-  stats <- paste0("Logrank test\n", logrankpval)
+  stats <- paste0("Logrank test: ", logrankpval)
   } else if(stat == "coxph"){
     stats <- paste0("HR ",
                     round(model$conf.int[,"exp(coef)"], digits = 2),
@@ -61,13 +115,43 @@ if(stat == "logrank"){
                     " to ",
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")")
+  } else if(stat == "coxmodel"){
+    if("right" %in% stat.position){
+      # table is always written from the specified x,y pos from left to right
+      # therefore stat.positon="right" position is outside of the border.
+      # It has to be corrected for tables.
+
+      # Extract infos and create data frame from model
+      tbl <- data.frame(N = model$n,
+                        Events = model$nevent,
+                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
+                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
+                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
+                        Logrank = logrankpval)
+      # Annotation
+      # plottbl() function was written to allow to plot different tables reproducible
+      plottbl(x = stat_xpos - max(xlim)/2,
+              y = stat_ypos,
+              tbl,
+              cex = stat.cex)
+    } else {
+      # Extract infos and create data frame from model
+      tbl <- data.frame(N = model$n,
+                        Events = model$nevent,
+                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
+                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
+                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
+                        Logrank = logrankpval)
+      # Annotation
+      # plottbl() function was written to allow to plot different tables reproducible
+      plottbl(x = stat_xpos,
+              y = stat_ypos,
+              tbl,
+              cex = stat.cex)
+    }
   }
 
-    # } else if(stat == "model"){
-    #   code: table2plot()
-    # }
-
-if (stat != "none" & stat != "model"){
+if (stat != "none" && stat != "coxmodel"){
   # Annotate the stats in the plot
   text(x = stat_xpos,
        y = stat_ypos,
@@ -75,66 +159,7 @@ if (stat != "none" & stat != "model"){
        pos = pos,
        col = stat.col,
        cex = stat.cex,
-       font = stat.font)
+       font = 1)
 }
 
-# Extract Info from model:
-N <- model$n
-Events <- model$nevent
-HR <- round(model$conf.int[,"exp(coef)"], digits = 2)
-#CI  <- c(paste(round(model$conf.int[,"lower .95"], digits = 2),"to",round(model$conf.int[,"upper .95"], digits = 2)))
-lwrCI <- round(model$conf.int[,"lower .95"], digits = 2)
-uprCI <- round(model$conf.int[,"upper .95"], digits = 2)
-Logrank <- logrankpval
 
-tbl <- data.frame(N, Events, HR, lwrCI, uprCI, Logrank)
-# Annotation
-table2plot(x = stat_xpos, y = stat_ypos, tbl, cex = stat.cex)
-
-# Draw table
-table2plot <- function (x, y,
-                        table,
-                        cex = 1,
-                        # Positioning for the table relative to ‘⁠x,y⁠’.
-                        xjust = 0,
-                        yjust = 1,
-                        xpad = 0.1,
-                        ypad = 0.5,
-                        text.col = "black",
-                        display.colnames = TRUE)
-{
-
-  tabdim <- dim(table)
-  column.names <- colnames(table)
-  cellwidth <- rep(0, tabdim[2])
-
-  # Calculate cell widths for each column
-for(column in 1:tabdim[2]){
-  cellwidth[column] <- max(strwidth(c(column.names[column], format(table[, column])),
-                                    cex = cex)) * (1 + xpad)
-  }
-
-  nvcells <- tabdim[1] + 1
-  cellheight <- max(strheight(c(column.names, as.vector(unlist(table))),
-                              cex = cex)) * (1 + ypad)
-  ytop <- y + yjust * nvcells * cellheight
-
-  # Draw column names
-    xleft <- x - xjust * (sum(cellwidth))
-    for (column in 1:tabdim[2]) {
-      text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
-           cex = cex, col = text.col)
-      xleft <- xleft + cellwidth[column]
-    }
-
-  # Draw tables cells
-  for (row in 1:tabdim[1]) {
-    xleft <- x - xjust * (sum(cellwidth))
-    for (column in 1:tabdim[2]) {
-      text(xleft + 0.5 * cellwidth[column],
-           ytop - (row + display.colnames - 0.5) * cellheight, table[row, column],
-           cex = cex, col = text.col)
-      xleft <- xleft + cellwidth[column]
-    }
-  }
-}
