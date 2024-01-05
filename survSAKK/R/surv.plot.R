@@ -54,6 +54,9 @@
 #' @param stat.col Can accept a single value for colour
 #' @param stat.cex A numeric value specifying the size of the stat size
 #' @param stat.font The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)
+#' @param risk.table A logical value for drawing risktable (Default: TRUE)
+#' @param risk.table.cex A numeric value specifying the size of the risk table size
+#' @param risk.table.col Can accept a single value for colour, or a vector of colour values to set colour(s)
 #'
 #' @export
 #'
@@ -116,7 +119,11 @@ surv.plot <- function(
     stat.position = "right",
     stat.col = "black",
     stat.cex = 0.75,
-    stat.font = 1
+    stat.font = 1,
+    # risk table options
+    risk.table = TRUE,
+    risk.table.cex = 0.75,
+    risk.table.col = "black"
 ){
 
 # Preparation ####
@@ -651,15 +658,20 @@ surv.plot <- function(
 ## Log rank test ####
 
 # To compare the survival curves of two or more groups
-  logrank <- fit$call                                   # Extract the call from survival object
+    logrank <- fit$call                                   # Extract the call from survival object
   logrank$conf.type <- NULL
   logrank$conf.int <- NULL
   logrank[1] <- call("survdiff")                        # Modify the call from survfit() to survdiff()
-  logrank <- eval(logrank)
 
-# Recalculating p-Value
-  logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
-  logrankpval <- round.pval(logrankpval)
+# Check first if strata > 1
+  if(is.null(fit$strata)){
+    logrank <- NULL
+  } else {
+    logrank <- eval(logrank)
+    # Recalculating p-Value
+    logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
+    logrankpval <- round.pval(logrankpval)
+  }
 
 ## Cox proportional hazard regression ####
 
@@ -728,4 +740,65 @@ surv.plot <- function(
          cex = stat.cex,
          font = stat.font)
   }
+
+# Surv.risktable() Function ####
+  # Extract infromation from fit$strata
+  obsStrata <- if(is.null(fit$strata)){
+    obsStrata <- 1
+  } else {
+    obsStrata <- fit$strata
+  }
+
+  grp <- rep(1:stratum, times=obsStrata)
+
+
+  # Initialize a matrix 'n.risk.matrix' with zeros
+  n.risk.matrix <- matrix(0,nrow = length(xlim), ncol = stratum)
+
+  # Loop over each stratum and each time point defined by 'xlim'
+  for (stratum_i in 1:stratum) {
+    for (x in 1:length(xlim)) {
+      # Find the indices where the survival time for the current group is greater than the current 'xlim'
+      index <- which(fit$time[grp == stratum_i] > xlim[x])
+      # If there are no such indices, set the corresponding element in 'n.risk.matrix' to 0
+      if (length(index) == 0)
+        n.risk.matrix[x,stratum_i] <- 0
+      else
+        # Otherwise, set the element to the minimum number at risk for the specified group and time point
+        n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
+    }
+  }
+
+if (risk.table == TRUE){
+  # Set up the plot with margin (ora) and outer margins (oma)
+  par(mfrow = c(1,1), mar = c(5, 4, 4, 2), oma = c(stratum+1, 2, 1, 1)) # c(bottom, left, top, right)
+
+  # Add "Strata" text to the outer margin
+  mtext(text = "Strata", side = 2, outer = TRUE,
+        line = 1, adj = 1, at = 0,
+        cex = risk.table.cex,
+        col = risk.table.col)
+
+  # Add "Number at risk" text to the outer margin
+  mtext("Nuber at risk", side = 1, outer = TRUE,
+        line = 0, adj = 0, at = 0,
+        cex = risk.table.cex,
+        col = risk.table.col)
+
+  # Add legend text to the outer margin for each stratum
+  for (i in 1:stratum){
+    mtext(text = legend.legend[i], side = 1, outer = TRUE,
+          line = i, adj = 0, at = 0,
+          cex = risk.table.cex, col = risk.table.col)
+  }
+
+  # Add vector of risk counts text to the margin
+  mtext(text = as.vector(n.risk.matrix), side = 1, outer = F,
+        #line = rep((1:stratum), each = length(xlim)),
+        line = rep((1:stratum) + 5, each = length(xlim)),         # Since Outer = TRUE not working, +5 to get to the outer margin area. ORA(Margin) has 4 line.
+        at = rep(xlim, stratum),
+        cex = risk.table.cex,
+        col = risk.table.col)
+  }
+
 } # final closer of the function

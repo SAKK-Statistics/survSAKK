@@ -1,4 +1,6 @@
-fit <- survobject1                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
+# Run chunk 'for testing purpose first' to load the survobject1
+
+fit <- survobject4                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
 mark.censoring <- TRUE                                                          # mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
 conf.int <- fit$conf.int                                                        # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
                                                                                 # Alternatively, this can be a numeric value giving the desired confidence level.
@@ -307,7 +309,7 @@ survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
                     segment.font = 1,
                     segment.main.font = 2,
                     stat = "coxmodel",
-                    stat.position = c(19,0.95),
+                    stat.position = c(19,0.85),
                     stat.font = 1,
                     stat.col = "black",
                     stat.cex = 0.75)

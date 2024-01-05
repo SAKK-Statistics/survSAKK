@@ -49,7 +49,10 @@ surv.plot(
   stat.position = "right",
   stat.col = "black",
   stat.cex = 0.75,
-  stat.font = 1
+  stat.font = 1,
+  risk.table = TRUE,
+  risk.table.cex = 0.75,
+  risk.table.col = "black"
 )
 }
 \arguments{
@@ -142,6 +145,12 @@ surv.plot(
 \item{stat.cex}{A numeric value specifying the size of the stat size}
 
 \item{stat.font}{The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)}
+
+\item{risk.table}{A logical value for drawing risktable (Default: TRUE)}
+
+\item{risk.table.cex}{A numeric value specifying the size of the risk table size}
+
+\item{risk.table.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
 }
 \description{
 Plot publication ready Kaplan-Meier plot using the results from \code{survival::survfit()}.
