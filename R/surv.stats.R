@@ -91,11 +91,16 @@ logrank <- fit$call                                   # Extract the call from su
 logrank$conf.type <- NULL
 logrank$conf.int <- NULL
 logrank[1] <- call("survdiff")                        # Modify the call from survfit() to survdiff()
-logrank <- eval(logrank)
 
-# Recalculating p-Value
-logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
-logrankpval <- round.pval(logrankpval)
+# Check first if strata > 1
+if(is.null(fit$strata)){
+  logrank <- NULL
+} else {
+  logrank <- eval(logrank)
+  # Recalculating p-Value
+  logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
+  logrankpval <- round.pval(logrankpval)
+}
 
 # Cox proportional hazard regression ####
 ## To describe the effect of variables on survival
