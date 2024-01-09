@@ -492,7 +492,7 @@ surv.plot <- function(
              cex = segment.cex,
              font = segment.font)
       }
-    } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
+    } else if (is.null(segment.quantile) & !is.null(segment.timepoint)){
       # Code for segment at a specific time point
       segment_x <- segment.timepoint
       segment_y <- summary(fit,time = segment_x)
