@@ -30,21 +30,21 @@ survSAKK::surv.plot(fit = survobject1, col = c("pink", "#666666"))
 survSAKK::surv.plot(fit = survobject1, main = "KM Curve of the Lung Cancer", sub = "Datasource - NCCTG Lung Cancer Data")
 
 # Rename legend
-survSAKK::surv.plot(fit = survobject1,legend.legend = c("Male", "Female"))
+survSAKK::surv.plot(fit = survobject1,legend.name = c("Male", "Female"))
 
 # Modify x axis
-survSAKK::surv.plot(fit = survobject1,legend.legend = c("Male", "Female"),
+survSAKK::surv.plot(fit = survobject1,legend.name = c("Male", "Female"),
                     xlim = seq(0,35, 3),
                     xlab = "Time (Month)")
 # Add Segments
 # Median
-survSAKK::surv.plot(fit = survobject1,legend.legend = c("Male", "Female"),
+survSAKK::surv.plot(fit = survobject1,legend.name = c("Male", "Female"),
                     xlim = seq(0,35, 3),
                     xlab = "Time (Month)",
                     segment.quantile = 0.5)
 
 # Survival at 12month
-survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+survSAKK::surv.plot(fit = survobject1, legend.name = c("Male", "Female"),
                     xlim = seq(0,35, 3),
                     xlab = "Time (Month)h",
                     segment.timepoint = 12,
@@ -52,7 +52,7 @@ survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
 
 # Survival at 3, 6 and 12 month
 # survSAKK::surv.plot(fit = survobject1,
-#                     legend.legend = c("Male", "Female"),
+#                     legend.name = c("Male", "Female"),
 #                     xlim = seq(0,35, 3),
 #                     xlab = "Time (Month)",
 #                     segment.timepoint = c(3, 6, 12),
@@ -60,14 +60,14 @@ survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
 #                     segment.annotation = "top")
 
 # Specifying the location of annotation manually
-survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+survSAKK::surv.plot(fit = survobject1, legend.name = c("Male", "Female"),
                     xlim = seq(0,35, 3),
                     xlab = "Time (Month)",
                     segment.timepoint = 12,
                     segment.annotation = c(3,0.25))
 
 # Add statistics: Cox proportional hazard ratio
-survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+survSAKK::surv.plot(fit = survobject1, legend.name = c("Male", "Female"),
                     xlim = seq(0,35, 3),
                     xlab = "Time (Month)",
                     segment.quantile = 0.5,
@@ -75,7 +75,7 @@ survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
                     stat.position = "bottomleft")
 
 # Add  statistics table
-survSAKK::surv.plot(fit = survobject1, legend.legend = c("Male", "Female"),
+survSAKK::surv.plot(fit = survobject1, legend.name = c("Male", "Female"),
                     xlim = seq(0,35, 3),
                     xlab = "Time (Month)",
                     legend.position = "bottomleft",
