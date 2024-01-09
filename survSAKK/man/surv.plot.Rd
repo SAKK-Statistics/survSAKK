@@ -19,7 +19,7 @@ surv.plot(
   xlab = "Time",
   ylab = "Estimates Survival Probability",
   cex.lab = 1,
-  cex.axis = 0.75,
+  cex.axis = 0.6,
   bty = "l",
   lty = c("solid", "dotted", "dotted"),
   lwd = 1,
@@ -27,9 +27,9 @@ surv.plot(
   ylim = seq(from = 0, to = 1, by = 0.25),
   show.legend = TRUE,
   legend.position = "topright",
-  legend.legend = NULL,
+  legend.name = NULL,
   legend.text.font = 1,
-  legend.cex = 0.75,
+  legend.cex = 0.6,
   legend.title = NULL,
   legend.title.cex = 1,
   segment.type = 3,
@@ -41,7 +41,7 @@ surv.plot(
   segment.annotation.col = col,
   segment.lty = "dashed",
   segment.lwd = 1,
-  segment.cex = 0.75,
+  segment.cex = 0.6,
   segment.annotation.space = 0.03,
   segment.font = 1,
   segment.main.font = 1,
@@ -50,206 +50,165 @@ surv.plot(
   stat.col = "black",
   stat.cex = 0.75,
   stat.font = 1,
-  risk.table = TRUE,
-  risk.table.cex = 0.75,
-  risk.table.col = "black"
+  risktable = TRUE,
+  risktable.title = "Number at risk",
+  risktable.title.font = 3,
+  risktable.title.col = "black",
+  risktable.title.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.1,
+  risktable.cex = 0.5,
+  risktable.col = "black",
+  risktable.name.font = 2,
+  risktable.name.col = "#666666",
+  risktable.name.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.1
 )
 }
 \arguments{
-\item{fit}{An object of class \code{survfit}, usually returned by the \code{survfit} function}
+\item{fit}{An object of class \code{survfit} containing survival data.}
 
-\item{mark.censoring}{Curves are marked at each censoring time if TRUE otherwise FALSE.}
+\item{mark.censoring}{Mark censoring events on the curves. Logical (default: TRUE)}
 
-\item{conf.int}{Specifies the coverage probability. (FALSE, TRUE using 95\% confidence intervals.  Alternatively, this can be a numeric value giving the desired confidence level.}
+\item{conf.int}{Display confidence intervals. (FALSE, TRUE for 95\% confidence intervals, or specify a numeric value for desired coverage.}
 
 \item{conf.band}{Mapping the specified coverage probability}
 
-\item{conf.band.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{conf.band.col}{Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.}
 
-\item{conf.band.alpha}{Modify colour transparency for the confidence band}
+\item{conf.band.alpha}{Transparency for the confidence band.}
 
-\item{conf.type}{Specifies the transformation. Default: "log-log". Options ("log", "log-log", "plain", "logit", "arcsin")}
+\item{conf.type}{Transformation type of the confidence interval.Options: "log", "log-log", "plain", "logit", "arcsin";(default: "log-log").}
 
-\item{grid}{gird A logical value for drawing Grid. (TRUE or FALSE)}
+\item{grid}{Draw a grid on the plot Logical (default: FALSE)}
 
-\item{col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{col}{Colour(s) for the survival curves. Can accept a single value for colour, or a vector of colour values to set colour(s).}
 
-\item{main}{Title}
+\item{main}{Title of the plot.}
 
-\item{sub}{Subtitle}
+\item{sub}{Subtitle of the plot.}
 
-\item{xlab}{Label given to x-axis}
+\item{xlab}{X-axis label.}
 
-\item{ylab}{Label given to y-axis}
+\item{ylab}{Y-axis label.}
 
-\item{cex.lab}{A numeric value specifying the size of the xlab and ylab}
+\item{cex.lab}{A numeric value specifying the size of the xlab and ylab text.}
 
-\item{cex.axis}{A numeric value specifying the size of the axis size}
+\item{cex.axis}{A numeric value specifying the size of the axis size.}
 
 \item{bty}{The type of box to be drawn around the plot ("n","o","7","L","C","U")}
 
-\item{lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)}
+\item{lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).}
 
 \item{lwd}{A vector of numeric values for line widths.}
 
-\item{xlim}{Set xlim based on the range, seq(starting value,  end value, number of increment of the sequence)}
+\item{xlim}{X-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).}
 
-\item{ylim}{Set ylim based on the range, seq(starting value,  end value, number of increment of the sequence)}
+\item{ylim}{Y-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).}
 
-\item{show.legend}{Display legend}
+\item{show.legend}{Display legend.}
 
-\item{legend.position}{Position of the legend: c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center"}
+\item{legend.position}{Position of the legend (c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center").}
 
-\item{legend.legend}{A vector of string given to legend}
+\item{legend.name}{A vector of string specifying the name(s) of stratum.}
 
-\item{legend.text.font}{An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic)}
+\item{legend.text.font}{An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic).}
 
-\item{legend.cex}{Expansion factor for legend text}
+\item{legend.cex}{Expansion factor for legend text.}
 
-\item{legend.title}{The title of the legend}
+\item{legend.title}{The title of the legend.}
 
-\item{legend.title.cex}{Expansion factor for legend title}
+\item{legend.title.cex}{Expansion factor for legend title.}
 
-\item{segment.type}{A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment)}
+\item{segment.type}{A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment).}
 
-\item{segment.timepoint}{A single value or a vector of fixed time points of segment(s)}
+\item{segment.timepoint}{A single value or a vector of fixed time points of segment(s).}
 
-\item{segment.quantile}{A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median)}
+\item{segment.quantile}{A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median).}
 
-\item{segment.main}{Title of segment text}
+\item{segment.main}{Title of segment text.}
 
-\item{segment.annotation}{Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none")}
+\item{segment.annotation}{Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none").}
 
-\item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s).}
 
-\item{segment.annotation.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{segment.annotation.col}{Can accept a single value for colour, or a vector of colour values to set colour(s).}
 
-\item{segment.lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”)}
+\item{segment.lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).}
 
-\item{segment.lwd}{A vector of numeric values for line widths}
+\item{segment.lwd}{A vector of numeric values for line widths.}
 
-\item{segment.cex}{A numeric values specifying the size of the segment annotation size}
+\item{segment.cex}{A numeric values specifying the size of the segment annotation size.}
 
-\item{segment.annotation.space}{Spacing between the text in unit of x-coordinates}
+\item{segment.annotation.space}{Spacing between the text in unit of x-coordinates.}
 
-\item{segment.font}{A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)}
+\item{segment.font}{A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).}
 
-\item{segment.main.font}{A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...)}
+\item{segment.main.font}{A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).}
 
-\item{stat}{Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none")}
+\item{stat}{Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none").}
 
-\item{stat.position}{Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")}
+\item{stat.position}{Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none").}
 
-\item{stat.col}{Can accept a single value for colour}
+\item{stat.col}{Can accept a single value for colour.}
 
-\item{stat.cex}{A numeric value specifying the size of the stat size}
+\item{stat.cex}{A numeric value specifying the size of the stat size.}
 
-\item{stat.font}{The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)}
+\item{stat.font}{The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic).}
 
-\item{risk.table}{A logical value for drawing risktable (Default: TRUE)}
+\item{risktable}{A logical value for drawing risk table (Default: TRUE).}
 
-\item{risk.table.cex}{A numeric value specifying the size of the risk table size}
+\item{risktable.title}{Title of risk table.}
 
-\item{risk.table.col}{Can accept a single value for colour, or a vector of colour values to set colour(s)}
+\item{risktable.title.font}{Title font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).}
+
+\item{risktable.title.col}{Colour for the risk table title. Can accept a single value for colour.}
+
+\item{risktable.title.position}{Position of the title on the x-axis.}
+
+\item{risktable.cex}{A numeric value specifying the size of the risk table size.}
+
+\item{risktable.col}{Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).}
+
+\item{risktable.name.font}{legend name(s) font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).}
+
+\item{risktable.name.col}{Colour for the risk table name. Can accept a single value for colour.}
+
+\item{risktable.name.position}{Position of the legend name(s) on the x-axis.}
+}
+\value{
+Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
 }
 \description{
 Plot publication ready Kaplan-Meier plot using the results from \code{survival::survfit()}.
 }
 \examples{
-#'  Example
-#'
-#' lung <- survival::lung
-#' lung$time_yr <- lung$time/365.25
-#' lung$time_mt <- lung$time_yr*12
-#' lung$sex <- factor(lung$sex,
-#'                    levels = c(1,2),
-#'                    labels = c("Male","Female"))
-#'
-#' #  Survival Object with two arms
-#' survobject1 <- survival::survfit(Surv(time_mt, status) ~ sex, data = lung)
-#' survobject2 <- survival::survfit(Surv(time_yr, status) ~ sex, data = lung)
-#'
-#' #  Survival Object with one arm
-#' survobject3 <- survival::survfit(Surv(time_yr, status) ~ 1, data = lung)
-#' survobject4 <- survival::survfit(Surv(time_mt, status) ~ 1, data = lung)
-#'
-#'
-#'  # Base Plot
-#'  survSAKK::surv.plot(fit = survobject1)
-#'
-#'  #  Modify Colour
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      col = c("pink", "#' 666666"))
-#'
-#'  #  Add a title and subtitle
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      main = "KM Curve of the Lung Cancer",
-#'                      sub = "Datasource - NCCTG Lung Cancer Data")
-#'
-#'  #  Rename legend
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"))
-#'
-#'  #  Modify x axis
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)")
-#'  #  Add Segments
-#'  #Median
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)",
-#'                      segment.quantile = 0.5)
-#'
-#'  #  Survival at 12month
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)h",
-#'                      segment.timepoint = 12,
-#'                      segment.annotation = "bottomleft")
-#'
-#'  #  Survival at 3, 6 and 12 month
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)",
-#'                      segment.timepoint = c(3, 6, 12),
-#'                      segment.col = c("darkred","darkblue","darkgreen"),
-#'                      segment.annotation = "none")
-#'
-#'  #  Specifying the location of annotation manually
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)",
-#'                      segment.timepoint = 12,
-#'                      segment.annotation = c(3,0.25))
-#'
-#'  #  Add statistics: Cox proportional hazard ratio
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)",
-#'                      segment.quantile = 0.5,
-#'                      stat = "coxph",
-#'                      stat.position = "bottomleft")
-#'
-#'  # Add  statistics table
-#'  survSAKK::surv.plot(fit = survobject1,
-#'                      legend.legend = c("Male", "Female"),
-#'                      xlim = seq(0,35, 3),
-#'                      xlab = "Time (Month)",
-#'                      legend.position = "bottomleft",
-#'                      segment.quantile = 0.5,
-#'                      segment.annotation = "left",
-#'                      segment.font = 1,
-#'                      segment.main.font = 2,
-#'                      stat = "coxmodel",
-#'                      stat.position = c(19,0.95),
-#'                      stat.font = 1,
-#'                      stat.col = "black",
-#'                      stat.cex = 0.75)
+# Load Libraray
+ require(survival)
+ require(survSAKK)
+
+# Load Data
+ veteran$time_yr <- veteran$time/365.25
+ veteran$time_mt <- veteran$time_yr*12
+
+# Create survival object
+ veteran_fit_yr <- survfit(Surv(time_yr, status) ~ 1, data = veteran)
+ veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
+
+# Generate survival plots
+ par(mfrow=c(1,2))
+ survSAKK::surv.plot(fit = veteran_fit_yr,
+          risktable = FALSE,
+          xlim = seq(0,3, by = 0.5),
+          segment.quantile = 0.5,
+          segment.annotation.space = 0.02)
+
+ survSAKK::surv.plot(fit = veteran_trt_fit_mt,
+          col = c("#5ab4ac","#d8b365"),
+          legend.title = "Treatment Regimens",
+          legend.name = c("LT60","OV60"),
+          segment.timepoint = 1,
+          segment.col = "darkred",
+          stat = "coxph",
+          stat.position = "bottomleft",
+          risktable.col = c("#5ab4ac","#d8b365"))
+ par(mfrow=c(1,1))
+
 }
