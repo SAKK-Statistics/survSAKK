@@ -1,34 +1,7 @@
----
-title: "survSAKK::surv.plot"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{survSAKK::surv.plot}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  echo = TRUE,
-  eval = TRUE
-)
-```
-
-# Preparation
-
-## Load libraries
-
-```{r setup, warning=FALSE}
-library(survSAKK)
+# Load Data and library
 library(survival)
-```
+library(survSAKK)
 
-## Load Data
-
-```{r data}
-veteran <- survival::veteran
 veteran$time_yr <- veteran$time/365.25
 veteran$time_mt <- veteran$time_yr*12
 
@@ -43,104 +16,78 @@ veteran_fit_mt <- survfit(Surv(time_mt, status) ~ 1, data = veteran)
 veteran_trt_fit_yr <- survfit(Surv(time_yr, status) ~ trt, data = veteran)
 veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
 
-```
 
-# Examples of 'surv.plot' Function
+# With no Risktable
+png(file="C:/Users/vithersans/Desktop/survSAKK_example1.png",
+    width = 20.5, height = 16, units = "cm", res = 200)
+par(mfrow=c(2,2))
+# Plot 1
+surv.plot(fit = veteran_fit_mt,
+                    risktable = FALSE,
+                    xlim = seq(0,34, by = 3),
+                    xlab = ("Time (month)"),
+                    segment.type = 3,
+                    segment.quantile = 0.5,
+                    segment.annotation.space = 0.06,
+                    segment.cex = 0.6,
+          )
+# Plot 2
+surv.plot(fit = veteran_fit_yr,
+                    risktable = FALSE,
+                    xlim = seq(0,3, by = 0.5),
+                    xlab = c("Time (year)"),
+                    ylab = c("Survival"),
+                    legend.name = c("Veterans'Lung Cancer Study"),
+                    legend.cex = 0.6,
+                    segment.type = 3,
+                    segment.timepoint = 1.0,
+                    segment.annotation.space = 0.06,
+                    segment.annotation = c(1.58,0.75),
+                    segment.cex = 0.6,
+                    segment.col = "darkred")
+# Plot 3
+surv.plot(fit = veteran_trt_fit_mt,
+                    risktable = FALSE,
+                    legend.name = c("LT60","OV60"),
+                    legend.position = c(23.7,0.3),
+                    legend.cex = 0.6,
+                    xlim = seq(0,34, by = 6),
+                    xlab = ("Time (month)"),
+                    segment.timepoint = 6,
+                    segment.annotation.space = 0.06,
+                    segment.main = "Survival at 6mt [95%]",
+                    segment.annotation = c(19.5, 0.85),
+                    segment.cex = 0.6,
+                    segment.col = c("#666666","#a6761d"),
+                    stat = "coxph",
+                    stat.position = "bottomleft",
+                    stat.font = 2,
+                    stat.cex = 0.6)
 
-## Base plot
+# Plot 4
+surv.plot(fit = veteran_trt_fit_mt,
+                    risktable = FALSE,
+                    grid =TRUE,
+                    col = c("pink","lightblue"),
+                    xlab = "Time (year)",
+                    xlim = seq(0,3),
+                    legend.title = "Treatment Regimens",
+                    legend.title.cex = 0.5,
+                    legend.name = c("LT60","OV60"),
+                    legend.cex = 0.6,
+                    stat = "coxmodel",
+                    stat.position = "bottomleft",
+                    stat.cex = 0.6
+                    )
+dev.off()
 
-```{r baseplot}
-survSAKK::surv.plot(veteran_fit_yr)
-```
-
-## Adjustment of layout
-
-```{r layout}
-surv.plot(veteran_trt_fit_mt,
-          col = c("darkblue", "black"),
-          main = "Veterans' Administration Lung Cancer study", 
-          xlab = "Time (months)", 
-          legend.name = c("Standard","Test"))
-```
-
-## Drawing segment for specific timepoint/quantile
-
-### Estimated survial probability at 0.5 quantile (median)
-
-```{r quantil}
-surv.plot(veteran_trt_fit_mt,
-          col = c("darkblue", "black"),
-          xlab = "Time (months)", 
-          legend.name = c("Standard","Test"),
-          segment.quantile = 0.5)
-```
-
-### Estimated survial probability at 6 month
-
-```{r timepoint}
-surv.plot(veteran_trt_fit_mt,
-          col = c("darkblue", "black"),
-          xlab = "Time (months)", 
-          legend.name = c("Standard","Test"),
-          segment.timepoint = c(6))
-```
-
-### Estimated survival probability at 3,6 and 9 month
-
-```{r timepoints, eval=FALSE}
-surv.plot(veteran_trt_fit_mt,
-          segment.timepoint = c(3,6,9),
-          segment.annotation = "none",
-          segment.type = 2,
-          segment.col = "darkblue")
-```
-
-## Inlcude statistics
-
-### Cox proportional hazard 
-
-```{r coxph}
-surv.plot(veteran_trt_fit_mt,
-          segment.quantile =  0.5,
-          stat = "coxph",
-          stat.position = "bottomleft")
-```
-
-## Modify risk table
-
-### Undisplay risk table
-
-```{r norisktable}
-surv.plot(veteran_trt_fit_mt,
-          segment.quantile =  0.5,
-          stat = "coxph",
-          stat.position = "bottomleft",
-          risktable = FALSE)
-```
-
-### Adjustment of the risktable
-
-```{r risktable}
-surv.plot(veteran_trt_fit_mt,
-          col = c("darkblue","black"),
-          legend.name = c("Standard", "Test"),
-          segment.quantile =  0.5,
-          segment.annotation = c(17,0.9),
-          stat = "coxph",
-          stat.position = "bottomleft",
-          risktable.col = c("darkblue","black"),
-          risktable.title.font = 1,
-          risktable.name.font = 2)
-```
-
-
-# Mix multiple 'surv.plot' plots
-
-```{r plots}
+# With Risktable
+png(file="C:/Users/vithersans/Desktop/survSAKK_example2.png",
+    width = 20.5, height = 16, units = "cm", res = 200)
 par(mfrow=c(2,3))
 # Plot 5
 surv.plot(fit = veteran_fit_mt,
-          risktable = FALSE,
+          risktable = TRUE,
           xlim = seq(0,34, by = 3),
           xlab = ("Time (month)"),
           segment.type = 3,
@@ -155,7 +102,7 @@ surv.plot(fit = veteran_fit_yr,
           xlim = seq(0,3, by = 0.5),
           xlab = c("Time (year)"),
           ylab = c("Survival"),
-          main = "Kaplan-Meier Pots",
+          main = "Kaplan-Meier Pots With Different Opitons",
           legend.name = c("Veterans"),
           legend.cex = 0.6,
           segment.type = 3,
@@ -225,7 +172,7 @@ surv.plot(fit = veteran_trt_fit_mt,
 
 # Plot 10
 surv.plot(fit = veteran_trt_fit_mt,
-          risktable = FALSE,
+          risktable = TRUE,
           grid =TRUE,
           col = c("#fc8d59","#99d594"),
           xlab = "Time (year)",
@@ -245,11 +192,6 @@ surv.plot(fit = veteran_trt_fit_mt,
           stat.cex = 0.6,
           risktable.cex = 0.5,
           risktable.title = "No. at risk",
-          risktable.title.font = 2)
-          
-par(mfrow=c(1,1))
-
-```
-
-
-### References
+          risktable.title.font = 2
+)
+dev.off()

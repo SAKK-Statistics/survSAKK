@@ -14,9 +14,9 @@ segment.main.font <- 2                      # segment.main.font A numeric value 
 segment.annotation <- "none"                # segment.annotation: Position of the segment annotation, c(x,y), "bottomleft", ...
 segment.annotation.space <- 0.03            # segment.annotation.space: Spacing between the text
 
-segment.quantile <- 0.50
-#segment.timepoint = c(3, 6, 12)
-segment.annotation <- "left"
+#segment.quantile <- 0.50
+segment.timepoint = c(3, 6, 12)
+#segment.annotation <- "left"
 #segment.annotation <- "bottomleft"
 #segment.main <- c("Survival time (95%) ")
 

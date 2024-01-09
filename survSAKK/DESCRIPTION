@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     c(
   person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre","cph"), email = "Vithersan.Somasundaram@sakk.ch"),
-  person(given = "Katrin", family = "Gysel", role = c("aut","cph"), email = "Katrin.Gysel@sakk.ch"),
+  person(given = "Katrin", family = "Gysel", role = c("ctb"), email = "Katrin.Gysel@sakk.ch"),
   person(given = "Stefanie", family = "Hayoz", role = c("cph"), email = "Stefanie.Hayoz@sakk.ch")
   )
 Description: The survSAKK R package, incorporate various statistics and layout 
@@ -17,9 +17,11 @@ URL: https://github.com/SAKK-Statistics/survSAKK, https://sakk-statistics.github
 BugReports: https://github.com/SAKK-Statistics/survSAKK/issues
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: 
     graphics,
     grDevices,
     survival
+Config/testthat/edition: 3

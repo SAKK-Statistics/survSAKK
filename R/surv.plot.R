@@ -26,7 +26,7 @@ ylim <- seq(from = 0, to = 1, by = 0.25)                                        
 # Legend options
 show.legend <- TRUE                                                             # show.legend        Display legend
 legend.position <- "topright"                                                   # legend.position    Position of the legend, c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center".
-legend.legend <- NULL                                                           # legend.legend      A vector of string given to legend.
+legend.name <- NULL                                                           # legend.name      A vector of string given to legend.
 legend.text.font <- 1                                                           # legend.text.font   An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic)
 legend.cex <- 0.75                                                              # legend.cex         expansion factor for legend text.
 legend.title <- NULL                                                            # legend.title       The title of the legend
@@ -83,13 +83,13 @@ if (is.null(col)){
 
 
 # Extract Group names for legend if not manually specified
-if (is.null(legend.legend)){
+if (is.null(legend.name)){
   if(is.null(fit$strata)){
     group <- "Cohort"
-    legend.legend <- group
+    legend.name <- group
   } else {
     group <- names(fit$strata)
-    legend.legend <- group
+    legend.name <- group
   }
 }
 
@@ -213,7 +213,7 @@ if (is.logical(show.legend)){
   if(show.legend == TRUE){
     legend(x = legend.position[1],             # the x coordinates to positon the legend
            y = legend.position[2],             # the y coordinates to positoin the legend
-           legend = legend.legend ,            # the text of the legend
+           legend = legend.name ,            # the text of the legend
            bty = "n",                          # boarder type for legend fixed as "none"
            col = col,
            lty = "solid",                      # line type for legend fixed as "solid"
