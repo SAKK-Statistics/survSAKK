@@ -1,9 +1,3 @@
-# Changelog
+# survSAKK 1.0.0
 
-## Version 0.0.0.9000
-
-- Initial GitHub submission.
-
-## Veresion 1.0.0
-
-- Release surv.plot() function.
+* Initial CRAN submission.
