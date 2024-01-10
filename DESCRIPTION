@@ -3,7 +3,7 @@ Title: Create publication ready Kaplan-Meier plot
 Version: 0.0.0.9000
 Authors@R: 
     c(
-  person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre","cph"), email = "Vithersan.Somasundaram@sakk.ch"),
+  person(given = "Vithersans", family = "Somasundaram", role = c("aut","cre","cph"), email = "Vithersan.Somasundaram@sakk.ch"),
   person(given = "Katrin", family = "Gysel", role = c("ctb"), email = "Katrin.Gysel@sakk.ch"),
   person(given = "Stefanie", family = "Hayoz", role = c("cph"), email = "Stefanie.Hayoz@sakk.ch")
   )
