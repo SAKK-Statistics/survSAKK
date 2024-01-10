@@ -1,6 +1,6 @@
 Package: survSAKK
 Title: Create publication ready Kaplan-Meier plot
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     c(
   person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre","cph"), email = "Vithersan.Somasundaram@sakk.ch"),
@@ -12,7 +12,7 @@ Description: The survSAKK R package, incorporate various statistics and layout
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3s
+RoxygenNote: 7.2.3
 URL: https://sakk-statistics.github.io/survSAKK/
 BugReports: https://github.com/SAKK-Statistics/survSAKK/issues
 Suggests: 
