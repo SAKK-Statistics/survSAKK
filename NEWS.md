@@ -1,3 +1,3 @@
-# survSAKK (development version)
+# survSAKK (Under development)
 
-* Initial CRAN submission.
+* Initial GitHub submission.
