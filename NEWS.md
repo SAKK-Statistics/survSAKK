@@ -1,3 +1,3 @@
-# survSAKK 1.0.0
-
-* Initial CRAN submission.
+# survSAKK 0.0.0.9000
+* Initial GitHub submission.
+1
