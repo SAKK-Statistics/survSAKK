@@ -89,20 +89,15 @@
 #'  veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
 #'
 #' # Generate survival plots
-#'  survSAKK::surv.plot(fit = veteran_fit_yr,
-#'           risktable = FALSE,
-#'           xlim = seq(0,3, by = 0.5),
-#'           segment.quantile = 0.5)
+#'  survSAKK::surv.plot(fit = veteran_fit_yr)
 #'
-#'  survSAKK::surv.plot(fit = veteran_trt_fit_mt,
-#'           col = c("#5ab4ac","#d8b365"),
-#'           legend.title = "Treatment Regimens",
-#'           legend.name = c("LT60","OV60"),
-#'           segment.timepoint = 1,
-#'           segment.col = "darkred",
-#'           stat = "coxph",
-#'           stat.position = "bottomleft",
-#'           risktable.col = c("#5ab4ac","#d8b365"))
+#'  survSAKK::surv.plot(
+#'  fit = veteran_trt_fit_mt,
+#'  col = c("#5ab4ac","#d8b365"),
+#'  cex = 0.8,
+#'  segment.quantile = 0.5,
+#'  stat = "coxph",
+#'  risktable.col = c("#5ab4ac","#d8b365"))
 
 #'
 #' @import survival
@@ -171,14 +166,14 @@ surv.plot <- function(
     risktable.margin.bottom = 5,
     risktable.margin.left = 6.5,
     risktable.title = "Number at risk",
-    risktable.title.font = 3,
+    risktable.title.font = 2,
     risktable.title.col = "black",
     risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
     risktable.cex = 1,
     risktable.title.cex = 1,
     risktable.name.cex = 1,
     risktable.col = "black",
-    risktable.name.font = 2,
+    risktable.name.font = 1,
     risktable.name.col = "#666666",
     risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
