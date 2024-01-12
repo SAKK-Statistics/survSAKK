@@ -10,16 +10,17 @@ surv.plot(
   conf.int = fit$conf.int,
   conf.band = TRUE,
   conf.band.col = col,
-  conf.band.alpha = 0.25,
+  conf.band.transparent = 0.25,
   conf.type = "log-log",
   grid = FALSE,
   col = NULL,
   main = NULL,
   sub = NULL,
   xlab = "Time",
-  ylab = "Estimates Survival Probability",
+  ylab = "Estimated survival probability",
+  cex = NULL,
   cex.lab = 1,
-  cex.axis = 0.6,
+  cex.axis = 1,
   bty = "l",
   lty = c("solid", "dotted", "dotted"),
   lwd = 1,
@@ -29,7 +30,7 @@ surv.plot(
   legend.position = "topright",
   legend.name = NULL,
   legend.text.font = 1,
-  legend.cex = 0.6,
+  legend.cex = 1,
   legend.title = NULL,
   legend.title.cex = 1,
   segment.type = 3,
@@ -41,21 +42,23 @@ surv.plot(
   segment.annotation.col = col,
   segment.lty = "dashed",
   segment.lwd = 1,
-  segment.cex = 0.6,
+  segment.cex = 1,
   segment.annotation.space = 0.03,
   segment.font = 1,
   segment.main.font = 1,
   stat = "none",
   stat.position = "right",
   stat.col = "black",
-  stat.cex = 0.75,
+  stat.cex = 1,
   stat.font = 1,
   risktable = TRUE,
   risktable.title = "Number at risk",
   risktable.title.font = 3,
   risktable.title.col = "black",
   risktable.title.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.1,
-  risktable.cex = 0.5,
+  risktable.cex = 1,
+  risktable.title.cex = 1,
+  risktable.name.cex = 1,
   risktable.col = "black",
   risktable.name.font = 2,
   risktable.name.col = "#666666",
@@ -73,7 +76,7 @@ surv.plot(
 
 \item{conf.band.col}{Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.}
 
-\item{conf.band.alpha}{Transparency for the confidence band.}
+\item{conf.band.transparent}{Transparency for the confidence band.}
 
 \item{conf.type}{Transformation type of the confidence interval.Options: "log", "log-log", "plain", "logit", "arcsin";(default: "log-log").}
 
@@ -88,6 +91,8 @@ surv.plot(
 \item{xlab}{X-axis label.}
 
 \item{ylab}{Y-axis label.}
+
+\item{cex}{A numeric value specifying the global size of the text.}
 
 \item{cex.lab}{A numeric value specifying the size of the xlab and ylab text.}
 
@@ -164,6 +169,10 @@ surv.plot(
 \item{risktable.title.position}{Position of the title on the x-axis.}
 
 \item{risktable.cex}{A numeric value specifying the size of the risk table size.}
+
+\item{risktable.title.cex}{A numeric value specifying the size of the risk table title.}
+
+\item{risktable.name.cex}{A numeric value specifying the size of the riksk legend name(s).}
 
 \item{risktable.col}{Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).}
 
