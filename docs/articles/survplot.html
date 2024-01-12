@@ -128,7 +128,6 @@
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">survSAKK</span><span class="fu">::</span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/baseplot-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="adjustment-of-layout">Adjustment of layout<a class="anchor" aria-label="anchor" href="#adjustment-of-layout"></a>
@@ -139,7 +138,6 @@
 <span>          main <span class="op">=</span> <span class="st">"Veterans' Administration Lung Cancer study"</span>, </span>
 <span>          xlab <span class="op">=</span> <span class="st">"Time (months)"</span>, </span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Standard"</span>,<span class="st">"Test"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/layout-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="drawing-segment-for-specific-timepointquantile">Drawing segment for specific timepoint/quantile<a class="anchor" aria-label="anchor" href="#drawing-segment-for-specific-timepointquantile"></a>
@@ -153,7 +151,6 @@
 <span>          xlab <span class="op">=</span> <span class="st">"Time (months)"</span>, </span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Standard"</span>,<span class="st">"Test"</span><span class="op">)</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/quantil-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="estimated-survial-probability-at-6-month">Estimated survial probability at 6 month<a class="anchor" aria-label="anchor" href="#estimated-survial-probability-at-6-month"></a>
@@ -164,17 +161,6 @@
 <span>          xlab <span class="op">=</span> <span class="st">"Time (months)"</span>, </span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Standard"</span>,<span class="st">"Test"</span><span class="op">)</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/timepoint-1.png" width="700"></p>
-</div>
-<div class="section level4">
-<h4 id="estimated-survival-probability-at-36-and-9-month">Estimated survival probability at 3,6 and 9 month<a class="anchor" aria-label="anchor" href="#estimated-survival-probability-at-36-and-9-month"></a>
-</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_mt</span>,</span>
-<span>          segment.timepoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">6</span>,<span class="fl">9</span><span class="op">)</span>,</span>
-<span>          segment.annotation <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>          segment.type <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>          segment.col <span class="op">=</span> <span class="st">"darkblue"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -183,12 +169,11 @@
 <div class="section level4">
 <h4 id="cox-proportional-hazard">Cox proportional hazard<a class="anchor" aria-label="anchor" href="#cox-proportional-hazard"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_mt</span>,</span>
 <span>          segment.quantile <span class="op">=</span>  <span class="fl">0.5</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"bottomleft"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/coxph-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -197,18 +182,17 @@
 <div class="section level4">
 <h4 id="undisplay-risk-table">Undisplay risk table<a class="anchor" aria-label="anchor" href="#undisplay-risk-table"></a>
 </h4>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_mt</span>,</span>
 <span>          segment.quantile <span class="op">=</span>  <span class="fl">0.5</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
 <span>          risktable <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/norisktable-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="adjustment-of-the-risktable">Adjustment of the risktable<a class="anchor" aria-label="anchor" href="#adjustment-of-the-risktable"></a>
 </h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_mt</span>,</span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkblue"</span>,<span class="st">"black"</span><span class="op">)</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Standard"</span>, <span class="st">"Test"</span><span class="op">)</span>,</span>
@@ -219,14 +203,13 @@
 <span>          risktable.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkblue"</span>,<span class="st">"black"</span><span class="op">)</span>,</span>
 <span>          risktable.title.font <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>          risktable.name.font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/risktable-1.png" width="700"></p>
 </div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="mix-multiple-surv-plot-plots">Mix multiple ‘surv.plot’ plots<a class="anchor" aria-label="anchor" href="#mix-multiple-surv-plot-plots"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Plot 5</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_mt</span>,</span>
@@ -335,10 +318,8 @@
 <span>          stat.cex <span class="op">=</span> <span class="fl">0.6</span>,</span>
 <span>          risktable.cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>          risktable.title <span class="op">=</span> <span class="st">"No. at risk"</span>,</span>
-<span>          risktable.title.font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="survplot_files/figure-html/plots-1.png" width="700"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>          </span>
+<span>          risktable.title.font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>          </span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

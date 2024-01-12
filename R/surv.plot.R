@@ -14,8 +14,9 @@
 #' @param mark.censoring Mark censoring events on the curves. Logical (default: TRUE)
 #' @param conf.int Display confidence intervals. (FALSE, TRUE for 95% confidence intervals, or specify a numeric value for desired coverage.
 #' @param conf.band Mapping the specified coverage probability
+#' @param conf.line  A logical value for drawing confidence line (Default: FALSE).
 #' @param conf.band.col Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.
-#' @param conf.band.alpha Transparency for the confidence band.
+#' @param conf.band.transparent Transparency for the confidence band.
 #' @param conf.type Transformation type of the confidence interval.Options: "log", "log-log", "plain", "logit", "arcsin";(default: "log-log").
 #' @param grid Draw a grid on the plot Logical (default: FALSE)
 #' @param col Colour(s) for the survival curves. Can accept a single value for colour, or a vector of colour values to set colour(s).
@@ -23,6 +24,7 @@
 #' @param sub Subtitle of the plot.
 #' @param xlab X-axis label.
 #' @param ylab Y-axis label.
+#' @param cex A numeric value specifying the global size of the text.
 #' @param cex.lab A numeric value specifying the size of the xlab and ylab text.
 #' @param cex.axis A numeric value specifying the size of the axis size.
 #' @param bty The type of box to be drawn around the plot ("n","o","7","L","C","U")
@@ -56,11 +58,16 @@
 #' @param stat.cex A numeric value specifying the size of the stat size.
 #' @param stat.font The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic).
 #' @param risktable A logical value for drawing risk table (Default: TRUE).
+#' @param risktable.axislab.pos Position of the X and Y label, specified on which line.
+#' @param risktable.margin.bottom Modify bottom margin of the plot region in line unit (Default: 5).
+#' @param risktable.margin.left Modify left margin of the plot region in line unit (Default: 7).
 #' @param risktable.title Title of risk table.
 #' @param risktable.title.font Title font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).
 #' @param risktable.title.col Colour for the risk table title. Can accept a single value for colour.
 #' @param risktable.title.position Position of the title on the x-axis.
 #' @param risktable.cex A numeric value specifying the size of the risk table size.
+#' @param risktable.title.cex A numeric value specifying the size of the risk table title.
+#' @param risktable.name.cex A numeric value specifying the size of the riksk legend name(s).
 #' @param risktable.col Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).
 #' @param risktable.name.font legend name(s) font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).
 #' @param risktable.name.col Colour for the risk table name. Can accept a single value for colour.
@@ -82,12 +89,10 @@
 #'  veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
 #'
 #' # Generate survival plots
-#'  par(mfrow=c(1,2))
 #'  survSAKK::surv.plot(fit = veteran_fit_yr,
 #'           risktable = FALSE,
 #'           xlim = seq(0,3, by = 0.5),
-#'           segment.quantile = 0.5,
-#'           segment.annotation.space = 0.02)
+#'           segment.quantile = 0.5)
 #'
 #'  survSAKK::surv.plot(fit = veteran_trt_fit_mt,
 #'           col = c("#5ab4ac","#d8b365"),
@@ -98,7 +103,7 @@
 #'           stat = "coxph",
 #'           stat.position = "bottomleft",
 #'           risktable.col = c("#5ab4ac","#d8b365"))
-#'  par(mfrow=c(1,1))
+
 #'
 #' @import survival
 #' @import graphics
@@ -113,8 +118,9 @@ surv.plot <- function(
     # Confidence Interval options
     conf.int = fit$conf.int,
     conf.band = TRUE,
+    conf.line = FALSE,
     conf.band.col = col,
-    conf.band.alpha = 0.25,
+    conf.band.transparent = 0.25,
     conf.type = "log-log",
     # Layout options
     grid = FALSE,
@@ -122,9 +128,10 @@ surv.plot <- function(
     main = NULL,
     sub = NULL,
     xlab = "Time",
-    ylab = "Estimates Survival Probability",
+    ylab = "Estimated survival probability",
+    cex = NULL,
     cex.lab = 1,
-    cex.axis = 0.6,
+    cex.axis = 1,
     bty = "l",
     lty = c("solid","dotted","dotted"),
     lwd = 1,
@@ -135,7 +142,7 @@ surv.plot <- function(
     legend.position = "topright",
     legend.name = NULL,
     legend.text.font = 1,
-    legend.cex = 0.6,
+    legend.cex = 1,
     legend.title = NULL,
     legend.title.cex = 1,
     # Segment options
@@ -148,27 +155,32 @@ surv.plot <- function(
     segment.annotation.col = col,
     segment.lty = "dashed",
     segment.lwd = 1,
-    segment.cex = 0.6,
-    segment.annotation.space = 0.03,
+    segment.cex = 1,
+    segment.annotation.space = 0.06,
     segment.font = 1,
     segment.main.font = 1,
     # Stats options
     stat = "none",
-    stat.position = "right",
+    stat.position = "bottomleft",
     stat.col = "black",
-    stat.cex = 0.75,
+    stat.cex = 1,
     stat.font = 1,
     # risk table options
     risktable = TRUE,
+    risktable.axislab.pos = 2.5,
+    risktable.margin.bottom = 5,
+    risktable.margin.left = 6.5,
     risktable.title = "Number at risk",
     risktable.title.font = 3,
     risktable.title.col = "black",
-    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.1,
-    risktable.cex = 0.50,
+    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    risktable.cex = 1,
+    risktable.title.cex = 1,
+    risktable.name.cex = 1,
     risktable.col = "black",
     risktable.name.font = 2,
     risktable.name.col = "#666666",
-    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.1
+    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
 
   # 1. PREPARTION ####
@@ -187,6 +199,33 @@ surv.plot <- function(
       pval <- paste("p = ", format(signif(x, digits = 2), scientific = FALSE))
     }
     return(pval)
+  }
+
+
+  ## Global font parameter ####
+  if(!is.null(cex)){
+    cex.lab <- cex
+    cex.axis <- cex
+    legend.cex <- cex
+    legend.title.cex <- cex
+    segment.cex <- cex
+    stat.cex <- cex
+    risktable.cex <- cex
+    risktable.title.cex <- cex
+    risktable.name.cex <- cex
+  }
+
+  ## Display confidence Line ####
+  if(is.logical(conf.line)){
+    if(conf.line == FALSE){
+      lty <-  c("solid","blank","blank")
+    } else if(conf.line == TRUE){
+      lty <-  lty
+    } else{
+      stop("Error in confidence Line argument")
+    }
+  } else {
+    stop("`conf.line` expecting TRUE or FALSE as an argument!")
   }
 
   ## Function to draw table (surv.stats) into plot ####
@@ -270,16 +309,33 @@ surv.plot <- function(
     }
   }
 
-  ## Extract Group(stratum) names for legend if not manually specified ####
+  ## Extract Group (stratum) names for legend if not manually specified ####
   if (is.null(legend.name)){
     if(is.null(fit$strata)){
       group <- "Cohort"
       legend.name <- group
     } else {
       group <- names(fit$strata)
-      legend.name <- group
+      legend.name <- sub(".*=","",group)
+      #legend.name <- group
     }
   }
+
+  ## Define Plotting area with and without risktable. ####
+  if(is.logical(risktable)){
+    if (risktable == TRUE){
+      # Set up the plot with margin (ora) and outer margins (oma)
+      par(mar = c(stratum + risktable.margin.bottom, stratum + risktable.margin.left, 4, 2) + 0.1,  # c(bottom, left, top, right)
+          mgp = c(risktable.axislab.pos,1,0)                        # distance (lines) of axis elements from plot region c(axis title, axis label, axis ticks)
+          )
+    } else {
+      par(mar = c(5, 4, 4, 2) + 0.1,  # c(bottom, left, top, right)
+          mgp = c(3,1,0)              # c(axis title, axis label, axis ticks)
+      )
+    }
+  } else{
+      stop("`risktable` expecting TRUE or FALSE as an argument!")
+    }
 
   # 2. SURV.PLOT ####
 
@@ -384,7 +440,7 @@ surv.plot <- function(
           x = x_coordinates,
           y = y_coordinates,
           col = adjustcolor(col = col[i],
-                            alpha.f =  conf.band.alpha),
+                            alpha.f =  conf.band.transparent),
           border = FALSE)
       }
       else{
@@ -392,7 +448,7 @@ surv.plot <- function(
           x = x_coordinates,
           y = y_coordinates,
           col = adjustcolor(col = conf.band.col[i],
-                            alpha.f =  conf.band.alpha),
+                            alpha.f =  conf.band.transparent),
           border = FALSE)
       }
     }
@@ -817,14 +873,11 @@ surv.plot <- function(
         }
       }
 
-      # Set up the plot with margin (ora) and outer margins (oma)
-      par(mar = c(3 + stratum + 2, 4, 4, 2)+0.1) # c(bottom, left, top, right)
-
       # Add risktable.title text to the outer margin
       mtext(risktable.title, side = 1, outer = FALSE,
             line = 4, adj = NA, at = risktable.title.position,
             font = risktable.title.font,
-            cex = risktable.cex,
+            cex = risktable.title.cex,
             col = risktable.title.col)
 
       # Add legend text to the outer margin for each stratum
@@ -832,7 +885,7 @@ surv.plot <- function(
         mtext(text = legend.name[i], side = 1, outer = FALSE,
               line = i+4, adj = NA, at = risktable.name.position,
               font = risktable.name.font,
-              cex = risktable.cex,
+              cex = risktable.name.cex,
               col = risktable.name.col)
       }
 
@@ -846,6 +899,5 @@ surv.plot <- function(
     }
   } else {
     stop("`risktable` expecting TRUE or FALSE as an argument!")
-  }
-
-} # final closer of the function
+    }
+  } # final closer of the function
