@@ -23,12 +23,14 @@ png(file="C:/Users/vithersans/Desktop/survSAKK_example1.png",
 par(mfrow=c(2,2))
 # Plot 1
 surv.plot(fit = veteran_fit_mt,
-                    risktable = FALSE,
-                    xlim = seq(0,34, by = 3),
-                    xlab = ("Time (month)"),
-                    segment.type = 3,
-                    segment.quantile = 0.5,
-                    segment.annotation.space = 0.06)
+          risktable = FALSE,
+          conf.line = FALSE,
+          xlim = seq(0,34, by = 3),
+          xlab = ("Time (month)"),
+          segment.type = 3,
+          segment.quantile = 0.5,
+          segment.annotation.space = 0.06)
+
 # Plot 2
 surv.plot(fit = veteran_fit_yr,
                     risktable = FALSE,
@@ -51,7 +53,7 @@ surv.plot(fit = veteran_trt_fit_mt,
                     segment.col = c("#666666","#a6761d"),
                     stat = "coxph",
                     stat.position = "bottomleft",
-                    stat.font = 2)
+                    stat.font = 1)
 
 # Plot 4
 surv.plot(fit = veteran_trt_fit_mt,
@@ -104,7 +106,7 @@ surv.plot(fit = veteran_trt_fit_mt,
           segment.col = c("#666666","#a6761d"),
           stat = "coxph",
           stat.position = "bottomleft",
-          stat.font = 2)
+          risktable.axislab.pos = 2.5)
 
 # Plot 8
 surv.plot(fit = veteran_trt_fit_mt,
@@ -116,8 +118,7 @@ surv.plot(fit = veteran_trt_fit_mt,
           legend.title = "Treatment Regimens",
           legend.name = c("LT60","OV60"),
           stat = "coxmodel",
-          stat.position = "bottomleft",
-          segment.annotation.space = 0.6)
+          stat.position = "bottomleft")
 
 # Plot 9
 surv.plot(fit = veteran_trt_fit_mt,
@@ -148,8 +149,5 @@ surv.plot(fit = veteran_trt_fit_mt,
           segment.annotation = "left",
           stat = "logrank",
           stat.position = "bottomleft",
-          risktable.title = "Number at risk",
-          risktable.title.cex =  0.75,
-          risktable.name.cex = 0.75
-)
+          risktable.title = "Number at risk")
 dev.off()

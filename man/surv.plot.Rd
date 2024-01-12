@@ -9,6 +9,7 @@ surv.plot(
   mark.censoring = TRUE,
   conf.int = fit$conf.int,
   conf.band = TRUE,
+  conf.line = FALSE,
   conf.band.col = col,
   conf.band.transparent = 0.25,
   conf.type = "log-log",
@@ -18,7 +19,6 @@ surv.plot(
   sub = NULL,
   xlab = "Time",
   ylab = "Estimated survival probability",
-  axis.lab.pos = 2.5,
   cex = NULL,
   cex.lab = 1,
   cex.axis = 1,
@@ -44,26 +44,29 @@ surv.plot(
   segment.lty = "dashed",
   segment.lwd = 1,
   segment.cex = 1,
-  segment.annotation.space = 0.03,
+  segment.annotation.space = 0.06,
   segment.font = 1,
   segment.main.font = 1,
   stat = "none",
-  stat.position = "right",
+  stat.position = "bottomleft",
   stat.col = "black",
   stat.cex = 1,
   stat.font = 1,
   risktable = TRUE,
+  risktable.axislab.pos = 2.5,
+  risktable.margin.bottom = 5,
+  risktable.margin.left = 6.5,
   risktable.title = "Number at risk",
   risktable.title.font = 3,
   risktable.title.col = "black",
-  risktable.title.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.1,
+  risktable.title.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.15,
   risktable.cex = 1,
   risktable.title.cex = 1,
   risktable.name.cex = 1,
   risktable.col = "black",
   risktable.name.font = 2,
   risktable.name.col = "#666666",
-  risktable.name.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.1
+  risktable.name.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.15
 )
 }
 \arguments{
@@ -74,6 +77,8 @@ surv.plot(
 \item{conf.int}{Display confidence intervals. (FALSE, TRUE for 95\% confidence intervals, or specify a numeric value for desired coverage.}
 
 \item{conf.band}{Mapping the specified coverage probability}
+
+\item{conf.line}{A logical value for drawing confidence line (Default: FALSE).}
 
 \item{conf.band.col}{Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.}
 
@@ -92,8 +97,6 @@ surv.plot(
 \item{xlab}{X-axis label.}
 
 \item{ylab}{Y-axis label.}
-
-\item{axis.lab.pos}{Position of the X and Y label, specified on which line.}
 
 \item{cex}{A numeric value specifying the global size of the text.}
 
@@ -163,6 +166,12 @@ surv.plot(
 
 \item{risktable}{A logical value for drawing risk table (Default: TRUE).}
 
+\item{risktable.axislab.pos}{Position of the X and Y label, specified on which line.}
+
+\item{risktable.margin.bottom}{Modify bottom margin of the plot region in line unit (Default: 5).}
+
+\item{risktable.margin.left}{Modify left margin of the plot region in line unit (Default: 7).}
+
 \item{risktable.title}{Title of risk table.}
 
 \item{risktable.title.font}{Title font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).}
@@ -205,12 +214,10 @@ Plot publication ready Kaplan-Meier plot using the results from \code{survival::
  veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
 
 # Generate survival plots
- par(mfrow=c(1,2))
  survSAKK::surv.plot(fit = veteran_fit_yr,
           risktable = FALSE,
           xlim = seq(0,3, by = 0.5),
-          segment.quantile = 0.5,
-          segment.annotation.space = 0.02)
+          segment.quantile = 0.5)
 
  survSAKK::surv.plot(fit = veteran_trt_fit_mt,
           col = c("#5ab4ac","#d8b365"),
@@ -221,6 +228,5 @@ Plot publication ready Kaplan-Meier plot using the results from \code{survival::
           stat = "coxph",
           stat.position = "bottomleft",
           risktable.col = c("#5ab4ac","#d8b365"))
- par(mfrow=c(1,1))
 
 }
