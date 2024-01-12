@@ -23,6 +23,7 @@
 #' @param sub Subtitle of the plot.
 #' @param xlab X-axis label.
 #' @param ylab Y-axis label.
+#' @param axis.lab.pos Position of the X and Y label, specified on which line.
 #' @param cex A numeric value specifying the global size of the text.
 #' @param cex.lab A numeric value specifying the size of the xlab and ylab text.
 #' @param cex.axis A numeric value specifying the size of the axis size.
@@ -126,6 +127,7 @@ surv.plot <- function(
     sub = NULL,
     xlab = "Time",
     ylab = "Estimated survival probability",
+    axis.lab.pos = 2.5,
     cex = NULL,
     cex.lab = 1,
     cex.axis = 1,
@@ -153,12 +155,12 @@ surv.plot <- function(
     segment.lty = "dashed",
     segment.lwd = 1,
     segment.cex = 1,
-    segment.annotation.space = 0.03,
+    segment.annotation.space = 0.06,
     segment.font = 1,
     segment.main.font = 1,
     # Stats options
     stat = "none",
-    stat.position = "right",
+    stat.position = "bottomleft",
     stat.col = "black",
     stat.cex = 1,
     stat.font = 1,
@@ -297,7 +299,8 @@ surv.plot <- function(
       legend.name <- group
     } else {
       group <- names(fit$strata)
-      legend.name <- group
+      legend.name <- sub(".*=","",group)
+      #legend.name <- group
     }
   }
 
@@ -839,7 +842,7 @@ surv.plot <- function(
 
       # Set up the plot with margin (ora) and outer margins (oma)
       par(mar = c(stratum + 5, stratum + 5, 4, 2)+0.1,  # c(bottom, left, top, right)
-          mgp = c(2,3,0)                        # c(axis title, axis label, axis ticks)
+          mgp = c(axis.lab.pos,3,0)                        # c(axis title, axis label, axis ticks)
           )
 
       # Add risktable.title text to the outer margin

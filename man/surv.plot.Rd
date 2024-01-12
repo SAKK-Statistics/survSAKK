@@ -18,6 +18,7 @@ surv.plot(
   sub = NULL,
   xlab = "Time",
   ylab = "Estimated survival probability",
+  axis.lab.pos = 2.5,
   cex = NULL,
   cex.lab = 1,
   cex.axis = 1,
@@ -91,6 +92,8 @@ surv.plot(
 \item{xlab}{X-axis label.}
 
 \item{ylab}{Y-axis label.}
+
+\item{axis.lab.pos}{Position of the X and Y label, specified on which line.}
 
 \item{cex}{A numeric value specifying the global size of the text.}
 

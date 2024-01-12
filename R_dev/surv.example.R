@@ -28,9 +28,7 @@ surv.plot(fit = veteran_fit_mt,
                     xlab = ("Time (month)"),
                     segment.type = 3,
                     segment.quantile = 0.5,
-                    segment.annotation.space = 0.06,
-                    segment.cex = 0.6,
-          )
+                    segment.annotation.space = 0.06)
 # Plot 2
 surv.plot(fit = veteran_fit_yr,
                     risktable = FALSE,
@@ -40,12 +38,10 @@ surv.plot(fit = veteran_fit_yr,
                     legend.name = c("Veterans'Lung Cancer Study"),
                     segment.type = 3,
                     segment.timepoint = 1.0,
-                    segment.annotation = c(1.58,0.75),
                     segment.col = "darkred")
 # Plot 3
 surv.plot(fit = veteran_trt_fit_mt,
                     risktable = FALSE,
-                    legend.name = c("LT60","OV60"),
                     legend.position = c(23.7,0.3),
                     xlim = seq(0,34, by = 6),
                     xlab = ("Time (month)"),
@@ -80,8 +76,8 @@ surv.plot(fit = veteran_fit_mt,
           xlim = seq(0,34, by = 3),
           xlab = ("Time (month)"),
           segment.type = 3,
-          segment.quantile = 0.5,
-          risktable.name.position = -4)
+          segment.quantile = 0.5)
+
 # Plot 6
 surv.plot(fit = veteran_fit_yr,
           risktable = TRUE,
@@ -92,11 +88,9 @@ surv.plot(fit = veteran_fit_yr,
           legend.name = c("Veterans"),
           segment.type = 3,
           segment.timepoint = 1.0,
-          segment.annotation.space = 0.06,
           segment.annotation = c(1.58,0.75),
-          segment.col = "darkred",
-          risktable.title.position = -0.5,
-          risktable.name.position = -0.5)
+          segment.col = "darkred")
+
 # Plot 7
 surv.plot(fit = veteran_trt_fit_mt,
           risktable = TRUE,
@@ -105,7 +99,6 @@ surv.plot(fit = veteran_trt_fit_mt,
           xlim = seq(0,34, by = 6),
           xlab = ("Time (month)"),
           segment.timepoint = 6,
-          segment.annotation.space = 0.06,
           segment.main = "Survival at 6mt [95%]",
           segment.annotation = c(18, 0.85),
           segment.col = c("#666666","#a6761d"),
@@ -123,7 +116,8 @@ surv.plot(fit = veteran_trt_fit_mt,
           legend.title = "Treatment Regimens",
           legend.name = c("LT60","OV60"),
           stat = "coxmodel",
-          stat.position = "bottomleft")
+          stat.position = "bottomleft",
+          segment.annotation.space = 0.6)
 
 # Plot 9
 surv.plot(fit = veteran_trt_fit_mt,
@@ -148,7 +142,7 @@ surv.plot(fit = veteran_trt_fit_mt,
           xlab = "Time (year)",
           xlim = seq(0,3),
           legend.title = "Treatment Regimens",
-          legend.name = c("LT60","OV60"),
+          #legend.name = c("LT60","OV60"),
           segment.type = 1,
           segment.quantile = 0.5,
           segment.annotation = "left",
