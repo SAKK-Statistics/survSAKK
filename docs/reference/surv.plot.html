@@ -65,17 +65,19 @@
 <span>  mark.censoring <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  conf.int <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">conf.int</span>,</span>
 <span>  conf.band <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.line <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  conf.band.col <span class="op">=</span> <span class="va">col</span>,</span>
-<span>  conf.band.alpha <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  conf.band.transparent <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  conf.type <span class="op">=</span> <span class="st">"log-log"</span>,</span>
 <span>  grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sub <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">"Time"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"Estimates Survival Probability"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Estimated survival probability"</span>,</span>
+<span>  cex <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cex.lab <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  cex.axis <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  cex.axis <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  bty <span class="op">=</span> <span class="st">"l"</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"dotted"</span>, <span class="st">"dotted"</span><span class="op">)</span>,</span>
 <span>  lwd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -85,7 +87,7 @@
 <span>  legend.position <span class="op">=</span> <span class="st">"topright"</span>,</span>
 <span>  legend.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend.text.font <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  legend.cex <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  legend.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  legend.title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend.title.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  segment.type <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -97,25 +99,30 @@
 <span>  segment.annotation.col <span class="op">=</span> <span class="va">col</span>,</span>
 <span>  segment.lty <span class="op">=</span> <span class="st">"dashed"</span>,</span>
 <span>  segment.lwd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  segment.cex <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>  segment.annotation.space <span class="op">=</span> <span class="fl">0.03</span>,</span>
+<span>  segment.cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  segment.annotation.space <span class="op">=</span> <span class="fl">0.06</span>,</span>
 <span>  segment.font <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  segment.main.font <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>  stat.position <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  stat.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
 <span>  stat.col <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  stat.cex <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  stat.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  stat.font <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  risktable.axislab.pos <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  risktable.margin.bottom <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  risktable.margin.left <span class="op">=</span> <span class="fl">6.5</span>,</span>
 <span>  risktable.title <span class="op">=</span> <span class="st">"Number at risk"</span>,</span>
 <span>  risktable.title.font <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  risktable.title.col <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  risktable.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.1</span>,</span>
-<span>  risktable.cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  risktable.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.15</span>,</span>
+<span>  risktable.cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  risktable.title.cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  risktable.name.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable.col <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>  risktable.name.font <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  risktable.name.col <span class="op">=</span> <span class="st">"#666666"</span>,</span>
-<span>  risktable.name.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.1</span></span>
+<span>  risktable.name.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.15</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -137,11 +144,15 @@
 <dd><p>Mapping the specified coverage probability</p></dd>
 
 
+<dt>conf.line</dt>
+<dd><p>A logical value for drawing confidence line (Default: FALSE).</p></dd>
+
+
 <dt>conf.band.col</dt>
 <dd><p>Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.</p></dd>
 
 
-<dt>conf.band.alpha</dt>
+<dt>conf.band.transparent</dt>
 <dd><p>Transparency for the confidence band.</p></dd>
 
 
@@ -171,6 +182,10 @@
 
 <dt>ylab</dt>
 <dd><p>Y-axis label.</p></dd>
+
+
+<dt>cex</dt>
+<dd><p>A numeric value specifying the global size of the text.</p></dd>
 
 
 <dt>cex.lab</dt>
@@ -305,6 +320,18 @@
 <dd><p>A logical value for drawing risk table (Default: TRUE).</p></dd>
 
 
+<dt>risktable.axislab.pos</dt>
+<dd><p>Position of the X and Y label, specified on which line.</p></dd>
+
+
+<dt>risktable.margin.bottom</dt>
+<dd><p>Modify bottom margin of the plot region in line unit (Default: 5).</p></dd>
+
+
+<dt>risktable.margin.left</dt>
+<dd><p>Modify left margin of the plot region in line unit (Default: 7).</p></dd>
+
+
 <dt>risktable.title</dt>
 <dd><p>Title of risk table.</p></dd>
 
@@ -323,6 +350,14 @@
 
 <dt>risktable.cex</dt>
 <dd><p>A numeric value specifying the size of the risk table size.</p></dd>
+
+
+<dt>risktable.title.cex</dt>
+<dd><p>A numeric value specifying the size of the risk table title.</p></dd>
+
+
+<dt>risktable.name.cex</dt>
+<dd><p>A numeric value specifying the size of the riksk legend name(s).</p></dd>
 
 
 <dt>risktable.col</dt>
@@ -363,13 +398,11 @@
 <span class="r-in"><span> <span class="va">veteran_trt_fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time_mt</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Generate survival plots</span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_yr</span>,</span></span>
 <span class="r-in"><span>          risktable <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
-<span class="r-in"><span>          segment.annotation.space <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(predvars, data, env):</span> object 'time_yr' not found</span>
+<span class="r-in"><span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="surv.plot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_trt_fit_mt</span>,</span></span>
 <span class="r-in"><span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5ab4ac"</span>,<span class="st">"#d8b365"</span><span class="op">)</span>,</span></span>
@@ -380,8 +413,7 @@
 <span class="r-in"><span>          stat <span class="op">=</span> <span class="st">"coxph"</span>,</span></span>
 <span class="r-in"><span>          stat.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span></span>
 <span class="r-in"><span>          risktable.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5ab4ac"</span>,<span class="st">"#d8b365"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(predvars, data, env):</span> object 'time_mt' not found</span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="surv.plot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
