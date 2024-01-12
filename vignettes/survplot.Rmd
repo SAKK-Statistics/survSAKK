@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   echo = TRUE,
-  eval = TRUE
+  eval = FALSE
 )
 ```
 
@@ -83,16 +83,6 @@ surv.plot(veteran_trt_fit_mt,
           xlab = "Time (months)", 
           legend.name = c("Standard","Test"),
           segment.timepoint = c(6))
-```
-
-### Estimated survival probability at 3,6 and 9 month
-
-```{r timepoints, eval=FALSE}
-surv.plot(veteran_trt_fit_mt,
-          segment.timepoint = c(3,6,9),
-          segment.annotation = "none",
-          segment.type = 2,
-          segment.col = "darkblue")
 ```
 
 ## Inlcude statistics
