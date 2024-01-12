@@ -113,14 +113,14 @@
 <span>  risktable.margin.bottom <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  risktable.margin.left <span class="op">=</span> <span class="fl">6.5</span>,</span>
 <span>  risktable.title <span class="op">=</span> <span class="st">"Number at risk"</span>,</span>
-<span>  risktable.title.font <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  risktable.title.font <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  risktable.title.col <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>  risktable.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.15</span>,</span>
 <span>  risktable.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable.title.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable.name.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable.col <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  risktable.name.font <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  risktable.name.font <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable.name.col <span class="op">=</span> <span class="st">"#666666"</span>,</span>
 <span>  risktable.name.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.15</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -398,21 +398,16 @@
 <span class="r-in"><span> <span class="va">veteran_trt_fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time_mt</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Generate survival plots</span></span></span>
-<span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_yr</span>,</span></span>
-<span class="r-in"><span>          risktable <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_yr</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="surv.plot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_trt_fit_mt</span>,</span></span>
-<span class="r-in"><span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5ab4ac"</span>,<span class="st">"#d8b365"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          legend.title <span class="op">=</span> <span class="st">"Treatment Regimens"</span>,</span></span>
-<span class="r-in"><span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LT60"</span>,<span class="st">"OV60"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          segment.timepoint <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>          segment.col <span class="op">=</span> <span class="st">"darkred"</span>,</span></span>
-<span class="r-in"><span>          stat <span class="op">=</span> <span class="st">"coxph"</span>,</span></span>
-<span class="r-in"><span>          stat.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span></span>
-<span class="r-in"><span>          risktable.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5ab4ac"</span>,<span class="st">"#d8b365"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span></span></span>
+<span class="r-in"><span> fit <span class="op">=</span> <span class="va">veteran_trt_fit_mt</span>,</span></span>
+<span class="r-in"><span> col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5ab4ac"</span>,<span class="st">"#d8b365"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> cex <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
+<span class="r-in"><span> segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
+<span class="r-in"><span> stat <span class="op">=</span> <span class="st">"coxph"</span>,</span></span>
+<span class="r-in"><span> risktable.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5ab4ac"</span>,<span class="st">"#d8b365"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="surv.plot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
