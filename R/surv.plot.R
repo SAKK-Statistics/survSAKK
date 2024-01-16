@@ -11,67 +11,138 @@
 #'
 #' @export
 #' @param fit An object of class `survfit` containing survival data.
-#' @param mark.censoring Mark censoring events on the curves. Logical (default: TRUE)
-#' @param conf.int Display confidence intervals. (FALSE, TRUE for 95% confidence intervals, or specify a numeric value for desired coverage.
-#' @param conf.band Mapping the specified coverage probability
-#' @param conf.line  A logical value for drawing confidence line (Default: FALSE).
-#' @param conf.band.col Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.
-#' @param conf.band.transparent Transparency for the confidence band.
-#' @param conf.type Transformation type of the confidence interval.Options: "log", "log-log", "plain", "logit", "arcsin";(default: "log-log").
-#' @param grid Draw a grid on the plot Logical (default: FALSE)
-#' @param col Colour(s) for the survival curves. Can accept a single value for colour, or a vector of colour values to set colour(s).
+#' @param mark.censoring A logical parameter indicating whether to mark censoring
+#'    events on the survival curves. Default: \code{TRUE}.
+#' @param conf.int Controlling the confidence interval on the survival curves.
+#'    When set to \code{TRUE}, the function displays default 95% confidence interval.
+#'    If set to \code{FALSE}, confidence intervals are not displayed.
+#'    If a numeric value between 0 and 1 is provided, it represents the desired
+#'    coverage for the confidence interval (e.g. 0.9 for 90%).
+#' @param conf.band A logical parameter indicating whether to display the
+#'    confidence band on the survival curves (default: \code{TRUE}).
+#' @param conf.line  A logical parameter indicating whether to draw the confidence
+#'    line on the survival curves (default: \code{FALSE}).
+#' @param conf.band.col Colour(s) for confidence band. Can accept a single value
+#'    for colour, or a vector of colour values.
+#' @param conf.band.transparent A numeric values from 0 to 1. Controlling the
+#'    transparency of the confidence band (default: 0.25).
+#' @param conf.type Transformation type for the confidence interval.
+#' `'log'`, `'log-log'` (default), `'plain'`, `'logit'`, `'arcsin'`.
+#' @param grid A logical parameter specifying whether to draw a grid.
+#'    Default: \code{FALSE}.
+#' @param col Colour(s) for the survival curves. Can accept a single value for
+#'    colour, or a vector of colour values to set colour(s).
 #' @param main Title of the plot.
 #' @param sub Subtitle of the plot.
 #' @param xlab X-axis label.
 #' @param ylab Y-axis label.
-#' @param cex A numeric value specifying the global size of the text.
-#' @param cex.lab A numeric value specifying the size of the xlab and ylab text.
-#' @param cex.axis A numeric value specifying the size of the axis size.
-#' @param bty The type of box to be drawn around the plot ("n","o","7","L","C","U")
-#' @param lty A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
-#' @param lwd A vector of numeric values for line widths.
-#' @param xlim X-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).
-#' @param ylim Y-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).
-#' @param show.legend Display legend.
-#' @param legend.position Position of the legend (c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center").
-#' @param legend.name A vector of string specifying the name(s) of stratum.
-#' @param legend.text.font An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic).
-#' @param legend.cex Expansion factor for legend text.
-#' @param legend.title The title of the legend.
-#' @param legend.title.cex Expansion factor for legend title.
-#' @param segment.type A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment).
-#' @param segment.timepoint A single value or a vector of fixed time points of segment(s).
-#' @param segment.quantile A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median).
-#' @param segment.col Can accept a single value for colour, or a vector of colour values to set colour(s).
-#' @param segment.annotation.col Can accept a single value for colour, or a vector of colour values to set colour(s).
-#' @param segment.lty A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).
-#' @param segment.lwd A vector of numeric values for line widths.
-#' @param segment.cex A numeric values specifying the size of the segment annotation size.
-#' @param segment.font A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).
+#' @param cex A numeric value specifying all size of the text elements at once
+#'    (labels, annotations, ...).
+#' @param cex.lab A numeric value specifying the size of the `xlab` and `ylab` text.
+#' @param cex.axis A numeric value specifying the size of the `axis` size.
+#' @param bty Determines the style of the box drawn around the plot.
+#'    Options: `'n'`,`'o'`,`'7'`,`'L'`,`'C'`,`'U'`.
+#' @param lty A vector of string specifying line types for each curve.
+#'    The length of the vector should match the number of survival curves,
+#'    assigning a specific line type to each curve. in the plot.
+#'    Options: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
+#'    `'longdash'`, `'twodash'`.
+#' @param lwd A numeric value specifying the width of the line.
+#' @param xlim Limits for the x-axis. Specified as
+#'    `seq(starting value, end value, number of increment of the sequence)`.
+#' @param ylim Limits for the y-axis. Specified as
+#'    `seq(starting value, end value, number of increment of the sequence)`.
+#' @param show.legend A logical parameter specifying whether to display legend.
+#'    Default: \code{TRUE}.
+#' @param legend.position Position of the legend.
+#'    Options: `c(x,y)`, `'bottomright'`, `'bottom'`, `'bottomleft'`, '`left`',
+#'    '`topleft'`, `'top'`, `'topright'`, `'right'`, `'center'`.
+#' @param legend.name Renaming the name(s) of the stratum.
+#' @param legend.text.font Font style of the legend text.
+#'    - `1` normal
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold and italic
+#' @param legend.cex A numeric value specifying the size of the legend text.
+#' @param legend.title Title of the legend.
+#' @param legend.title.cex A numeric value specifying the size of the legend title.
+#' @param segment.type A numeric value specifying the layout of the segment.
+#'    Options: `1` (full width), `2` (half width), `3` (vertical and horizontal segment).
+#' @param segment.timepoint A single value or a vector of fixed time points
+#'    to be drawn as segment(s).
+#' @param segment.quantile A single value or a vector of fixed quantile to be
+#'    drawn as segment(s) e.g. 0.5 corresponds to median.
+#' @param segment.col Colour for the segment.  Can accept a single value for colour.
+#' @param segment.annotation.col Colour(s) for the segment annotation.
+#'    Can accept a single value for colour, or a vector of colour values to
+#'    set colour(s).
+#' @param segment.lty A vector of string specifying line types for each curve.
+#'    Options: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
+#'    `'longdash'`, `'twodash'`.
+#' @param segment.lwd A numeric value specifying the width of the segment line.
+#' @param segment.cex A numeric value specifying the size of the segment text size.
+#' @param segment.font A numeric value specifying the font face.
+#'    - `1` plain
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold-italic
 #' @param segment.main Title of segment text.
-#' @param segment.main.font A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).
-#' @param segment.annotation Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none").
+#' @param segment.main.font A numeric value specifying the font face.
+#'    - `1` plain
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold-italic
+#' @param segment.annotation Position of the segment annotation.
+#'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
 #' @param segment.annotation.space Spacing between the text in unit of x-coordinates.
-#' @param stat  Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none").
-#' @param stat.position Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none").
-#' @param stat.col Can accept a single value for colour.
-#' @param stat.cex A numeric value specifying the size of the stat size.
-#' @param stat.font The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic).
-#' @param risktable A logical value for drawing risk table (Default: TRUE).
-#' @param risktable.axislab.pos Position of the X and Y label, specified on which line.
-#' @param risktable.margin.bottom Modify bottom margin of the plot region in line unit (Default: 5).
-#' @param risktable.margin.left Modify left margin of the plot region in line unit (Default: 7).
+#' @param stat  Statistics which is displayed in the plot.
+#'    Options:
+#'    - `'logrank'` gives the p value of the conducted logrank test using `survdiff{survival}`.
+#'      To tests if there is a difference between two or more survival curves.
+#'
+#'    - `'coxph'`  gives the hazard ratio (HR) and its 95% CI of the conducted
+#'      Cox proportional hazards regression using `coxph{survival}`.
+#'
+#'    - `'coxmodel'` gives `N` (number of observations), `Events` (Number of events),
+#'      `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval),
+#'      `uprCI` (upper 95% confidence interval) and `Logrank` (p-value corresponding to the Chisquare statistic)
+#'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
+#'    - `'none'` no statistic is displayed (default).
+#' @param stat.position Position where the stat should be displayed.
+#'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
+#' @param stat.col Colour of the `stat` text. Can accept a single value for colour.
+#' @param stat.cex A numeric value specifying the size of the `stat` text size.
+#' @param stat.font The font face.
+#'    - `1` plain
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold-italic
+#' @param risktable A logical parameter indicating whether to draw risk table (default: \code{TRUE}).
+#' @param risktable.axislab.pos Specifies on which line on the plotting area `X` and `Y` label
+#'    should be drawn if `risktable` is drawn. Default 2.5 lines distance form the axis elements.
+#' @param risktable.margin.bottom Specifies the bottom margin of the plotting area for the `risktable`in line units.
+#'   Bottom margin line is calculated by `risktable.margin.bottom` (default: 5 line units) + Number of stratum).
+#' @param risktable.margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
+#'   Left margin line default is set by 6.5 line units.
 #' @param risktable.title Title of risk table.
-#' @param risktable.title.font Title font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).
+#' @param risktable.title.font Title font of risk table.
+#'    - `1` normal
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold and italic
 #' @param risktable.title.col Colour for the risk table title. Can accept a single value for colour.
-#' @param risktable.title.position Position of the title on the x-axis.
-#' @param risktable.cex A numeric value specifying the size of the risk table size.
-#' @param risktable.title.cex A numeric value specifying the size of the risk table title.
-#' @param risktable.name.cex A numeric value specifying the size of the riksk legend name(s).
+#' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
+#' @param risktable.cex A numeric value specifying the size of the risk table text size.
+#' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
+#' @param risktable.name.cex A numeric value specifying the size of the rsik table legend name size.
 #' @param risktable.col Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).
-#' @param risktable.name.font legend name(s) font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).
+#' @param risktable.name.font legend name(s) font of risk table.
+#'    - `1` normal
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold and italic
 #' @param risktable.name.col Colour for the risk table name. Can accept a single value for colour.
-#' @param risktable.name.position Position of the legend name(s) on the x-axis.
+#' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
 #'
 #' @return Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
 #'

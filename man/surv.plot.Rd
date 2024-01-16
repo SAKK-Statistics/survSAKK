@@ -72,23 +72,35 @@ surv.plot(
 \arguments{
 \item{fit}{An object of class \code{survfit} containing survival data.}
 
-\item{mark.censoring}{Mark censoring events on the curves. Logical (default: TRUE)}
+\item{mark.censoring}{A logical parameter indicating whether to mark censoring
+events on the survival curves. Default: \code{TRUE}.}
 
-\item{conf.int}{Display confidence intervals. (FALSE, TRUE for 95\% confidence intervals, or specify a numeric value for desired coverage.}
+\item{conf.int}{Controlling the confidence interval on the survival curves.
+When set to \code{TRUE}, the function displays default 95\% confidence interval.
+If set to \code{FALSE}, confidence intervals are not displayed.
+If a numeric value between 0 and 1 is provided, it represents the desired
+coverage for the confidence interval (e.g. 0.9 for 90\%).}
 
-\item{conf.band}{Mapping the specified coverage probability}
+\item{conf.band}{A logical parameter indicating whether to display the
+confidence band on the survival curves (default: \code{TRUE}).}
 
-\item{conf.line}{A logical value for drawing confidence line (Default: FALSE).}
+\item{conf.line}{A logical parameter indicating whether to draw the confidence
+line on the survival curves (default: \code{FALSE}).}
 
-\item{conf.band.col}{Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.}
+\item{conf.band.col}{Colour(s) for confidence band. Can accept a single value
+for colour, or a vector of colour values.}
 
-\item{conf.band.transparent}{Transparency for the confidence band.}
+\item{conf.band.transparent}{A numeric values from 0 to 1. Controlling the
+transparency of the confidence band (default: 0.25).}
 
-\item{conf.type}{Transformation type of the confidence interval.Options: "log", "log-log", "plain", "logit", "arcsin";(default: "log-log").}
+\item{conf.type}{Transformation type for the confidence interval.
+\code{'log'}, \code{'log-log'} (default), \code{'plain'}, \code{'logit'}, \code{'arcsin'}.}
 
-\item{grid}{Draw a grid on the plot Logical (default: FALSE)}
+\item{grid}{A logical parameter specifying whether to draw a grid.
+Default: \code{FALSE}.}
 
-\item{col}{Colour(s) for the survival curves. Can accept a single value for colour, or a vector of colour values to set colour(s).}
+\item{col}{Colour(s) for the survival curves. Can accept a single value for
+colour, or a vector of colour values to set colour(s).}
 
 \item{main}{Title of the plot.}
 
@@ -98,101 +110,172 @@ surv.plot(
 
 \item{ylab}{Y-axis label.}
 
-\item{cex}{A numeric value specifying the global size of the text.}
+\item{cex}{A numeric value specifying all size of the text elements at once
+(labels, annotations, ...).}
 
-\item{cex.lab}{A numeric value specifying the size of the xlab and ylab text.}
+\item{cex.lab}{A numeric value specifying the size of the \code{xlab} and \code{ylab} text.}
 
-\item{cex.axis}{A numeric value specifying the size of the axis size.}
+\item{cex.axis}{A numeric value specifying the size of the \code{axis} size.}
 
-\item{bty}{The type of box to be drawn around the plot ("n","o","7","L","C","U")}
+\item{bty}{Determines the style of the box drawn around the plot.
+Options: \code{'n'},\code{'o'},\code{'7'},\code{'L'},\code{'C'},\code{'U'}.}
 
-\item{lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).}
+\item{lty}{A vector of string specifying line types for each curve.
+The length of the vector should match the number of survival curves,
+assigning a specific line type to each curve. in the plot.
+Options: \code{'blank'}, \code{'solid'}, \code{'dashed'}, \code{'dotted'}, \code{'dotdash'},
+\code{'longdash'}, \code{'twodash'}.}
 
-\item{lwd}{A vector of numeric values for line widths.}
+\item{lwd}{A numeric value specifying the width of the line.}
 
-\item{xlim}{X-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).}
+\item{xlim}{Limits for the x-axis. Specified as
+\verb{seq(starting value, end value, number of increment of the sequence)}.}
 
-\item{ylim}{Y-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).}
+\item{ylim}{Limits for the y-axis. Specified as
+\verb{seq(starting value, end value, number of increment of the sequence)}.}
 
-\item{show.legend}{Display legend.}
+\item{show.legend}{A logical parameter specifying whether to display legend.
+Default: \code{TRUE}.}
 
-\item{legend.position}{Position of the legend (c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center").}
+\item{legend.position}{Position of the legend.
+Options: \code{c(x,y)}, \code{'bottomright'}, \code{'bottom'}, \code{'bottomleft'}, '\code{left}',
+'\verb{topleft'}, \code{'top'}, \code{'topright'}, \code{'right'}, \code{'center'}.}
 
-\item{legend.name}{A vector of string specifying the name(s) of stratum.}
+\item{legend.name}{Renaming the name(s) of the stratum.}
 
-\item{legend.text.font}{An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic).}
+\item{legend.text.font}{Font style of the legend text.
+\itemize{
+\item \code{1} normal
+\item \code{2} bold
+\item \code{3} italic
+\item \code{4} bold and italic
+}}
 
-\item{legend.cex}{Expansion factor for legend text.}
+\item{legend.cex}{A numeric value specifying the size of the legend text.}
 
-\item{legend.title}{The title of the legend.}
+\item{legend.title}{Title of the legend.}
 
-\item{legend.title.cex}{Expansion factor for legend title.}
+\item{legend.title.cex}{A numeric value specifying the size of the legend title.}
 
-\item{segment.type}{A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment).}
+\item{segment.type}{A numeric value specifying the layout of the segment.
+Options: \code{1} (full width), \code{2} (half width), \code{3} (vertical and horizontal segment).}
 
-\item{segment.timepoint}{A single value or a vector of fixed time points of segment(s).}
+\item{segment.timepoint}{A single value or a vector of fixed time points
+to be drawn as segment(s).}
 
-\item{segment.quantile}{A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median).}
+\item{segment.quantile}{A single value or a vector of fixed quantile to be
+drawn as segment(s) e.g. 0.5 corresponds to median.}
 
 \item{segment.main}{Title of segment text.}
 
-\item{segment.annotation}{Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none").}
+\item{segment.annotation}{Position of the segment annotation.
+Options: \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'none'}.}
 
-\item{segment.col}{Can accept a single value for colour, or a vector of colour values to set colour(s).}
+\item{segment.col}{Colour for the segment.  Can accept a single value for colour.}
 
-\item{segment.annotation.col}{Can accept a single value for colour, or a vector of colour values to set colour(s).}
+\item{segment.annotation.col}{Colour(s) for the segment annotation.
+Can accept a single value for colour, or a vector of colour values to
+set colour(s).}
 
-\item{segment.lty}{A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).}
+\item{segment.lty}{A vector of string specifying line types for each curve.
+Options: \code{'blank'}, \code{'solid'}, \code{'dashed'}, \code{'dotted'}, \code{'dotdash'},
+\code{'longdash'}, \code{'twodash'}.}
 
-\item{segment.lwd}{A vector of numeric values for line widths.}
+\item{segment.lwd}{A numeric value specifying the width of the segment line.}
 
-\item{segment.cex}{A numeric values specifying the size of the segment annotation size.}
+\item{segment.cex}{A numeric value specifying the size of the segment text size.}
 
 \item{segment.annotation.space}{Spacing between the text in unit of x-coordinates.}
 
-\item{segment.font}{A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).}
+\item{segment.font}{A numeric value specifying the font face.
+\itemize{
+\item \code{1} plain
+\item \code{2} bold
+\item \code{3} italic
+\item \code{4} bold-italic
+}}
 
-\item{segment.main.font}{A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).}
+\item{segment.main.font}{A numeric value specifying the font face.
+\itemize{
+\item \code{1} plain
+\item \code{2} bold
+\item \code{3} italic
+\item \code{4} bold-italic
+}}
 
-\item{stat}{Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none").}
+\item{stat}{Statistics which is displayed in the plot.
+Options:
+\itemize{
+\item \code{'logrank'} gives the p value of the conducted logrank test using \verb{survdiff\{survival\}}.
+To tests if there is a difference between two or more survival curves.
+\item \code{'coxph'}  gives the hazard ratio (HR) and its 95\% CI of the conducted
+Cox proportional hazards regression using \verb{coxph\{survival\}}.
+\item \code{'coxmodel'} gives \code{N} (number of observations), \code{Events} (Number of events),
+\code{HR}(hazard ratio), \code{lwrCI} (lower 95\% confidence interval),
+\code{uprCI} (upper 95\% confidence interval) and \code{Logrank} (p-value corresponding to the Chisquare statistic)
+of the conduct Cox proportional hazards regression using \verb{summary(coxph\{survival\})}.
+\item \code{'none'} no statistic is displayed (default).
+}}
 
-\item{stat.position}{Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none").}
+\item{stat.position}{Position where the stat should be displayed.
+Options: \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'none'}.}
 
-\item{stat.col}{Can accept a single value for colour.}
+\item{stat.col}{Colour of the \code{stat} text. Can accept a single value for colour.}
 
-\item{stat.cex}{A numeric value specifying the size of the stat size.}
+\item{stat.cex}{A numeric value specifying the size of the \code{stat} text size.}
 
-\item{stat.font}{The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic).}
+\item{stat.font}{The font face.
+\itemize{
+\item \code{1} plain
+\item \code{2} bold
+\item \code{3} italic
+\item \code{4} bold-italic
+}}
 
-\item{risktable}{A logical value for drawing risk table (Default: TRUE).}
+\item{risktable}{A logical parameter indicating whether to draw risk table (default: \code{TRUE}).}
 
-\item{risktable.axislab.pos}{Position of the X and Y label, specified on which line.}
+\item{risktable.axislab.pos}{Specifies on which line on the plotting area \code{X} and \code{Y} label
+should be drawn if \code{risktable} is drawn. Default 2.5 lines distance form the axis elements.}
 
-\item{risktable.margin.bottom}{Modify bottom margin of the plot region in line unit (Default: 5).}
+\item{risktable.margin.bottom}{Specifies the bottom margin of the plotting area for the \code{risktable}in line units.
+Bottom margin line is calculated by \code{risktable.margin.bottom} (default: 5 line units) + Number of stratum).}
 
-\item{risktable.margin.left}{Modify left margin of the plot region in line unit (Default: 7).}
+\item{risktable.margin.left}{Specifies the left margin of the plotting area for the \code{risktable} in line units.
+Left margin line default is set by 6.5 line units.}
 
 \item{risktable.title}{Title of risk table.}
 
-\item{risktable.title.font}{Title font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).}
+\item{risktable.title.font}{Title font of risk table.
+\itemize{
+\item \code{1} normal
+\item \code{2} bold
+\item \code{3} italic
+\item \code{4} bold and italic
+}}
 
 \item{risktable.title.col}{Colour for the risk table title. Can accept a single value for colour.}
 
-\item{risktable.title.position}{Position of the title on the x-axis.}
+\item{risktable.title.position}{A numeric value specifying the position of the title on the x-axis.}
 
-\item{risktable.cex}{A numeric value specifying the size of the risk table size.}
+\item{risktable.cex}{A numeric value specifying the size of the risk table text size.}
 
-\item{risktable.title.cex}{A numeric value specifying the size of the risk table title.}
+\item{risktable.title.cex}{A numeric value specifying the size of the risk table title size.}
 
-\item{risktable.name.cex}{A numeric value specifying the size of the riksk legend name(s).}
+\item{risktable.name.cex}{A numeric value specifying the size of the rsik table legend name size.}
 
 \item{risktable.col}{Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).}
 
-\item{risktable.name.font}{legend name(s) font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).}
+\item{risktable.name.font}{legend name(s) font of risk table.
+\itemize{
+\item \code{1} normal
+\item \code{2} bold
+\item \code{3} italic
+\item \code{4} bold and italic
+}}
 
 \item{risktable.name.col}{Colour for the risk table name. Can accept a single value for colour.}
 
-\item{risktable.name.position}{Position of the legend name(s) on the x-axis.}
+\item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the x-axis.}
 }
 \value{
 Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
