@@ -82,16 +82,16 @@ If a numeric value between 0 and 1 is provided, it represents the desired
 coverage for the confidence interval (e.g. 0.9 for 90\%).}
 
 \item{conf.band}{A logical parameter indicating whether to display the
-confidence band on the survival curves (default: \code{TRUE}).}
+confidence band on the survival curves. Default: \code{TRUE}.}
 
 \item{conf.line}{A logical parameter indicating whether to draw the confidence
-line on the survival curves (default: \code{FALSE}).}
+line on the survival curves. Default: \code{FALSE}.}
 
 \item{conf.band.col}{Colour(s) for confidence band. Can accept a single value
 for colour, or a vector of colour values.}
 
 \item{conf.band.transparent}{A numeric values from 0 to 1. Controlling the
-transparency of the confidence band (default: 0.25).}
+transparency of the confidence band. Default: 0.25.}
 
 \item{conf.type}{Transformation type for the confidence interval.
 \code{'log'}, \code{'log-log'} (default), \code{'plain'}, \code{'logit'}, \code{'arcsin'}.}
@@ -218,7 +218,7 @@ of the conduct Cox proportional hazards regression using \verb{summary(coxph\{su
 }}
 
 \item{stat.position}{Position where the stat should be displayed.
-Options: \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'none'}.}
+Options: specify explicit by \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'none'}.}
 
 \item{stat.col}{Colour of the \code{stat} text. Can accept a single value for colour.}
 
@@ -232,10 +232,10 @@ Options: \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code
 \item \code{4} bold-italic
 }}
 
-\item{risktable}{A logical parameter indicating whether to draw risk table (default: \code{TRUE}).}
+\item{risktable}{A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.}
 
 \item{risktable.axislab.pos}{Specifies on which line on the plotting area \code{X} and \code{Y} label
-should be drawn if \code{risktable} is drawn. Default 2.5 lines distance form the axis elements.}
+should be drawn if \code{risktable} is drawn. Default: 2.5 line distances form the axis elements.}
 
 \item{risktable.margin.bottom}{Specifies the bottom margin of the plotting area for the \code{risktable}in line units.
 Bottom margin line is calculated by \code{risktable.margin.bottom} (default: 5 line units) + Number of stratum).}

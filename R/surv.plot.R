@@ -19,13 +19,13 @@
 #'    If a numeric value between 0 and 1 is provided, it represents the desired
 #'    coverage for the confidence interval (e.g. 0.9 for 90%).
 #' @param conf.band A logical parameter indicating whether to display the
-#'    confidence band on the survival curves (default: \code{TRUE}).
+#'    confidence band on the survival curves. Default: \code{TRUE}.
 #' @param conf.line  A logical parameter indicating whether to draw the confidence
-#'    line on the survival curves (default: \code{FALSE}).
+#'    line on the survival curves. Default: \code{FALSE}.
 #' @param conf.band.col Colour(s) for confidence band. Can accept a single value
 #'    for colour, or a vector of colour values.
 #' @param conf.band.transparent A numeric values from 0 to 1. Controlling the
-#'    transparency of the confidence band (default: 0.25).
+#'    transparency of the confidence band. Default: 0.25.
 #' @param conf.type Transformation type for the confidence interval.
 #' `'log'`, `'log-log'` (default), `'plain'`, `'logit'`, `'arcsin'`.
 #' @param grid A logical parameter specifying whether to draw a grid.
@@ -109,7 +109,7 @@
 #'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
 #'    - `'none'` no statistic is displayed (default).
 #' @param stat.position Position where the stat should be displayed.
-#'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
+#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
 #' @param stat.col Colour of the `stat` text. Can accept a single value for colour.
 #' @param stat.cex A numeric value specifying the size of the `stat` text size.
 #' @param stat.font The font face.
@@ -117,9 +117,9 @@
 #'    - `2` bold
 #'    - `3` italic
 #'    - `4` bold-italic
-#' @param risktable A logical parameter indicating whether to draw risk table (default: \code{TRUE}).
+#' @param risktable A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.
 #' @param risktable.axislab.pos Specifies on which line on the plotting area `X` and `Y` label
-#'    should be drawn if `risktable` is drawn. Default 2.5 lines distance form the axis elements.
+#'    should be drawn if `risktable` is drawn. Default: 2.5 line distances form the axis elements.
 #' @param risktable.margin.bottom Specifies the bottom margin of the plotting area for the `risktable`in line units.
 #'   Bottom margin line is calculated by `risktable.margin.bottom` (default: 5 line units) + Number of stratum).
 #' @param risktable.margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
@@ -823,6 +823,14 @@ surv.plot <- function(
     stat_xpos <- max(xlim)
     # Position the text to the left of the specified (x,y)
     pos <- 2
+  } else if (stat.position == "bottomright"){
+    stat_ypos <- 0.03
+    stat_xpos <- max(xlim)
+    pos <- 2
+  } else if (stat.position == "topright"){
+    stat_ypos <- max(ylim) * 0.95 # marginal smaller than max(xlim) to ensure that the text is not cut off.
+    stat_xpos <- max(xlim)
+    pos <- 2
   }
 
   ## Log rank test ####
@@ -865,10 +873,10 @@ surv.plot <- function(
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")")
   } else if(stat == "coxmodel"){
-    if("right" %in% stat.position){
+    if(stat.position %in% c("right", "bottomright", "topright")){
       # table is always written from the specified x,y pos from left to right
-      # therefore stat.positon="right" position is outside of the border.
-      # It has to be corrected for tables.
+      # therefore tables _right position is outside of the border.
+      # And has to be corrected for tables.
 
       # Extract infos and create data frame from model
       tbl <- data.frame(N = model$n,
@@ -879,7 +887,7 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos - max(xlim)/2,
+      plottbl(x = stat_xpos * 0.53,
               y = stat_ypos,
               tbl,
               cex = stat.cex)

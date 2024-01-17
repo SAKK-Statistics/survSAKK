@@ -1,7 +1,7 @@
 
 #Run surv.data.R script first
 
-fit <- survobject1                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
+fit <- veteran_trt_fit_mt                                                              # fit:      An object of class `survfit`, usually returned by the `survfit` funciton.
 mark.censoring <- TRUE                                                          # mark.censoring Curves are marked at each censoring time if TRUE otherwise FALSE.
 conf.int <- fit$conf.int                                                        # conf.int  specifies the coverage probability. (FALSE, TRUE using 95% confidence intervals.
                                                                                 # Alternatively, this can be a numeric value giving the desired confidence level.
@@ -63,7 +63,7 @@ data <- as.data.frame(eval(fit$call$data))
   fit$call$conf.type <- conf.type
   # recaclulate the fit object based on defined `conf.int`
   fit$call$conf.int <- conf.int
-  
+
 
 fit <- eval(fit$call)
 
