@@ -7,3 +7,5 @@
 ^\.github$
 ^README\.Rmd$
 ^R_dev$
+^doc$
+^Meta$

@@ -1,6 +1,6 @@
 # optional parameter
 stat <- "none"                                     # stat: Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none")
-stat.position <- c(18,0.75)                           # stat.position: Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")
+stat.position <- "bottomright"                     # stat.position: Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none")
 stat.col <- "red"                                # stat.col Can accept a single value for colour
 stat.cex <- 0.75                                   # stat.cex A numeric value specifying the size of the stat size
 stat.font <- 2                                     # stat.font The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic)
@@ -83,6 +83,14 @@ if (length(stat.position) == 2){
   stat_xpos <- max(xlim)
   # Position the text to the left of the specified (x,y)
   pos <- 2
+} else if (stat.position == "bottomright"){
+  stat_ypos <- 0.03
+  stat_xpos <- max(xlim)
+  pos <- 2
+} else if (stat.position == "topright"){
+  stat_ypos <- max(ylim) * 0.95 # marginal smaller than max(xlim) to ensure that the text is not cut off.
+  stat_xpos <- max(xlim)
+  pos <- 2
 }
 
 # Log rank test ####
@@ -121,10 +129,10 @@ if(stat == "logrank"){
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")")
   } else if(stat == "coxmodel"){
-    if("right" %in% stat.position){
+    if(stat.position %in% c("right", "bottomright", "topright")){
       # table is always written from the specified x,y pos from left to right
-      # therefore stat.positon="right" position is outside of the border.
-      # It has to be corrected for tables.
+      # therefore tables _right position is outside of the border.
+      # And has to be corrected for tables.
 
       # Extract infos and create data frame from model
       tbl <- data.frame(N = model$n,
@@ -135,7 +143,7 @@ if(stat == "logrank"){
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos - max(xlim)/2,
+      plottbl(x = stat_xpos* 0.53,
               y = stat_ypos,
               tbl,
               cex = stat.cex)

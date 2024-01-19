@@ -27,7 +27,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/survplot.html">survSAKK::surv.plot</a>
+    <a class="dropdown-item" href="../articles/surv.plot.html">Creating survival plot</a>
   </div>
 </li>
 <li class="nav-item">
@@ -133,39 +133,51 @@
 
 
 <dt>mark.censoring</dt>
-<dd><p>Mark censoring events on the curves. Logical (default: TRUE)</p></dd>
+<dd><p>A logical parameter indicating whether to mark censoring
+events on the survival curves. Default: <code>TRUE</code>.</p></dd>
 
 
 <dt>conf.int</dt>
-<dd><p>Display confidence intervals. (FALSE, TRUE for 95% confidence intervals, or specify a numeric value for desired coverage.</p></dd>
+<dd><p>Controlling the confidence interval on the survival curves.
+When set to <code>TRUE</code>, the function displays default 95% confidence interval.
+If set to <code>FALSE</code>, confidence intervals are not displayed.
+If a numeric value between 0 and 1 is provided, it represents the desired
+coverage for the confidence interval (e.g. 0.9 for 90%).</p></dd>
 
 
 <dt>conf.band</dt>
-<dd><p>Mapping the specified coverage probability</p></dd>
+<dd><p>A logical parameter indicating whether to display the
+confidence band on the survival curves. Default: <code>TRUE</code>.</p></dd>
 
 
 <dt>conf.line</dt>
-<dd><p>A logical value for drawing confidence line (Default: FALSE).</p></dd>
+<dd><p>A logical parameter indicating whether to draw the confidence
+line on the survival curves. Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>conf.band.col</dt>
-<dd><p>Colour(s) for confidence band. Can accept a single value for colour, or a vector of colour values.</p></dd>
+<dd><p>Colour(s) for confidence band. Can accept a single value
+for colour, or a vector of colour values.</p></dd>
 
 
 <dt>conf.band.transparent</dt>
-<dd><p>Transparency for the confidence band.</p></dd>
+<dd><p>A numeric values from 0 to 1. Controlling the
+transparency of the confidence band. Default: 0.25.</p></dd>
 
 
 <dt>conf.type</dt>
-<dd><p>Transformation type of the confidence interval.Options: "log", "log-log", "plain", "logit", "arcsin";(default: "log-log").</p></dd>
+<dd><p>Transformation type for the confidence interval.
+<code>'log'</code>, <code>'log-log'</code> (default), <code>'plain'</code>, <code>'logit'</code>, <code>'arcsin'</code>.</p></dd>
 
 
 <dt>grid</dt>
-<dd><p>Draw a grid on the plot Logical (default: FALSE)</p></dd>
+<dd><p>A logical parameter specifying whether to draw a grid.
+Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>col</dt>
-<dd><p>Colour(s) for the survival curves. Can accept a single value for colour, or a vector of colour values to set colour(s).</p></dd>
+<dd><p>Colour(s) for the survival curves. Can accept a single value for
+colour, or a vector of colour values to set colour(s).</p></dd>
 
 
 <dt>main</dt>
@@ -185,75 +197,95 @@
 
 
 <dt>cex</dt>
-<dd><p>A numeric value specifying the global size of the text.</p></dd>
+<dd><p>A numeric value specifying all size of the text elements at once
+(labels, annotations, ...).</p></dd>
 
 
 <dt>cex.lab</dt>
-<dd><p>A numeric value specifying the size of the xlab and ylab text.</p></dd>
+<dd><p>A numeric value specifying the size of the <code>xlab</code> and <code>ylab</code> text.</p></dd>
 
 
 <dt>cex.axis</dt>
-<dd><p>A numeric value specifying the size of the axis size.</p></dd>
+<dd><p>A numeric value specifying the size of the <code>axis</code> size.</p></dd>
 
 
 <dt>bty</dt>
-<dd><p>The type of box to be drawn around the plot ("n","o","7","L","C","U")</p></dd>
+<dd><p>Determines the style of the box drawn around the plot.
+Options: <code>'n'</code>,<code>'o'</code>,<code>'7'</code>,<code>'L'</code>,<code>'C'</code>,<code>'U'</code>.</p></dd>
 
 
 <dt>lty</dt>
-<dd><p>A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).</p></dd>
+<dd><p>A vector of string specifying line types for each curve.
+The length of the vector should match the number of survival curves,
+assigning a specific line type to each curve. in the plot.
+Options: <code>'blank'</code>, <code>'solid'</code>, <code>'dashed'</code>, <code>'dotted'</code>, <code>'dotdash'</code>,
+<code>'longdash'</code>, <code>'twodash'</code>.</p></dd>
 
 
 <dt>lwd</dt>
-<dd><p>A vector of numeric values for line widths.</p></dd>
+<dd><p>A numeric value specifying the width of the line.</p></dd>
 
 
 <dt>xlim</dt>
-<dd><p>X-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).</p></dd>
+<dd><p>Limits for the x-axis. Specified as
+<code>seq(starting value, end value, number of increment of the sequence)</code>.</p></dd>
 
 
 <dt>ylim</dt>
-<dd><p>Y-axis limits specified as a sequence; seq(starting value,  end value, number of increment of the sequence).</p></dd>
+<dd><p>Limits for the y-axis. Specified as
+<code>seq(starting value, end value, number of increment of the sequence)</code>.</p></dd>
 
 
 <dt>show.legend</dt>
-<dd><p>Display legend.</p></dd>
+<dd><p>A logical parameter specifying whether to display legend.
+Default: <code>TRUE</code>.</p></dd>
 
 
 <dt>legend.position</dt>
-<dd><p>Position of the legend (c(x,y), "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center").</p></dd>
+<dd><p>Position of the legend.
+Options: <code>c(x,y)</code>, <code>'bottomright'</code>, <code>'bottom'</code>, <code>'bottomleft'</code>, '<code>left</code>',
+'<code>topleft'</code>, <code>'top'</code>, <code>'topright'</code>, <code>'right'</code>, <code>'center'</code>.</p></dd>
 
 
 <dt>legend.name</dt>
-<dd><p>A vector of string specifying the name(s) of stratum.</p></dd>
+<dd><p>Renaming the name(s) of the stratum.</p></dd>
 
 
 <dt>legend.text.font</dt>
-<dd><p>An integer specifying the font style of the legend text; (1: normal, 2: bold, 3: italic, 4: bold and italic).</p></dd>
+<dd><p>Font style of the legend text.</p><ul><li><p><code>1</code> normal</p></li>
+<li><p><code>2</code> bold</p></li>
+<li><p><code>3</code> italic</p></li>
+<li><p><code>4</code> bold and italic</p></li>
+</ul></dd>
 
 
 <dt>legend.cex</dt>
-<dd><p>Expansion factor for legend text.</p></dd>
+<dd><p>A numeric value specifying the size of the legend text.</p></dd>
 
 
 <dt>legend.title</dt>
-<dd><p>The title of the legend.</p></dd>
+<dd><p>Title of the legend.</p></dd>
 
 
 <dt>legend.title.cex</dt>
-<dd><p>Expansion factor for legend title.</p></dd>
+<dd><p>A numeric value specifying the size of the legend title.</p></dd>
 
 
 <dt>segment.type</dt>
-<dd><p>A numeric value specifying the layout of the segment (1: Draws specified segment (full bandwidth), 2: Draws specified segment, 3: Drawing vertical and horizontal segment).</p></dd>
+<dd><p>A numeric value specifying the layout of the segment.</p><ul><li><p><code>1</code> (full width)</p></li>
+<li><p><code>2</code> (half width)</p></li>
+<li><p><code>3</code> (vertical and horizontal segment)</p></li>
+</ul></dd>
 
 
 <dt>segment.timepoint</dt>
-<dd><p>A single value or a vector of fixed time points of segment(s).</p></dd>
+<dd><p>A single value or a vector of fixed time points
+to be drawn as segment(s).</p></dd>
 
 
 <dt>segment.quantile</dt>
-<dd><p>A single value or a vector of fixed quantile of segment(s) at a fixed quantile (e.g. 0.5 corresponds to median).</p></dd>
+<dd><p>A single value or a vector of fixed quantile to be
+drawn as segment(s) e.g. 0.5 corresponds to median.</p></dd>
 
 
 <dt>segment.main</dt>
@@ -261,27 +293,32 @@
 
 
 <dt>segment.annotation</dt>
-<dd><p>Position of the segment annotation: (c(x,y), "bottomleft", "left", "right", "none").</p></dd>
+<dd><p>Position of the segment annotation.
+Options: <code>c(x,y)</code>,<code>'bottomleft'</code>, <code>'left'</code>, <code>'right'</code>, <code>'none'</code>.</p></dd>
 
 
 <dt>segment.col</dt>
-<dd><p>Can accept a single value for colour, or a vector of colour values to set colour(s).</p></dd>
+<dd><p>Colour for the segment.  Can accept a single value for colour.</p></dd>
 
 
 <dt>segment.annotation.col</dt>
-<dd><p>Can accept a single value for colour, or a vector of colour values to set colour(s).</p></dd>
+<dd><p>Colour(s) for the segment annotation.
+Can accept a single value for colour, or a vector of colour values to
+set colour(s).</p></dd>
 
 
 <dt>segment.lty</dt>
-<dd><p>A vector of string specifying line types for each curve (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, “twodash”).</p></dd>
+<dd><p>A vector of string specifying line types for each curve.
+Options: <code>'blank'</code>, <code>'solid'</code>, <code>'dashed'</code>, <code>'dotted'</code>, <code>'dotdash'</code>,
+<code>'longdash'</code>, <code>'twodash'</code>.</p></dd>
 
 
 <dt>segment.lwd</dt>
-<dd><p>A vector of numeric values for line widths.</p></dd>
+<dd><p>A numeric value specifying the width of the segment line.</p></dd>
 
 
 <dt>segment.cex</dt>
-<dd><p>A numeric values specifying the size of the segment annotation size.</p></dd>
+<dd><p>A numeric value specifying the size of the segment text size.</p></dd>
 
 
 <dt>segment.annotation.space</dt>
@@ -289,47 +326,73 @@
 
 
 <dt>segment.font</dt>
-<dd><p>A numeric value specifying the font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).</p></dd>
+<dd><p>A numeric value specifying the font face.</p><ul><li><p><code>1</code> plain</p></li>
+<li><p><code>2</code> bold</p></li>
+<li><p><code>3</code> italic</p></li>
+<li><p><code>4</code> bold-italic</p></li>
+</ul></dd>
 
 
 <dt>segment.main.font</dt>
-<dd><p>A numeric value specifying the fon face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic, ...).</p></dd>
+<dd><p>A numeric value specifying the font face.</p><ul><li><p><code>1</code> plain</p></li>
+<li><p><code>2</code> bold</p></li>
+<li><p><code>3</code> italic</p></li>
+<li><p><code>4</code> bold-italic</p></li>
+</ul></dd>
 
 
 <dt>stat</dt>
-<dd><p>Statistics which is displayed in the plot ("logrank", "coxph", "coxmodel", "none").</p></dd>
+<dd><p>Statistics which is displayed in the plot.
+Options:</p><ul><li><p><code>'logrank'</code> gives the p value of the conducted logrank test using <code>survdiff{survival}</code>.
+To tests if there is a difference between two or more survival curves.</p></li>
+<li><p><code>'coxph'</code>  gives the hazard ratio (HR) and its 95% CI of the conducted
+Cox proportional hazards regression using <code>coxph{survival}</code>.</p></li>
+<li><p><code>'coxmodel'</code> gives <code>N</code> (number of observations), <code>Events</code> (Number of events),
+<code>HR</code>(hazard ratio), <code>lwrCI</code> (lower 95% confidence interval),
+<code>uprCI</code> (upper 95% confidence interval) and <code>Logrank</code> (p-value corresponding to the Chisquare statistic)
+of the conduct Cox proportional hazards regression using <code>summary(coxph{survival})</code>.</p></li>
+<li><p><code>'none'</code> no statistic is displayed (default).</p></li>
+</ul></dd>
 
 
 <dt>stat.position</dt>
-<dd><p>Position where the stat should be displayed: (c(x,y), "bottomleft", "left", "right", "none").</p></dd>
+<dd><p>Position where the stat should be displayed.
+Options: specify explicit by <code>c(x,y)</code>,<code>'bottomleft'</code>, <code>'left'</code>, <code>'right'</code>, <code>'topright'</code>,<code>'bottomright'</code>, <code>'none'</code>.</p></dd>
 
 
 <dt>stat.col</dt>
-<dd><p>Can accept a single value for colour.</p></dd>
+<dd><p>Colour of the <code>stat</code> text. Can accept a single value for colour.</p></dd>
 
 
 <dt>stat.cex</dt>
-<dd><p>A numeric value specifying the size of the stat size.</p></dd>
+<dd><p>A numeric value specifying the size of the <code>stat</code> text size.</p></dd>
 
 
 <dt>stat.font</dt>
-<dd><p>The font face (1 = plain, 2 = bold, 3 = italic, 4 = bold-italic).</p></dd>
+<dd><p>The font face.</p><ul><li><p><code>1</code> plain</p></li>
+<li><p><code>2</code> bold</p></li>
+<li><p><code>3</code> italic</p></li>
+<li><p><code>4</code> bold-italic</p></li>
+</ul></dd>
 
 
 <dt>risktable</dt>
-<dd><p>A logical value for drawing risk table (Default: TRUE).</p></dd>
+<dd><p>A logical parameter indicating whether to draw risk table. Default: <code>TRUE</code>.</p></dd>
 
 
 <dt>risktable.axislab.pos</dt>
-<dd><p>Position of the X and Y label, specified on which line.</p></dd>
+<dd><p>Specifies on which line on the plotting area <code>X</code> and <code>Y</code> label
+should be drawn if <code>risktable</code> is drawn. Default: 2.5 line distances form the axis elements.</p></dd>
 
 
 <dt>risktable.margin.bottom</dt>
-<dd><p>Modify bottom margin of the plot region in line unit (Default: 5).</p></dd>
+<dd><p>Specifies the bottom margin of the plotting area for the <code>risktable</code>in line units.
+Bottom margin line is calculated by <code>risktable.margin.bottom</code> (default: 5 line units + Number of stratum).</p></dd>
 
 
 <dt>risktable.margin.left</dt>
-<dd><p>Modify left margin of the plot region in line unit (Default: 7).</p></dd>
+<dd><p>Specifies the left margin of the plotting area for the <code>risktable</code> in line units.
+Left margin line default is set by 6.5 line units.</p></dd>
 
 
 <dt>risktable.title</dt>
@@ -337,7 +400,11 @@
 
 
 <dt>risktable.title.font</dt>
-<dd><p>Title font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).</p></dd>
+<dd><p>Title font of risk table.</p><ul><li><p><code>1</code> normal</p></li>
+<li><p><code>2</code> bold</p></li>
+<li><p><code>3</code> italic</p></li>
+<li><p><code>4</code> bold and italic</p></li>
+</ul></dd>
 
 
 <dt>risktable.title.col</dt>
@@ -345,19 +412,19 @@
 
 
 <dt>risktable.title.position</dt>
-<dd><p>Position of the title on the x-axis.</p></dd>
+<dd><p>A numeric value specifying the position of the title on the x-axis.</p></dd>
 
 
 <dt>risktable.cex</dt>
-<dd><p>A numeric value specifying the size of the risk table size.</p></dd>
+<dd><p>A numeric value specifying the size of the risk table text size.</p></dd>
 
 
 <dt>risktable.title.cex</dt>
-<dd><p>A numeric value specifying the size of the risk table title.</p></dd>
+<dd><p>A numeric value specifying the size of the risk table title size.</p></dd>
 
 
 <dt>risktable.name.cex</dt>
-<dd><p>A numeric value specifying the size of the riksk legend name(s).</p></dd>
+<dd><p>A numeric value specifying the size of the rsik table legend name size.</p></dd>
 
 
 <dt>risktable.col</dt>
@@ -365,7 +432,11 @@
 
 
 <dt>risktable.name.font</dt>
-<dd><p>legend name(s) font of risk table (1 = normal, 2 = bold, 3 = italic, 4 = bold and italic).</p></dd>
+<dd><p>legend name(s) font of risk table.</p><ul><li><p><code>1</code> normal</p></li>
+<li><p><code>2</code> bold</p></li>
+<li><p><code>3</code> italic</p></li>
+<li><p><code>4</code> bold and italic</p></li>
+</ul></dd>
 
 
 <dt>risktable.name.col</dt>
@@ -373,7 +444,7 @@
 
 
 <dt>risktable.name.position</dt>
-<dd><p>Position of the legend name(s) on the x-axis.</p></dd>
+<dd><p>A numeric value specifying the position of the legend name(s) on the x-axis.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -381,6 +452,10 @@
     
 
 <p>Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p><code><a href="../articles/surv.plot.html">vignette("surv.plot", package = "survSAKK")</a></code></p>
     </div>
 
     <div class="section level2">
@@ -394,8 +469,8 @@
 <span class="r-in"><span> <span class="va">veteran</span><span class="op">$</span><span class="va">time_mt</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">time_yr</span><span class="op">*</span><span class="fl">12</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create survival object</span></span></span>
-<span class="r-in"><span> <span class="va">veteran_fit_yr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time_yr</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="va">veteran_trt_fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time_mt</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">veteran_fit_yr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span> <span class="op">/</span> <span class="fl">365.25</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">veteran_trt_fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span> <span class="op">/</span> <span class="fl">365.12</span> <span class="op">*</span> <span class="fl">12</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Generate survival plots</span></span></span>
 <span class="r-in"><span> <span class="fu">survSAKK</span><span class="fu">::</span><span class="fu">surv.plot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_yr</span><span class="op">)</span></span></span>
