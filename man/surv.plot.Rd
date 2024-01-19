@@ -158,7 +158,11 @@ Options: \code{c(x,y)}, \code{'bottomright'}, \code{'bottom'}, \code{'bottomleft
 \item{legend.title.cex}{A numeric value specifying the size of the legend title.}
 
 \item{segment.type}{A numeric value specifying the layout of the segment.
-Options: \code{1} (full width), \code{2} (half width), \code{3} (vertical and horizontal segment).}
+\itemize{
+\item \code{1} (full width)
+\item \code{2} (half width)
+\item \code{3} (vertical and horizontal segment)
+}}
 
 \item{segment.timepoint}{A single value or a vector of fixed time points
 to be drawn as segment(s).}
@@ -218,7 +222,7 @@ of the conduct Cox proportional hazards regression using \verb{summary(coxph\{su
 }}
 
 \item{stat.position}{Position where the stat should be displayed.
-Options: specify explicit by \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'none'}.}
+Options: specify explicit by \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'topright'},\code{'bottomright'}, \code{'none'}.}
 
 \item{stat.col}{Colour of the \code{stat} text. Can accept a single value for colour.}
 
@@ -238,7 +242,7 @@ Options: specify explicit by \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \
 should be drawn if \code{risktable} is drawn. Default: 2.5 line distances form the axis elements.}
 
 \item{risktable.margin.bottom}{Specifies the bottom margin of the plotting area for the \code{risktable}in line units.
-Bottom margin line is calculated by \code{risktable.margin.bottom} (default: 5 line units) + Number of stratum).}
+Bottom margin line is calculated by \code{risktable.margin.bottom} (default: 5 line units + Number of stratum).}
 
 \item{risktable.margin.left}{Specifies the left margin of the plotting area for the \code{risktable} in line units.
 Left margin line default is set by 6.5 line units.}
@@ -293,8 +297,8 @@ Plot publication ready Kaplan-Meier plot using the results from \code{survival::
  veteran$time_mt <- veteran$time_yr*12
 
 # Create survival object
- veteran_fit_yr <- survfit(Surv(time_yr, status) ~ 1, data = veteran)
- veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
+ veteran_fit_yr <- survfit(Surv(time / 365.25, status) ~ 1, data = veteran)
+ veteran_trt_fit_mt <- survfit(Surv(time / 365.12 * 12, status) ~ trt, data = veteran)
 
 # Generate survival plots
  survSAKK::surv.plot(fit = veteran_fit_yr)
@@ -307,4 +311,7 @@ Plot publication ready Kaplan-Meier plot using the results from \code{survival::
  stat = "coxph",
  risktable.col = c("#5ab4ac","#d8b365"))
 
+}
+\references{
+\code{vignette("surv.plot", package = "survSAKK")}
 }

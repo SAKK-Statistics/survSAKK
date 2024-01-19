@@ -2,9 +2,9 @@ pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  survplot: survplot.html
+  surv.plot: surv.plot.html
   survSAKK: survSAKK.html
-last_built: 2024-01-12T15:23Z
+last_built: 2024-01-19T10:06Z
 urls:
   reference: https://sakk-statistics.github.io/survSAKK/reference
   article: https://sakk-statistics.github.io/survSAKK/articles
