@@ -9,7 +9,6 @@
 #'
 #' Plot publication ready Kaplan-Meier plot using the results from `survival::survfit()`.
 #'
-#' @export
 #' @param fit An object of class `survfit` containing survival data.
 #' @param mark.censoring A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
@@ -67,7 +66,9 @@
 #' @param legend.title Title of the legend.
 #' @param legend.title.cex A numeric value specifying the size of the legend title.
 #' @param segment.type A numeric value specifying the layout of the segment.
-#'    Options: `1` (full width), `2` (half width), `3` (vertical and horizontal segment).
+#'    - `1` (full width)
+#'    - `2` (half width)
+#'    - `3` (vertical and horizontal segment)
 #' @param segment.timepoint A single value or a vector of fixed time points
 #'    to be drawn as segment(s).
 #' @param segment.quantile A single value or a vector of fixed quantile to be
@@ -109,7 +110,7 @@
 #'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
 #'    - `'none'` no statistic is displayed (default).
 #' @param stat.position Position where the stat should be displayed.
-#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
+#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'topright'`,`'bottomright'`, `'none'`.
 #' @param stat.col Colour of the `stat` text. Can accept a single value for colour.
 #' @param stat.cex A numeric value specifying the size of the `stat` text size.
 #' @param stat.font The font face.
@@ -121,7 +122,7 @@
 #' @param risktable.axislab.pos Specifies on which line on the plotting area `X` and `Y` label
 #'    should be drawn if `risktable` is drawn. Default: 2.5 line distances form the axis elements.
 #' @param risktable.margin.bottom Specifies the bottom margin of the plotting area for the `risktable`in line units.
-#'   Bottom margin line is calculated by `risktable.margin.bottom` (default: 5 line units) + Number of stratum).
+#'   Bottom margin line is calculated by `risktable.margin.bottom` (default: 5 line units + Number of stratum).
 #' @param risktable.margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
 #'   Left margin line default is set by 6.5 line units.
 #' @param risktable.title Title of risk table.
@@ -156,8 +157,8 @@
 #'  veteran$time_mt <- veteran$time_yr*12
 #'
 #' # Create survival object
-#'  veteran_fit_yr <- survfit(Surv(time_yr, status) ~ 1, data = veteran)
-#'  veteran_trt_fit_mt <- survfit(Surv(time_mt, status) ~ trt, data = veteran)
+#'  veteran_fit_yr <- survfit(Surv(time / 365.25, status) ~ 1, data = veteran)
+#'  veteran_trt_fit_mt <- survfit(Surv(time / 365.12 * 12, status) ~ trt, data = veteran)
 #'
 #' # Generate survival plots
 #'  survSAKK::surv.plot(fit = veteran_fit_yr)
@@ -169,12 +170,16 @@
 #'  segment.quantile = 0.5,
 #'  stat = "coxph",
 #'  risktable.col = c("#5ab4ac","#d8b365"))
-
+#'
+#' @references
+#' \code{vignette("surv.plot", package = "survSAKK")}
 #'
 #' @import survival
 #' @import graphics
 #' @import stats
 #' @importFrom grDevices adjustcolor
+#'
+#' @export
 
 
 
@@ -391,8 +396,11 @@ surv.plot <- function(
   if(is.logical(risktable)){
     if (risktable == TRUE){
       # Set up the plot with margin (ora) and outer margins (oma)
-      par(mar = c(stratum + risktable.margin.bottom, stratum + risktable.margin.left, 4, 2) + 0.1,  # c(bottom, left, top, right)
-          mgp = c(risktable.axislab.pos,1,0)                        # distance (lines) of axis elements from plot region c(axis title, axis label, axis ticks)
+        # c(bottom, left, top, right)
+      par(mar = c(stratum + risktable.margin.bottom, stratum + risktable.margin.left, 4, 2) + 0.1,
+            # distance (lines) of axis elements from plot region
+            # c(axis title, axis label, axis ticks)
+          mgp = c(risktable.axislab.pos, 1, 0)
           )
     } else {
       par(mar = c(5, 4, 4, 2) + 0.1,  # c(bottom, left, top, right)
@@ -562,6 +570,12 @@ surv.plot <- function(
     text_xpos <- max(xlim)
     # Position the text to the left of the specified (x,y)
     pos <- 2
+  } else if (segment.annotation == "none"){
+    text_ypos <- NULL
+    text_xpos <- NULL
+    pos <- 2
+  } else {
+    stop(paste0("'",segment.annotation,"'"," is not a valid argument!"))
   }
 
   ## Determining the y coordinate for each text ####
@@ -873,7 +887,7 @@ surv.plot <- function(
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")")
   } else if(stat == "coxmodel"){
-    if(stat.position %in% c("right", "bottomright", "topright")){
+    if(stat.position == "right"){
       # table is always written from the specified x,y pos from left to right
       # therefore tables _right position is outside of the border.
       # And has to be corrected for tables.
@@ -887,8 +901,44 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.53,
+      plottbl(x = stat_xpos * 0.45,
               y = stat_ypos,
+              tbl,
+              cex = stat.cex)
+    } else if(stat.position == "bottomright"){
+      # table is always written from the specified x,y pos from left to right
+      # therefore tables _right position is outside of the border.
+      # And has to be corrected for tables.
+
+      # Extract infos and create data frame from model
+      tbl <- data.frame(N = model$n,
+                        Events = model$nevent,
+                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
+                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
+                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
+                        Logrank = logrankpval)
+      # Annotation
+      # plottbl() function was written to allow to plot different tables reproducible
+      plottbl(x = stat_xpos * 0.45, # 0.45
+              y = stat_ypos * 0.85,
+              tbl,
+              cex = stat.cex)
+    } else if(stat.position == "topright"){
+      # table is always written from the specified x,y pos from left to right
+      # therefore tables _right position is outside of the border.
+      # And has to be corrected for tables.
+
+      # Extract infos and create data frame from model
+      tbl <- data.frame(N = model$n,
+                        Events = model$nevent,
+                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
+                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
+                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
+                        Logrank = logrankpval)
+      # Annotation
+      # plottbl() function was written to allow to plot different tables reproducible
+      plottbl(x = stat_xpos * 0.45, # 0.45
+              y = stat_ypos * 0.80,
               tbl,
               cex = stat.cex)
     } else {
@@ -922,6 +972,7 @@ surv.plot <- function(
   # 5. SURV.RISKTABLE ####
   if(is.logical(risktable)){
     if (risktable == TRUE){
+      ## Extract risktable data ####
       obsStrata <- if(is.null(fit$strata)){
         obsStrata <- 1
       } else {
@@ -947,14 +998,14 @@ surv.plot <- function(
         }
       }
 
-      # Add risktable.title text to the outer margin
+      ## Add risktable.title text to the outer margin ####
       mtext(risktable.title, side = 1, outer = FALSE,
             line = 4, adj = NA, at = risktable.title.position,
             font = risktable.title.font,
             cex = risktable.title.cex,
             col = risktable.title.col)
 
-      # Add legend text to the outer margin for each stratum
+      ## Add legend text to the outer margin for each stratum ####
       for (i in 1:stratum){
         mtext(text = legend.name[i], side = 1, outer = FALSE,
               line = i+4, adj = NA, at = risktable.name.position,
@@ -963,7 +1014,7 @@ surv.plot <- function(
               col = risktable.name.col)
       }
 
-      # Add vector of risk counts text to the margin
+      ## Add vector of risk counts text to the margin ####
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
             line = rep((1:stratum) + 4, each = length(xlim)),
             at = rep(xlim, stratum),

@@ -1,8 +1,8 @@
 ---
-title: "survSAKK"
+title: "Package Documentation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{survSAKK}
+  %\VignetteIndexEntry{Package Documentation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,13 +15,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Overview
+# Usage
 
-The package `survSAKK` provides publicaiton ready Kaplan-Meier Plots developed at the SAKK CC.https://www.sakk.ch/en. 
+`survSAKK` provides Publication-Ready Kaplan-Meier plot. The objective is provide an user-friendly and flexible `R` package, which will incorporate various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot. 
 
-## Get started
 
-### Install the package
+# Install the package
 
 ```{r}
 devtools::install_github(
@@ -29,23 +28,23 @@ devtools::install_github(
   build_vignettes = TRUE)
 ```
 
-### Load package
+# Load package
+
 ```{r}
 libray(survSAKK)
 ```
 
-### Get the documentation of a function 
+# Get the documentation of a function 
 
 ```{r}
-?survSAKK
+help(package = "survSAKK")
 ```
 
-### Acess vignette
+# Acess vignette
+
 ```{r}
-vignette(survSAKK)
+vignette("surv.plot")
 ```
 
-
-## Note
 
 
