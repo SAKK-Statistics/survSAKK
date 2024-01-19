@@ -938,7 +938,7 @@ surv.plot <- function(
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
       plottbl(x = stat_xpos * 0.45, # 0.45
-              y = stat_ypos * 0.80,
+              y = stat_ypos * 0.90,
               tbl,
               cex = stat.cex)
     } else {
