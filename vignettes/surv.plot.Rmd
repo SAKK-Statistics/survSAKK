@@ -49,7 +49,7 @@ veteran_trt_fit_mt <- survfit(Surv(time / 365.25 * 12, status) ~ trt, data = vet
 # Drawing survival plot
 
 ```{r baseplot, eval = TRUE}
-survSAKK::surv.plot(veteran_fit_yr)
+surv.plot(veteran_fit_yr)
 ```
 
 ## Customisation of axis limits and label
@@ -77,6 +77,26 @@ surv.plot(veteran_fit_yr,
           # Limits
           xlim = seq(0,3,by = 0.5),
           cex = 0.8)
+```
+
+### Custamisation of the x and y axis label position
+
+```{r label3}
+surv.plot(veteran_trt_fit_yr,
+          # Specifies on which line on the plotting area 
+          # X and Y label should be drawn
+          xlab.pos = 3,
+          ylab.pos = 3.75)
+```
+
+## Custamisation of the marging area
+
+```{r label4}
+surv.plot(veteran_fit_yr,  
+          # How many bottom lines should be drawn
+          margin.bottom = 10,
+          # How many left lines should be drawn
+          margin.left = 8)
 ```
 
 # Drawing segment
@@ -193,7 +213,7 @@ surv.plot(veteran_trt_fit_yr,
 
 ```{r stat3, eval = TRUE}
 surv.plot(veteran_trt_fit_yr,
-          legend.position = c(25.4,0.85),
+          legend.position = "right",
           stat = "coxmodel",
           stat.position = "topright")
 ```
@@ -221,24 +241,16 @@ surv.plot(veteran_trt_fit_yr,
           risktable = FALSE)
 ```
 
-## Custamisation of the x and y axis label position
+## Modify risktable position
 
-```{r risktable2}
-surv.plot(veteran_trt_fit_yr,
-          # Specifies on which line on the plotting area 
-          # X and Y label should be drawn
-          risktable.axislab.pos = 3)
-```
-
-## Custamisation of the risk table marging area
-
-```{r risktable3}
-surv.plot(veteran_fit_yr,
+```{r risktable.pos}
+surv.plot(veteran_fit_yr,  
           # How many bottom lines should be drawn
-          risktable.margin.bottom = 10,
+          margin.bottom = 10,
           # How many left lines should be drawn
-          risktable.margin.left = 8)
-
+          margin.left = 4,
+          # Define position of the risk table
+          risktable.pos = 8.5)
 ```
 
 ## Modify risk table title

@@ -16,34 +16,48 @@ knitr::opts_chunk$set(
 
 # survSAKK
 
+## Overview
+
 The goal of `survSAKK` is to create an open source, user-friendly and flexible `R` package, which will incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plot. 
 
 ## Installation
 
-You can install the development version of survSAKK from [GitHub](https://github.com/) with:
+You can install the current version of `survSAKK` from [GitHub](https://github.com/):
 
-```r
+```{r installation}
 # install.packages("devtools")
-devtools::install_github("SAKK-Statistics/survSAKK", build_vignettes = TRUE)
+
+# At the moment, while repository is private:
+devtools::install_github("SAKK-Statistics/survSAKK",
+                         auth_token = "ask_for_the_password",
+                         build_vignettes = TRUE,
+                         force = TRUE)
+
+# Later, when the repository is public:
+devtools::install_github("SAKK-Statistics/survSAKK",
+                         build_vignettes = TRUE)
 ```
 
-## Load package
+## Usage
 
-```{r example}
+```{r loading}
 library(survSAKK)
-## basic example code
+
+surv.plot(fit)
+
 ```
 
-## Get the documentation of the funciton
+## Getting help
 
-```{r}
-?survSAKK
-```
+The documentation of the function
 
-## Access vignette
-```{r}
+```{r help}
+# Documentation
+?surv.plot
+
+# Vigniette
 vignette(survSAKK)
+
+
 ```
-
-
 

@@ -6,6 +6,8 @@
 \usage{
 surv.plot(
   fit,
+  margin.bottom = NULL,
+  margin.left = NULL,
   mark.censoring = TRUE,
   conf.int = fit$conf.int,
   conf.band = TRUE,
@@ -19,6 +21,8 @@ surv.plot(
   sub = NULL,
   xlab = "Time",
   ylab = "Estimated survival probability",
+  xlab.pos = 1.5,
+  ylab.pos = 2.5,
   cex = NULL,
   cex.lab = 1,
   cex.axis = 1,
@@ -53,9 +57,7 @@ surv.plot(
   stat.cex = 1,
   stat.font = 1,
   risktable = TRUE,
-  risktable.axislab.pos = 2.5,
-  risktable.margin.bottom = 5,
-  risktable.margin.left = 6.5,
+  risktable.pos = 3,
   risktable.title = "Number at risk",
   risktable.title.font = 2,
   risktable.title.col = "black",
@@ -71,6 +73,10 @@ surv.plot(
 }
 \arguments{
 \item{fit}{An object of class \code{survfit} containing survival data.}
+
+\item{margin.bottom}{Specifies the bottom margin of the plotting area in line units.}
+
+\item{margin.left}{Specifies the left margin of the plotting area for the \code{risktable} in line units.}
 
 \item{mark.censoring}{A logical parameter indicating whether to mark censoring
 events on the survival curves. Default: \code{TRUE}.}
@@ -109,6 +115,10 @@ colour, or a vector of colour values to set colour(s).}
 \item{xlab}{X-axis label.}
 
 \item{ylab}{Y-axis label.}
+
+\item{xlab.pos}{Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards.}
+
+\item{ylab.pos}{Defines on which MARgin line the ylab is displayed. Starting at 0 counting outwards.}
 
 \item{cex}{A numeric value specifying all size of the text elements at once
 (labels, annotations, ...).}
@@ -238,14 +248,8 @@ Options: specify explicit by \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \
 
 \item{risktable}{A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.}
 
-\item{risktable.axislab.pos}{Specifies on which line on the plotting area \code{X} and \code{Y} label
+\item{risktable.pos}{Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 4.
 should be drawn if \code{risktable} is drawn. Default: 2.5 line distances form the axis elements.}
-
-\item{risktable.margin.bottom}{Specifies the bottom margin of the plotting area for the \code{risktable}in line units.
-Bottom margin line is calculated by \code{risktable.margin.bottom} (default: 5 line units + Number of stratum).}
-
-\item{risktable.margin.left}{Specifies the left margin of the plotting area for the \code{risktable} in line units.
-Left margin line default is set by 6.5 line units.}
 
 \item{risktable.title}{Title of risk table.}
 

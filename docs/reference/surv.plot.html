@@ -18,10 +18,7 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item">
-  <a class="nav-link" href="../articles/survSAKK.html">Get started</a>
-</li>
-<li class="active nav-item">
+      <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
@@ -62,6 +59,8 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">surv.plot</span><span class="op">(</span></span>
 <span>  <span class="va">fit</span>,</span>
+<span>  margin.bottom <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  margin.left <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mark.censoring <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  conf.int <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">conf.int</span>,</span>
 <span>  conf.band <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -75,6 +74,8 @@
 <span>  sub <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">"Time"</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">"Estimated survival probability"</span>,</span>
+<span>  xlab.pos <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>  ylab.pos <span class="op">=</span> <span class="fl">2.5</span>,</span>
 <span>  cex <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cex.lab <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  cex.axis <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -109,9 +110,7 @@
 <span>  stat.cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  stat.font <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  risktable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  risktable.axislab.pos <span class="op">=</span> <span class="fl">2.5</span>,</span>
-<span>  risktable.margin.bottom <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  risktable.margin.left <span class="op">=</span> <span class="fl">6.5</span>,</span>
+<span>  risktable.pos <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  risktable.title <span class="op">=</span> <span class="st">"Number at risk"</span>,</span>
 <span>  risktable.title.font <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  risktable.title.col <span class="op">=</span> <span class="st">"black"</span>,</span>
@@ -130,6 +129,14 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>fit</dt>
 <dd><p>An object of class <code>survfit</code> containing survival data.</p></dd>
+
+
+<dt>margin.bottom</dt>
+<dd><p>Specifies the bottom margin of the plotting area in line units.</p></dd>
+
+
+<dt>margin.left</dt>
+<dd><p>Specifies the left margin of the plotting area for the <code>risktable</code> in line units.</p></dd>
 
 
 <dt>mark.censoring</dt>
@@ -194,6 +201,14 @@ colour, or a vector of colour values to set colour(s).</p></dd>
 
 <dt>ylab</dt>
 <dd><p>Y-axis label.</p></dd>
+
+
+<dt>xlab.pos</dt>
+<dd><p>Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards.</p></dd>
+
+
+<dt>ylab.pos</dt>
+<dd><p>Defines on which MARgin line the ylab is displayed. Starting at 0 counting outwards.</p></dd>
 
 
 <dt>cex</dt>
@@ -380,19 +395,9 @@ Options: specify explicit by <code>c(x,y)</code>,<code>'bottomleft'</code>, <cod
 <dd><p>A logical parameter indicating whether to draw risk table. Default: <code>TRUE</code>.</p></dd>
 
 
-<dt>risktable.axislab.pos</dt>
-<dd><p>Specifies on which line on the plotting area <code>X</code> and <code>Y</code> label
+<dt>risktable.pos</dt>
+<dd><p>Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 4.
 should be drawn if <code>risktable</code> is drawn. Default: 2.5 line distances form the axis elements.</p></dd>
-
-
-<dt>risktable.margin.bottom</dt>
-<dd><p>Specifies the bottom margin of the plotting area for the <code>risktable</code>in line units.
-Bottom margin line is calculated by <code>risktable.margin.bottom</code> (default: 5 line units + Number of stratum).</p></dd>
-
-
-<dt>risktable.margin.left</dt>
-<dd><p>Specifies the left margin of the plotting area for the <code>risktable</code> in line units.
-Left margin line default is set by 6.5 line units.</p></dd>
 
 
 <dt>risktable.title</dt>
@@ -462,6 +467,8 @@ Left margin line default is set by 6.5 line units.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load Libraray</span></span></span>
 <span class="r-in"><span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: survival</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>package ‘survival’ was built under R version 4.3.2</span>
 <span class="r-in"><span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://sakk-statistics.github.io/survSAKK/">survSAKK</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load Data</span></span></span>
@@ -492,7 +499,7 @@ Left margin line default is set by 6.5 line units.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Vithersan Somasundaram.</p>
+  <p></p><p>Developed by Vithersan Somasundaram, Katrin Gysel, SCTO, Statistics.</p>
 </div>
 
 <div class="pkgdown-footer-right">

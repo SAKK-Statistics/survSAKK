@@ -35,6 +35,8 @@
 #' @param sub Subtitle of the plot.
 #' @param xlab X-axis label.
 #' @param ylab Y-axis label.
+#' @param xlab.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards.
+#' @param ylab.pos Defines on which MARgin line the ylab is displayed. Starting at 0 counting outwards.
 #' @param cex A numeric value specifying all size of the text elements at once
 #'    (labels, annotations, ...).
 #' @param cex.lab A numeric value specifying the size of the `xlab` and `ylab` text.
@@ -119,12 +121,10 @@
 #'    - `3` italic
 #'    - `4` bold-italic
 #' @param risktable A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.
-#' @param risktable.axislab.pos Specifies on which line on the plotting area `X` and `Y` label
+#' @param risktable.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 4.
 #'    should be drawn if `risktable` is drawn. Default: 2.5 line distances form the axis elements.
-#' @param risktable.margin.bottom Specifies the bottom margin of the plotting area for the `risktable`in line units.
-#'   Bottom margin line is calculated by `risktable.margin.bottom` (default: 5 line units + Number of stratum).
-#' @param risktable.margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
-#'   Left margin line default is set by 6.5 line units.
+#' @param margin.bottom Specifies the bottom margin of the plotting area in line units.
+#' @param margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
 #' @param risktable.title Title of risk table.
 #' @param risktable.title.font Title font of risk table.
 #'    - `1` normal
@@ -185,6 +185,10 @@
 
 surv.plot <- function(
     fit,
+    # Margin area
+    margin.bottom = NULL,
+    margin.left= NULL,
+    # Censoring
     mark.censoring = TRUE,
     # Confidence Interval options
     conf.int = fit$conf.int,
@@ -200,6 +204,8 @@ surv.plot <- function(
     sub = NULL,
     xlab = "Time",
     ylab = "Estimated survival probability",
+    xlab.pos =1.5,
+    ylab.pos = 2.5,
     cex = NULL,
     cex.lab = 1,
     cex.axis = 1,
@@ -238,9 +244,8 @@ surv.plot <- function(
     stat.font = 1,
     # risk table options
     risktable = TRUE,
-    risktable.axislab.pos = 2.5,
-    risktable.margin.bottom = 5,
-    risktable.margin.left = 6.5,
+    #risktable.axislab.pos = 2.5,
+    risktable.pos = 3,
     risktable.title = "Number at risk",
     risktable.title.font = 2,
     risktable.title.col = "black",
@@ -312,8 +317,8 @@ surv.plot <- function(
                        xpad = 0.1,
                        ypad = 0.5,
                        text.col = stat.col,
-                       pos = pos,
-                       font = stat.font)
+                       text.pos = 1,                                            # Check for pos argument: ?text
+                       text.font = stat.font)
   {
     tabdim <- dim(table)
     column.names <- colnames(table)
@@ -334,7 +339,7 @@ surv.plot <- function(
     xleft <- x - xjust * (sum(cellwidth))
     for (column in 1:tabdim[2]) {
       text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
-           cex = cex, col = stat.col, font = stat.font)
+           cex = cex, col = text.col, font = text.font, pos = text.pos)
       xleft <- xleft + cellwidth[column]
     }
 
@@ -344,7 +349,7 @@ surv.plot <- function(
       for (column in 1:tabdim[2]) {
         text(xleft + 0.5 * cellwidth[column],
              ytop - (row + 0.5) * cellheight, table[row, column],
-             cex = cex, col = stat.col, font = stat.font)
+             cex = cex, col = text.col, font = text.font, pos = text.pos)
         xleft <- xleft + cellwidth[column]
       }
     }
@@ -392,24 +397,48 @@ surv.plot <- function(
     }
   }
 
-  ## Define Plotting area with and without risktable. ####
+  ## Define Plotting area with and without risk table. ####
   if(is.logical(risktable)){
     if (risktable == TRUE){
+      # Bottom margin
+      if(is.null(margin.bottom)){
+        bottom.lines = 5
+      } else {
+        bottom.lines = margin.bottom
+      }
+      # Left margin
+      if(is.null(margin.left)){
+        left.lines = 6.5
+      } else {
+        left.lines = margin.left
+      }
       # Set up the plot with margin (ora) and outer margins (oma)
-        # c(bottom, left, top, right)
-      par(mar = c(stratum + risktable.margin.bottom, stratum + risktable.margin.left, 4, 2) + 0.1,
-            # distance (lines) of axis elements from plot region
-            # c(axis title, axis label, axis ticks)
-          mgp = c(risktable.axislab.pos, 1, 0)
-          )
+      # c(bottom, left, top, right)
+      par(mar = c(stratum + bottom.lines, stratum + left.lines, 4, 2) + 0.1,
+          # distance (lines) of axis elements from plot region
+          # c(axis title, axis label, axis ticks)
+          mgp = c(3, 1, 0)
+      )
     } else {
-      par(mar = c(5, 4, 4, 2) + 0.1,  # c(bottom, left, top, right)
+      # Bottom margin
+      if(is.null(margin.bottom)){
+        bottom.lines = 5
+      } else{
+        bottom.lines = margin.bottom
+      }
+      # Left margin
+      if(is.null(margin.left)){
+        left.lines = 4
+      } else {
+        left.lines = margin.left
+      }
+      par(mar = c(bottom.lines, left.lines, 4, 2) + 0.1,  # c(bottom, left, top, right)
           mgp = c(3,1,0)              # c(axis title, axis label, axis ticks)
       )
     }
   } else{
-      stop("`risktable` expecting TRUE or FALSE as an argument!")
-    }
+    stop("`risktable` expecting TRUE or FALSE as an argument!")
+  }
 
   # 2. SURV.PLOT ####
 
@@ -433,10 +462,14 @@ surv.plot <- function(
     bty = bty,                            # Remove borders
     ylim = range(ylim),                   # Set y-axis limits
     xlim = range(xlim),                   # Set x-axis limits
-    xlab = xlab,                          # Draw x label
-    ylab = ylab,                          # Draw y label
+    xlab = "",                            # Draw x label
+    ylab = "",                            # Draw y label
     cex.lab = cex.lab                     # Label size
   )
+
+  # xlab and ylab closer to axis line
+  mtext(paste(xlab), side = 1, line = xlab.pos)
+  mtext(paste(ylab), side = 2, line = ylab.pos)
 
   # Customize the x coordinates
   graphics::axis(
@@ -901,10 +934,11 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.45,
+      plottbl(x = stat_xpos * 0.7,
               y = stat_ypos,
               tbl,
-              cex = stat.cex)
+              cex = stat.cex,
+              text.col = stat.col)
     } else if(stat.position == "bottomright"){
       # table is always written from the specified x,y pos from left to right
       # therefore tables _right position is outside of the border.
@@ -919,10 +953,11 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.45, # 0.45
-              y = stat_ypos * 0.85,
+      plottbl(x = stat_xpos * 0.7, # 0.45
+              y = stat_ypos,
               tbl,
-              cex = stat.cex)
+              cex = stat.cex,
+              text.col = stat.col)
     } else if(stat.position == "topright"){
       # table is always written from the specified x,y pos from left to right
       # therefore tables _right position is outside of the border.
@@ -937,10 +972,11 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.45, # 0.45
-              y = stat_ypos * 0.80,
+      plottbl(x = stat_xpos * 0.7, # 0.45
+              y = stat_ypos * 0.90,
               tbl,
-              cex = stat.cex)
+              cex = stat.cex,
+              text.col = stat.col)
     } else {
       # Extract infos and create data frame from model
       tbl <- data.frame(N = model$n,
@@ -1000,7 +1036,7 @@ surv.plot <- function(
 
       ## Add risktable.title text to the outer margin ####
       mtext(risktable.title, side = 1, outer = FALSE,
-            line = 4, adj = NA, at = risktable.title.position,
+            line = risktable.pos, adj = NA, at = risktable.title.position,
             font = risktable.title.font,
             cex = risktable.title.cex,
             col = risktable.title.col)
@@ -1008,7 +1044,7 @@ surv.plot <- function(
       ## Add legend text to the outer margin for each stratum ####
       for (i in 1:stratum){
         mtext(text = legend.name[i], side = 1, outer = FALSE,
-              line = i+4, adj = NA, at = risktable.name.position,
+              line = i+risktable.pos, adj = NA, at = risktable.name.position,
               font = risktable.name.font,
               cex = risktable.name.cex,
               col = risktable.name.col)
@@ -1016,7 +1052,7 @@ surv.plot <- function(
 
       ## Add vector of risk counts text to the margin ####
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
-            line = rep((1:stratum) + 4, each = length(xlim)),
+            line = rep((1:stratum) + risktable.pos, each = length(xlim)),
             at = rep(xlim, stratum),
             cex = risktable.cex,
             col = c(rep(risktable.col, each = length(xlim)))
@@ -1024,5 +1060,5 @@ surv.plot <- function(
     }
   } else {
     stop("`risktable` expecting TRUE or FALSE as an argument!")
-    }
-  } # final closer of the function
+  }
+} # final closer of the function
