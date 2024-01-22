@@ -120,7 +120,7 @@
 #' @param risktable.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 4.
 #'    should be drawn if `risktable` is drawn. Default: 2.5 line distances form the axis elements.
 #' @param margin.bottom Specifies the bottom margin of the plotting area in line units.
-#' @param margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
+#' @param margin.left Specifies the left margin of the plotting area for in line units.
 #' @param risktable.title Title of risk table.
 #' @param risktable.title.font Title font of risk table.
 #'    - `1` normal
