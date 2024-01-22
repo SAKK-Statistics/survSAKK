@@ -211,8 +211,9 @@ surv.plot(veteran_trt_fit_yr,
 
 ## `coxmodel`
 
-```{r stat3, eval = TRUE}
+```{r stat3, eval = TRUE, fig.width=8}
 surv.plot(veteran_trt_fit_yr,
+          cex = 0.8,
           legend.position = "right",
           stat = "coxmodel",
           stat.position = "topright")
@@ -319,11 +320,12 @@ surv.plot(fit = veteran_fit_yr,
 par(mfrow=c(1,1))
 ```
 
-```{r plots2, fig.height = 12, fig.width = 7}
+```{r plots2, fig.height = 12, fig.width = 8}
 par(mfrow=c(2,1))
 # Plot 1
 surv.plot(fit = veteran_trt_fit_yr,
           bty = 'o',
+          cex = 0.75,
           legend.title = "Treament regimens",
           legend.name = c("LT60","OV60"),
           legend.text.font = 2,
@@ -338,6 +340,7 @@ surv.plot(fit = veteran_trt_fit_yr,
 # Plot 2
 surv.plot(fit = veteran_trt_fit_yr,
           grid =TRUE,
+          cex = 0.75,
           col = c("darkgreen","yellow4"),
           xlab = "Time (year)",
           xlim = seq(0,3, by = 1),
