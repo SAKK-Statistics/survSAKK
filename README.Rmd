@@ -63,4 +63,10 @@ The documentation of the function.
 
 ### Vigniette
 
--   `vignette("surv.plot", package = "survSAKK")`
+Available vignettes
+
+- `browseVignettes("survSAKK")`
+
+`surv.plot` vigniette:
+
+-  `vignette("surv.plot", package = "survSAKK")`
