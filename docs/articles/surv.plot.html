@@ -43,9 +43,6 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="../articles/survSAKK.html">Get started</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="active nav-item dropdown">
@@ -123,7 +120,7 @@ used.</p>
 <h2 id="drawing-survival-plot">Drawing survival plot<a class="anchor" aria-label="anchor" href="#drawing-survival-plot"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">survSAKK</span><span class="fu">::</span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="customisation-of-axis-limits-and-label">Customisation of axis limits and label<a class="anchor" aria-label="anchor" href="#customisation-of-axis-limits-and-label"></a>
@@ -155,6 +152,28 @@ used.</p>
 <span>          cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/label_2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+<div class="section level4">
+<h4 id="custamisation-of-the-x-and-y-axis-label-position">Custamisation of the x and y axis label position<a class="anchor" aria-label="anchor" href="#custamisation-of-the-x-and-y-axis-label-position"></a>
+</h4>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
+<span>          <span class="co"># Specifies on which line on the plotting area </span></span>
+<span>          <span class="co"># X and Y label should be drawn</span></span>
+<span>          xlab.pos <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>          ylab.pos <span class="op">=</span> <span class="fl">3.75</span><span class="op">)</span></span></code></pre></div>
+<p><img src="surv.plot_files/figure-html/label3-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="custamisation-of-the-marging-area">Custamisation of the marging area<a class="anchor" aria-label="anchor" href="#custamisation-of-the-marging-area"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,  </span>
+<span>          <span class="co"># How many bottom lines should be drawn</span></span>
+<span>          margin.bottom <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>          <span class="co"># How many left lines should be drawn</span></span>
+<span>          margin.left <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
+<p><img src="surv.plot_files/figure-html/label4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -168,7 +187,7 @@ options.</p>
 </h3>
 <p>Drawing a segment line for the median, which corresponds to 0.5
 quantile.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
@@ -178,7 +197,7 @@ quantile.</p>
 <h3 id="drawing-segment-line-for-a-specific-time-point">Drawing segment line for a specific time point<a class="anchor" aria-label="anchor" href="#drawing-segment-line-for-a-specific-time-point"></a>
 </h3>
 <p>Drawing a segment line at time point 1.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
@@ -187,7 +206,7 @@ quantile.</p>
 <div class="section level3">
 <h3 id="renaming-segment-title-font-size-and-colour">Renaming segment title, font size, and colour<a class="anchor" aria-label="anchor" href="#renaming-segment-title-font-size-and-colour"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -200,7 +219,7 @@ quantile.</p>
 <div class="section level3">
 <h3 id="add-several-segment-lines-change-line-type">Add several segment lines, change line type<a class="anchor" aria-label="anchor" href="#add-several-segment-lines-change-line-type"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,</span>
@@ -211,7 +230,7 @@ quantile.</p>
 <div class="section level3">
 <h3 id="modify-segment-font">Modify segment font<a class="anchor" aria-label="anchor" href="#modify-segment-font"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -224,7 +243,7 @@ quantile.</p>
 <div class="section level3">
 <h3 id="modify-segment-line-type-line-width-and-text-spacing">Modify segment line type, line width and text spacing<a class="anchor" aria-label="anchor" href="#modify-segment-line-type-line-width-and-text-spacing"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -268,7 +287,7 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <h3 id="logrank-test">
 <code>logrank test</code><a class="anchor" aria-label="anchor" href="#logrank-test"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"logrank"</span><span class="op">)</span></span></code></pre></div>
@@ -278,7 +297,7 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <h3 id="coxph">
 <code>coxph</code><a class="anchor" aria-label="anchor" href="#coxph"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          show.legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph"</span>,</span>
@@ -289,9 +308,9 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <h3 id="coxmodel">
 <code>coxmodel</code><a class="anchor" aria-label="anchor" href="#coxmodel"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
-<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25.4</span>,<span class="fl">0.85</span><span class="op">)</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="st">"right"</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxmodel"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"topright"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/stat3-1.png" width="672" style="display: block; margin: auto;"></p>
@@ -299,7 +318,7 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <div class="section level3">
 <h3 id="modify-stat-position-colour-text-size-and-text-font">Modify stat position, colour, text size, and text font<a class="anchor" aria-label="anchor" href="#modify-stat-position-colour-text-size-and-text-font"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          stat <span class="op">=</span> <span class="st">"logrank"</span>,</span>
@@ -319,36 +338,28 @@ different time points thought the study.</p>
 <div class="section level3">
 <h3 id="undisplay-risk-table">Undisplay risk table<a class="anchor" aria-label="anchor" href="#undisplay-risk-table"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          risktable <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="custamisation-of-the-x-and-y-axis-label-position">Custamisation of the x and y axis label position<a class="anchor" aria-label="anchor" href="#custamisation-of-the-x-and-y-axis-label-position"></a>
+<h3 id="modify-risktable-position">Modify risktable position<a class="anchor" aria-label="anchor" href="#modify-risktable-position"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
-<span>          <span class="co"># Specifies on which line on the plotting area </span></span>
-<span>          <span class="co"># X and Y label should be drawn</span></span>
-<span>          risktable.axislab.pos <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable2-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="custamisation-of-the-risk-table-marging-area">Custamisation of the risk table marging area<a class="anchor" aria-label="anchor" href="#custamisation-of-the-risk-table-marging-area"></a>
-</h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,  </span>
 <span>          <span class="co"># How many bottom lines should be drawn</span></span>
-<span>          risktable.margin.bottom <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>          margin.bottom <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>          <span class="co"># How many left lines should be drawn</span></span>
-<span>          risktable.margin.left <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable3-1.png" width="672" style="display: block; margin: auto;"></p>
+<span>          margin.left <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>          <span class="co"># Define position of the risk table</span></span>
+<span>          risktable.pos <span class="op">=</span> <span class="fl">8.5</span><span class="op">)</span></span></code></pre></div>
+<p><img src="surv.plot_files/figure-html/risktable.pos-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-risk-table-title">Modify risk table title<a class="anchor" aria-label="anchor" href="#modify-risk-table-title"></a>
 </h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          risktable.title <span class="op">=</span> <span class="st">"# at risk"</span>,</span>
 <span>          risktable.title.font <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -357,7 +368,7 @@ different time points thought the study.</p>
 <span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable4-1.png" width="672" style="display: block; margin: auto;">
 ## Modify risk table label names</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          risktable.name.col <span class="op">=</span> <span class="st">"darkgreen"</span>,</span>
 <span>          risktable.name.font <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -368,7 +379,7 @@ different time points thought the study.</p>
 <div class="section level3">
 <h3 id="modify-risktable-colour">Modify risktable colour<a class="anchor" aria-label="anchor" href="#modify-risktable-colour"></a>
 </h3>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          risktable.col <span class="op">=</span> <span class="st">"darkred"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable6-1.png" width="672" style="display: block; margin: auto;"></p>
@@ -376,7 +387,7 @@ different time points thought the study.</p>
 <div class="section level3">
 <h3 id="modify-risk-table-font-size">Modify risk table font size<a class="anchor" aria-label="anchor" href="#modify-risk-table-font-size"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          risktable.cex <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>          risktable.title.cex <span class="op">=</span> <span class="fl">0.85</span>,</span>
@@ -387,7 +398,7 @@ different time points thought the study.</p>
 <div class="section level2">
 <h2 id="multiple-survival-plots">Multiple survival plots<a class="anchor" aria-label="anchor" href="#multiple-survival-plots"></a>
 </h2>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Plot 1</span></span>
@@ -414,7 +425,7 @@ different time points thought the study.</p>
 <span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">0.7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/plots1-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Plot 1</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_trt_fit_yr</span>,</span>
@@ -440,7 +451,7 @@ different time points thought the study.</p>
 <span>          stat <span class="op">=</span> <span class="st">"coxmodel"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"bottomright"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/plots2-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -451,7 +462,7 @@ different time points thought the study.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Vithersan Somasundaram.</p>
+<p>Developed by Vithersan Somasundaram, Katrin Gysel, SCTO, Statistics.</p>
 </div>
 
 <div class="pkgdown-footer-right">
