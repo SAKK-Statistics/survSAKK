@@ -34,7 +34,6 @@ devtools::install_github("SAKK-Statistics/survSAKK",
 ``` r
 library(survSAKK)
 library(survival)
-#> Warning: Paket 'survival' wurde unter R Version 4.3.2 erstellt
 
 lung_fit <- survfit(Surv((time/365.25), status) ~ sex, data = lung)
 
