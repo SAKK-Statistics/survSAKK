@@ -930,7 +930,7 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.7,
+      plottbl(x = stat_xpos * 0.5,
               y = stat_ypos,
               tbl,
               cex = stat.cex,
@@ -949,7 +949,7 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.7, # 0.45
+      plottbl(x = stat_xpos * 0.5, # 0.45
               y = stat_ypos,
               tbl,
               cex = stat.cex,
@@ -968,7 +968,7 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.7, # 0.45
+      plottbl(x = stat_xpos * 0.5, # 0.45
               y = stat_ypos * 0.90,
               tbl,
               cex = stat.cex,
