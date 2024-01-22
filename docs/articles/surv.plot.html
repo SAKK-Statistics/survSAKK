@@ -310,10 +310,11 @@ regression using <code>summary(coxph{survival})</code>.</p>
 </h3>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
+<span>          cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="st">"right"</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxmodel"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"topright"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/stat3-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="surv.plot_files/figure-html/stat3-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-stat-position-colour-text-size-and-text-font">Modify stat position, colour, text size, and text font<a class="anchor" aria-label="anchor" href="#modify-stat-position-colour-text-size-and-text-font"></a>
@@ -430,6 +431,7 @@ different time points thought the study.</p>
 <span><span class="co"># Plot 1</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          bty <span class="op">=</span> <span class="st">'o'</span>,</span>
+<span>          cex <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>          legend.title <span class="op">=</span> <span class="st">"Treament regimens"</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LT60"</span>,<span class="st">"OV60"</span><span class="op">)</span>,</span>
 <span>          legend.text.font <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -444,13 +446,14 @@ different time points thought the study.</p>
 <span><span class="co"># Plot 2</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          grid <span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>          cex <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkgreen"</span>,<span class="st">"yellow4"</span><span class="op">)</span>,</span>
 <span>          xlab <span class="op">=</span> <span class="st">"Time (year)"</span>,</span>
 <span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxmodel"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"bottomright"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/plots2-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="surv.plot_files/figure-html/plots2-1.png" width="768" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>

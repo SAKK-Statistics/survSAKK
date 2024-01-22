@@ -307,14 +307,14 @@ surv.plot <- function(
                        cex = stat.cex,
                        # Positioning for the table relative to ‘⁠x,y⁠’.
                        xjust = 0,
-                       yjust = 1,
+                       yjust = 0,
                        # The amount of padding around text in the cells as a proportion
                        # of the maximum width and height of the strings in each column
-                       xpad = 0.1,
-                       ypad = 0.5,
+                       xpad = 0.2,
+                       ypad = 0.25,
                        text.col = stat.col,
-                       text.pos = 1,                                            # Check for pos argument: ?text
-                       text.font = stat.font)
+                       text.font = stat.font,
+                       text.pos = NULL)
   {
     tabdim <- dim(table)
     column.names <- colnames(table)
@@ -335,7 +335,7 @@ surv.plot <- function(
     xleft <- x - xjust * (sum(cellwidth))
     for (column in 1:tabdim[2]) {
       text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
-           cex = cex, col = text.col, font = text.font, pos = text.pos)
+           cex = cex, col = text.col, font = text.font, adj = 0.5, pos = text.pos)
       xleft <- xleft + cellwidth[column]
     }
 
@@ -345,7 +345,7 @@ surv.plot <- function(
       for (column in 1:tabdim[2]) {
         text(xleft + 0.5 * cellwidth[column],
              ytop - (row + 0.5) * cellheight, table[row, column],
-             cex = cex, col = text.col, font = text.font, pos = text.pos)
+             cex = cex, col = text.col, font = text.font, adj = 0.5, pos = text.pos)
         xleft <- xleft + cellwidth[column]
       }
     }
@@ -930,7 +930,7 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.5,
+      plottbl(x = stat_xpos * 0.6,
               y = stat_ypos,
               tbl,
               cex = stat.cex,
@@ -949,8 +949,8 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.5, # 0.45
-              y = stat_ypos,
+      plottbl(x = stat_xpos * 0.6, # 0.7
+              y = stat_ypos * 3,
               tbl,
               cex = stat.cex,
               text.col = stat.col)
@@ -968,7 +968,7 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.5, # 0.45
+      plottbl(x = stat_xpos * 0.6, # 0.7
               y = stat_ypos * 0.90,
               tbl,
               cex = stat.cex,
