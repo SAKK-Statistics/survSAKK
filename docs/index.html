@@ -45,13 +45,10 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="reference/index.html">Reference</a>
+  <a class="nav-link" href="articles/survSAKK.html">Get started</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/surv.plot.html">Creating survival plot</a>
-  </div>
+<li class="nav-item">
+  <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
@@ -77,38 +74,59 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="survsakk">survSAKK<a class="anchor" aria-label="anchor" href="#survsakk"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="survsakk-">survSAKK 
+<a class="anchor" aria-label="anchor" href="#survsakk-"></a>
 </h1>
 </div>
-<!-- badges: start -->
-
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>The goal of <code>survSAKK</code> is to create an open source, user-friendly and flexible <code>R</code> package, which will incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plot.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of survSAKK from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the current version of <code>survSAKK</code> from <a href="file:///C:/Users/vithersans/Desktop/survSAKK/docs/index.html">GitHub Pages</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SAKK-Statistics/survSAKK"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="co"># At the moment, while repository is private:</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SAKK-Statistics/survSAKK"</span>,</span>
+<span>                         auth_token <span class="op">=</span> <span class="st">"ask_for_the_password"</span>,</span>
+<span>                         build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                         force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Later, when the repository is public:</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SAKK-Statistics/survSAKK"</span>,</span>
+<span>                         build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="load-package">Load package<a class="anchor" aria-label="anchor" href="#load-package"></a>
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sakk-statistics.github.io/survSAKK/">survSAKK</a></span><span class="op">)</span></span>
-<span><span class="co">## basic example code</span></span></code></pre></div>
+<span></span>
+<span><span class="fu"><a href="reference/survSAKK.html">surv.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="get-the-documentation-of-the-funciton">Get the documentation of the funciton<a class="anchor" aria-label="anchor" href="#get-the-documentation-of-the-funciton"></a>
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">?</span><span class="va">survSAKK</span></span></code></pre></div>
+<p>The documentation of the function.</p>
+<div class="section level3">
+<h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h3>
+<ul>
+<li><code><a href="reference/survSAKK.html">?survSAKK</a></code></li>
+</ul>
 </div>
-<div class="section level2">
-<h2 id="access-vignette">Access vignette<a class="anchor" aria-label="anchor" href="#access-vignette"></a>
-</h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="va">survSAKK</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="vigniette">Vigniette<a class="anchor" aria-label="anchor" href="#vigniette"></a>
+</h3>
+<ul>
+<li><p><code>vignette(surv.plot)</code></p></li>
+<li><p><a href="https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html">Vignette Page</a></p></li>
+</ul>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -138,19 +156,14 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Vithersan Somasundaram <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
+<li>Vithersan Somasundaram <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Katrin Gysel <br><small class="roles"> Author, reviewer </small>  </li>
 <li>SCTO, Statistics <br><small class="roles"> Funder </small>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/SAKK-Statistics/survSAKK/actions/workflows/check-release.yaml" class="external-link"><img src="https://github.com/SAKK-Statistics/survSAKK/actions/workflows/check-release.yaml/badge.svg" alt="check-release"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>
