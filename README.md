@@ -52,7 +52,7 @@ The documentation of the function.
 
 - `help(surv.plot)`
 
-### Vigniette
+### Vignette
 
 Available vignettes
 
