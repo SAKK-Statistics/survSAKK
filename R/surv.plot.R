@@ -317,8 +317,8 @@ surv.plot <- function(
                        xpad = 0.1,
                        ypad = 0.5,
                        text.col = stat.col,
-                       pos = pos,
-                       font = stat.font)
+                       text.pos = 1,                                            # Check for pos argument: ?text
+                       text.font = stat.font)
   {
     tabdim <- dim(table)
     column.names <- colnames(table)
@@ -339,7 +339,7 @@ surv.plot <- function(
     xleft <- x - xjust * (sum(cellwidth))
     for (column in 1:tabdim[2]) {
       text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
-           cex = cex, col = stat.col, font = stat.font)
+           cex = cex, col = text.col, font = text.font, pos = text.pos)
       xleft <- xleft + cellwidth[column]
     }
 
@@ -349,7 +349,7 @@ surv.plot <- function(
       for (column in 1:tabdim[2]) {
         text(xleft + 0.5 * cellwidth[column],
              ytop - (row + 0.5) * cellheight, table[row, column],
-             cex = cex, col = stat.col, font = stat.font)
+             cex = cex, col = text.col, font = text.font, pos = text.pos)
         xleft <- xleft + cellwidth[column]
       }
     }
@@ -934,10 +934,11 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.25,
+      plottbl(x = stat_xpos * 0.7,
               y = stat_ypos,
               tbl,
-              cex = stat.cex)
+              cex = stat.cex,
+              text.col = stat.col)
     } else if(stat.position == "bottomright"){
       # table is always written from the specified x,y pos from left to right
       # therefore tables _right position is outside of the border.
@@ -952,10 +953,11 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.25, # 0.45
-              y = stat_ypos * 0.85,
+      plottbl(x = stat_xpos * 0.7, # 0.45
+              y = stat_ypos,
               tbl,
-              cex = stat.cex)
+              cex = stat.cex,
+              text.col = stat.col)
     } else if(stat.position == "topright"){
       # table is always written from the specified x,y pos from left to right
       # therefore tables _right position is outside of the border.
@@ -970,10 +972,11 @@ surv.plot <- function(
                         Logrank = logrankpval)
       # Annotation
       # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.25, # 0.45
+      plottbl(x = stat_xpos * 0.7, # 0.45
               y = stat_ypos * 0.90,
               tbl,
-              cex = stat.cex)
+              cex = stat.cex,
+              text.col = stat.col)
     } else {
       # Extract infos and create data frame from model
       tbl <- data.frame(N = model$n,
