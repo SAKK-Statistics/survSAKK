@@ -40,12 +40,16 @@ devtools::install_github("SAKK-Statistics/survSAKK",
 
 ## Usage
 
-```{r loading}
+
+```{r, eval=TRUE, fig.height = 6, fig.width = 7}
 library(survSAKK)
+library(survival)
 
-surv.plot(fit)
+lung_fit <- survfit(Surv((time/365.25), status) ~ sex, data = lung)
 
+surv.plot(fit = lung_fit)
 ```
+
 
 ## Getting help
 
@@ -53,10 +57,16 @@ The documentation of the function.
 
 ### Documentation
 
-- `?surv.plot`
+- `help(survSAKK)`
+
+- `help(surv.plot)`
 
 ### Vigniette
 
--   `vignette(surv.plot)`
+Available vignettes
 
--   [Vignette Page](https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html)
+- `browseVignettes("survSAKK")`
+
+`surv.plot` vigniette:
+
+-  `vignette("surv.plot", package = "survSAKK")`

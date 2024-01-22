@@ -33,9 +33,15 @@ devtools::install_github("SAKK-Statistics/survSAKK",
 
 ``` r
 library(survSAKK)
+library(survival)
+#> Warning: Paket 'survival' wurde unter R Version 4.3.2 erstellt
 
-surv.plot(fit)
+lung_fit <- survfit(Surv((time/365.25), status) ~ sex, data = lung)
+
+surv.plot(fit = lung_fit)
 ```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ## Getting help
 
@@ -43,11 +49,16 @@ The documentation of the function.
 
 ### Documentation
 
-- `?survSAKK`
+- `help(survSAKK)`
+
+- `help(surv.plot)`
 
 ### Vigniette
 
-- `vignette(surv.plot)`
+Available vignettes
 
-- [Vignette
-  Page](https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html)
+- `browseVignettes("survSAKK")`
+
+`surv.plot` vigniette:
+
+- `vignette("surv.plot", package = "survSAKK")`

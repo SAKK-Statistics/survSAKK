@@ -2,7 +2,6 @@
 #'
 #' Plot Kaplan-Meier plot using the results from `survival::survfit()`.
 #'
-#' @name survSAKK
 #'
 #' @docType package
 #'
