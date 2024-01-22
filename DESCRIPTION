@@ -6,7 +6,7 @@ Authors@R:
   person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre","cph"), email = "Vithersan.Somasundaram@sakk.ch"),
   person(given = "Katrin", family = "Gysel", role = c("aut", "rev"), email = "Katrin.Gysel@sakk.ch"),
   person(given = "Stefanie", family = "Hayoz", role = c("ctb"), email = "Stefanie.Hayoz@sakk.ch"),
-  person("SAKK, CompetenceCenter", role = c("cph")),
+  person("SAKK, CC", role = c("cph")),
   person("SCTO, Statistics", role = c("fnd"))
   )
 Description: The survSAKK R package, incorporate various statistics and layout 
