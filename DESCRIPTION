@@ -1,9 +1,10 @@
 Package: survSAKK
+Type: Package
 Title: Create publication ready Kaplan-Meier plot
 Version: 1.0.0
 Authors@R: 
     c(
-  person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre","cph"), email = "Vithersan.Somasundaram@sakk.ch"),
+  person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre"), email = "Vithersan.Somasundaram@sakk.ch"),
   person(given = "Katrin", family = "Gysel", role = c("aut", "rev"), email = "Katrin.Gysel@sakk.ch"),
   person(given = "Stefanie", family = "Hayoz", role = c("ctb"), email = "Stefanie.Hayoz@sakk.ch"),
   person("SAKK, CC", role = c("cph")),
