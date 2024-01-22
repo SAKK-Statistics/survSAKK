@@ -41,7 +41,7 @@ devtools::install_github("SAKK-Statistics/survSAKK",
 ## Usage
 
 
-```{r, eval=TRUE, fig.height = 6, fig.width = 7}
+```{r, eval=TRUE, warning=FALSE,fig.height = 6, fig.width = 7}
 library(survSAKK)
 library(survival)
 
