@@ -1,13 +1,10 @@
-# -----------------------------------------------------------------------------#
-# METADATA
-# TITLE: Publication ready Kaplan-Meier plot
-#
-# WRITTEN BY Vithersan Somasundaram and Katrin Gysel
-# -----------------------------------------------------------------------------#
-
-#' Publication Ready Kaplan-Meier Plot
+#' A package for publication ready Kaplan-Meier plots.
 #'
-#' Plot publication ready Kaplan-Meier plot using the results from `survival::survfit()`.
+#' Plot Kaplan-Meier plot using the results from `survival::survfit()`.
+#'
+#' @name survSAKK
+#'
+#' @docType package
 #'
 #' @param fit An object of class `survfit` containing survival data.
 #' @param mark.censoring A logical parameter indicating whether to mark censoring
