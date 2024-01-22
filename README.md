@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# survSAKK <a href="https://sakk-statistics.github.io/survSAKK"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# survSAKK <a href="https://sakk-statistics.github.io/survSAKK"><img src="man/figures/logo.png" align="right" height="138"/></a>
 
 ## Overview
 
@@ -12,8 +12,8 @@ of the Kaplan-Meier plot.
 
 ## Installation
 
-You can install the current version of `survSAKK` from
-[GitHub](https://github.com/):
+You can install the current version of `survSAKK` from [GitHub
+Pages](file:///C:/Users/vithersans/Desktop/survSAKK/docs/index.html):
 
 ``` r
 # install.packages("devtools")
@@ -39,12 +39,15 @@ surv.plot(fit)
 
 ## Getting help
 
-The documentation of the function
+The documentation of the function.
 
-``` r
-# Documentation
-?surv.plot
+### Documentation
 
-# Vigniette
-vignette(survSAKK)
-```
+- `?survSAKK`
+
+### Vigniette
+
+- `vignette(surv.plot)`
+
+- [Vignette
+  Page](https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html)

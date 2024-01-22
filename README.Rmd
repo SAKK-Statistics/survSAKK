@@ -14,15 +14,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-# survSAKK <a href="https://sakk-statistics.github.io/survSAKK"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# survSAKK <a href="https://sakk-statistics.github.io/survSAKK"><img src="man/figures/logo.png" align="right" height="138"/></a>
 
 ## Overview
 
-The goal of `survSAKK` is to create an open source, user-friendly and flexible `R` package, which will incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plot. 
+The goal of `survSAKK` is to create an open source, user-friendly and flexible `R` package, which will incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
 
 ## Installation
 
-You can install the current version of `survSAKK` from [GitHub](https://github.com/):
+You can install the current version of `survSAKK` from [GitHub Pages](file:///C:/Users/vithersans/Desktop/survSAKK/docs/index.html):
 
 ```{r installation}
 # install.packages("devtools")
@@ -49,13 +49,14 @@ surv.plot(fit)
 
 ## Getting help
 
-The documentation of the function
+The documentation of the function.
 
-```{r help}
-# Documentation
-?surv.plot
+### Documentation
 
-# Vigniette
-vignette(survSAKK)
-```
+- `?surv.plot`
 
+### Vigniette
+
+-   `vignette(surv.plot)`
+
+-   [Vignette Page](https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html)
