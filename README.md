@@ -3,10 +3,7 @@
 
 # survSAKK
 
-<!-- badges: start -->
-
-[![check-release](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/check-release.yaml/badge.svg)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/check-release.yaml)
-<!-- badges: end -->
+## Overview
 
 The goal of `survSAKK` is to create an open source, user-friendly and
 flexible `R` package, which will incorporate various statistics and
@@ -15,29 +12,39 @@ of the Kaplan-Meier plot.
 
 ## Installation
 
-You can install the development version of survSAKK from
-[GitHub](https://github.com/) with:
+You can install the current version of `survSAKK` from
+[GitHub](https://github.com/):
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SAKK-Statistics/survSAKK", build_vignettes = TRUE)
+
+# At the moment, while repository is private:
+devtools::install_github("SAKK-Statistics/survSAKK",
+                         auth_token = "ask_for_the_password",
+                         build_vignettes = TRUE,
+                         force = TRUE)
+
+# Later, when the repository is public:
+devtools::install_github("SAKK-Statistics/survSAKK",
+                         build_vignettes = TRUE)
 ```
 
-## Load package
+## Usage
 
 ``` r
 library(survSAKK)
-## basic example code
+
+surv.plot(fit)
 ```
 
-## Get the documentation of the funciton
+## Getting help
+
+The documentation of the function
 
 ``` r
-?survSAKK
-```
+# Documentation
+?surv.plot
 
-## Access vignette
-
-``` r
+# Vigniette
 vignette(survSAKK)
 ```
