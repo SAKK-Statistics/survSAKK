@@ -47,7 +47,9 @@ The documentation of the function.
 
 ### Vigniette
 
-- `vignette(surv.plot)`
+- `browseVignettes("survSAKK")`
+
+- You can read a specific vignette with: `vignette("surv.plot", package = "survSAKK")`  
 
 - [Vignette
   Page](https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html)
