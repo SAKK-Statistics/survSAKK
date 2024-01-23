@@ -117,10 +117,9 @@
 #'    - `3` italic
 #'    - `4` bold-italic
 #' @param risktable A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.
-#' @param risktable.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 4.
-#'    should be drawn if `risktable` is drawn. Default: 2.5 line distances form the axis elements.
+#' @param risktable.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 3.
 #' @param margin.bottom Specifies the bottom margin of the plotting area in line units.
-#' @param margin.left Specifies the left margin of the plotting area for the `risktable` in line units.
+#' @param margin.left Specifies the left margin of the plotting area for in line units.
 #' @param risktable.title Title of risk table.
 #' @param risktable.title.font Title font of risk table.
 #'    - `1` normal
@@ -240,7 +239,6 @@ surv.plot <- function(
     stat.font = 1,
     # risk table options
     risktable = TRUE,
-    #risktable.axislab.pos = 2.5,
     risktable.pos = 3,
     risktable.title = "Number at risk",
     risktable.title.font = 2,
