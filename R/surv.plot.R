@@ -239,7 +239,6 @@ surv.plot <- function(
     stat.font = 1,
     # risk table options
     risktable = TRUE,
-    #risktable.axislab.pos = 2.5,
     risktable.pos = 3,
     risktable.title = "Number at risk",
     risktable.title.font = 2,
