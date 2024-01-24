@@ -93,7 +93,7 @@
 #'    - `4` bold-italic
 #' @param segment.annotation Position of the segment annotation.
 #'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
-#' @param segment.annotation.space Spacing between the text in unit of x-coordinates.
+#' @param segment.annotation.space Spacing between the text in unit of y-coordinates.
 #' @param stat  Statistics which is displayed in the plot.
 #'    Options:
 #'    - `'logrank'` gives the p value of the conducted logrank test using `survdiff{survival}`.
@@ -247,9 +247,9 @@ surv.plot <- function(
     risktable.cex = 1,
     risktable.title.cex = 1,
     risktable.name.cex = 1,
-    risktable.col = "black",
+    risktable.col = col,
     risktable.name.font = 1,
-    risktable.name.col = "#666666",
+    risktable.name.col = "black",
     risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
 
@@ -831,13 +831,13 @@ surv.plot <- function(
            col = "black", cex = segment.cex, font = segment.main.font)
     } else if (is.null(segment.main) & !is.null(segment.quantile)){
       if (segment.quantile == 0.5){
-        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [95%]"), pos = pos,
+        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [95% CI]"), pos = pos,
              col = "black", cex = segment.cex, font = segment.main.font)
-      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
+      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [95% CI]"), pos = pos,
                    col = "black", cex = segment.cex, font = segment.main.font)
       }
     } else if (is.null(segment.main) & !is.null(segment.timepoint)){
-      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival [95% CI]"), pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
     }
   }
