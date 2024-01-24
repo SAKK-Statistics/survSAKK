@@ -37,7 +37,7 @@
 #'    (labels, annotations, ...).
 #' @param cex.lab A numeric value specifying the size of the `xlab` and `ylab` text.
 #' @param cex.axis A numeric value specifying the size of the `axis` size.
-#' @param bty Determines the style of the box drawn around the plot.
+#' @param bty Determine the style of the box drawn around the plot.
 #'    Options: `'n'`,`'o'`,`'7'`,`'L'`,`'C'`,`'U'`.
 #' @param lty A vector of string specifying line types for each curve.
 #'    The length of the vector should match the number of survival curves,
