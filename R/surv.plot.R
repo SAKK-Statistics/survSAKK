@@ -5,7 +5,7 @@
 #'
 #' @docType package
 #'
-#' @param fit An object of class `survfit` containing survival data.
+#' @param fit Ans object of class `survfit` containing survival data.
 #' @param mark.censoring A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
 #' @param conf.int Controlling the confidence interval on the survival curves.
