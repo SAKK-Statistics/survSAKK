@@ -231,7 +231,7 @@ surv.plot <- function(
     segment.annotation.space = 0.06,
     segment.font = 1,
     segment.main.font = 1,
-    # Stats options
+    # Stats option s
     stat = "none",
     stat.position = "bottomleft",
     stat.col = "black",
