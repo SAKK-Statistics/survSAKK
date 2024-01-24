@@ -206,7 +206,7 @@ surv.plot <- function(
     cex.axis = 1,
     bty = "l",
     lty = c("solid","dotted","dotted"),
-    lwd = 1,
+    lwd = 3,
     xlim = seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time))),
     ylim = seq(from = 0, to = 1, by = 0.25),
     # Legend options
