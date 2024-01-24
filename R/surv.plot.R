@@ -249,7 +249,7 @@ surv.plot <- function(
     risktable.name.cex = 1,
     risktable.col = "black",
     risktable.name.font = 1,
-    risktable.name.col = "#666666",
+    risktable.name.col = "black",
     risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
 
