@@ -176,7 +176,7 @@
 #'
 #' @export
 
-# test
+# test2
 
 surv.plot <- function(
     fit,
