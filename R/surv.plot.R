@@ -176,7 +176,7 @@
 #'
 #' @export
 
-# test2
+# todo: Mehrere Arme ploten funktioniert nicht
 
 surv.plot <- function(
     fit,
@@ -355,7 +355,7 @@ surv.plot <- function(
   data <- as.data.frame(eval(fit$call$data))
 
   ### Recalculate survival object ####
-  # Note: Recalculation is done to be sure that the survival object is correct,
+  # Note: Recalculation is done to be sure that the survival object is correct, # todo: specify what is "correct"
   # and for plotting with the desired CI and transformation.
 
   # recalculate the fit object based on defined `conf.type`
@@ -371,10 +371,11 @@ surv.plot <- function(
   ## Define colour for KM-plot if not manually specified ####
   if (is.null(col)){
     if(is.null(fit$strata)){
-      col <- "#666666"
+      col <- "black"
     } else {
       for (i in 1:stratum){
-        col[i] <- c("#666666","#a6761d","#66a61e","#377eb8","#e41a1c","#984ea3","#ff7f00","#f781bf","#ffff33")[i]
+        # Colors from brewer.pal(10,"Paired") are used
+        col[i] <- c("#1F78B4","#33A02C","#A6CEE3","#B2DF8A","#FB9A99","#E31A1C","#FDBF6F","#CAB2D6","#6A3D9A")[i]
       }
     }
   }
@@ -449,7 +450,8 @@ surv.plot <- function(
     lwd = lwd,
     # Add censoring information with ticks
     mark.time = mark.censoring,
-    pch = c("I"),
+    mark = "/",
+    cex = 1.3,                            # increase mark for censored patients. todo: discuss if value makes sense or if parameter is needed
     # Modify Layout
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
@@ -565,6 +567,7 @@ surv.plot <- function(
         bty = "n",                          # boarder type for legend fixed as "none"
         col = col,
         lty = "solid",                      # line type for legend fixed as "solid"
+        lwd = lwd,
         text.font = legend.text.font,
         title = legend.title,
         cex = legend.cex,
