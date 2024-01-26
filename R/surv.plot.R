@@ -49,6 +49,11 @@
 #'    `seq(starting value, end value, number of increment of the sequence)`.
 #' @param ylim Limits for the y-axis. Specified as
 #'    `seq(starting value, end value, number of increment of the sequence)`.
+#' @param time.unit The time unit of the survival curve.
+#'    Options:
+#'    - `'d'` days
+#'    - `'m'` months
+#'    - `'y'` years
 #' @param show.legend A logical parameter specifying whether to display legend.
 #'    Default: \code{TRUE}.
 #' @param legend.position Position of the legend.
@@ -207,8 +212,9 @@ surv.plot <- function(
     bty = "l",
     lty = c("solid","dotted","dotted"),
     lwd = 3,
-    xlim = seq(from = 0, to = ceiling(max(fit$time))+ceiling(min(fit$time))),
+    xlim,
     ylim = seq(from = 0, to = 1, by = 0.25),
+    time.unit,
     # Legend options
     show.legend = TRUE,
     legend.position = "topright",
@@ -437,6 +443,18 @@ surv.plot <- function(
 
   # 2. SURV.PLOT ####
 
+  # Customize the x ticks if they were not specified in the function call
+  if(missing(xlim)){
+    if(!missing(time.unit)){
+      if(time.unit == "m"){
+        xlim <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)    # choose increases by 6 if time unit is months
+      }
+      }
+    if(missing(xlim)){
+      xlim <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = ceiling(max(fit$time)/6))
+      }
+    }
+
   ## Main Plotting Function ####
   base::plot(
     # Plot the survival curve
@@ -456,7 +474,7 @@ surv.plot <- function(
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
     bty = bty,                            # Remove borders
-    ylim = range(ylim),                   # Set y-axis limits
+    ylim = range(ylim),                   # Set y-axis limits  # todo: better just set it to c(0,1)??
     xlim = range(xlim),                   # Set x-axis limits
     xlab = "",                            # Draw x label
     ylab = "",                            # Draw y label
