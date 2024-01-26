@@ -45,9 +45,9 @@
 #'    Options: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
 #'    `'longdash'`, `'twodash'`.
 #' @param lwd A numeric value specifying the width of the line.
-#' @param xlim Limits for the x-axis. Specified as
+#' @param x.ticks Limits for the x-axis. Specified as
 #'    `seq(starting value, end value, number of increment of the sequence)`.
-#' @param ylim Limits for the y-axis. Specified as
+#' @param y.ticks Limits for the y-axis. Specified as
 #'    `seq(starting value, end value, number of increment of the sequence)`.
 #' @param time.unit The time unit of the survival curve.
 #'    Options:
@@ -212,8 +212,8 @@ surv.plot <- function(
     bty = "l",
     lty = c("solid","dotted","dotted"),
     lwd = 3,
-    xlim,
-    ylim = seq(from = 0, to = 1, by = 0.25),
+    x.ticks,
+    y.ticks = seq(from = 0, to = 1, by = 0.25),
     time.unit,
     # Legend options
     show.legend = TRUE,
@@ -444,14 +444,14 @@ surv.plot <- function(
   # 2. SURV.PLOT ####
 
   # Customize the x ticks if they were not specified in the function call
-  if(missing(xlim)){
+  if(missing(x.ticks)){
     if(!missing(time.unit)){
       if(time.unit == "m"){
-        xlim <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)    # choose increases by 6 if time unit is months
+        x.ticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)    # choose increases by 6 if time unit is months
       }
       }
-    if(missing(xlim)){
-      xlim <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = ceiling(max(fit$time)/6))
+    if(missing(x.ticks)){
+      x.ticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = ceiling(max(fit$time)/6))
       }
     }
 
@@ -474,8 +474,8 @@ surv.plot <- function(
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
     bty = bty,                            # Remove borders
-    ylim = range(ylim),                   # Set y-axis limits  # todo: better just set it to c(0,1)??
-    xlim = range(xlim),                   # Set x-axis limits
+    ylim = range(y.ticks),                   # Set y-axis limits  # todo: better just set it to c(0,1)??
+    xlim = range(x.ticks),                   # Set x-axis limits
     xlab = "",                            # Draw x label
     ylab = "",                            # Draw y label
     cex.lab = cex.lab                     # Label size
@@ -490,8 +490,8 @@ surv.plot <- function(
     side = 1,                             # Specifies the side
     las = 0,                              # Rotate the labels
     mgp = c(3,0.50,0),                    # Adjust the label position (axis title, axis label, axis line)
-    at = xlim,                            # Specify tick mark position
-    labels = xlim,                        # Draw labels
+    at = x.ticks,                         # Specify tick mark position
+    labels = x.ticks,                     # Draw labels
     cex.axis = cex.axis                   # Axis size
   )
 
@@ -500,15 +500,15 @@ surv.plot <- function(
     side = 2,                             # Specifies the side
     las = 1,                              # Rotate the labels
     mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
-    at = ylim,                            # Specify tick mark position
-    labels = ylim,                        # Draw labels
+    at = y.ticks,                         # Specify tick mark position
+    labels = y.ticks,                     # Draw labels
     cex.axis = cex.axis                   # Axis size
   )
 
   ## Draw grid ####
   if (is.logical(grid)) {
     if (grid == TRUE) {
-      grid(nx = length(xlim)-1, ny = length(ylim)-1)
+      grid(nx = length(x.ticks)-1, ny = length(y.ticks)-1)
     }
   } else {
     stop("`gird` expecting TRUE or FALSE as an argument!")
@@ -607,15 +607,15 @@ surv.plot <- function(
     pos = 4
   } else if (segment.annotation == "bottomleft") {
     text_ypos <- 0.03
-    text_xpos <- min(xlim)
+    text_xpos <- min(x.ticks)
     pos <- 4
   } else if (segment.annotation == "left"){
     text_ypos <- 0.53
-    text_xpos <- min(xlim)
+    text_xpos <- min(x.ticks)
     pos <- 4
   } else if (segment.annotation == "right"){
     text_ypos <- 0.53
-    text_xpos <- max(xlim)
+    text_xpos <- max(x.ticks)
     # Position the text to the left of the specified (x,y)
     pos <- 2
   } else if (segment.annotation == "none"){
@@ -790,7 +790,7 @@ surv.plot <- function(
       # Draw horizontal Line
       segments(x0 = 0,
                y0 = segment_y,
-               x1 = max(xlim),
+               x1 = max(x.ticks),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -820,7 +820,7 @@ surv.plot <- function(
       segments(x0 = segment_x,
                y0 = 0,
                x1 = segment_x,
-               y1 = max(ylim),
+               y1 = max(y.ticks),
                col = segment.col,
                lty = segment.lty,
                lwd = segment.lwd)
@@ -874,24 +874,24 @@ surv.plot <- function(
     pos <- 4 #vorher 1
   } else if (stat.position == "bottomleft"){
     stat_ypos <- 0.03
-    stat_xpos <- min(xlim)
+    stat_xpos <- min(x.ticks)
     pos <- 4
   } else if (stat.position == "left"){
     stat_ypos <- 0.53
-    stat_xpos <- min(xlim)
+    stat_xpos <- min(x.ticks)
     pos <- 4
   }else if (stat.position == "right"){
     stat_ypos <- 0.53
-    stat_xpos <- max(xlim)
+    stat_xpos <- max(x.ticks)
     # Position the text to the left of the specified (x,y)
     pos <- 2
   } else if (stat.position == "bottomright"){
     stat_ypos <- 0.03
-    stat_xpos <- max(xlim)
+    stat_xpos <- max(x.ticks)
     pos <- 2
   } else if (stat.position == "topright"){
-    stat_ypos <- max(ylim) * 0.95 # marginal smaller than max(xlim) to ensure that the text is not cut off.
-    stat_xpos <- max(xlim)
+    stat_ypos <- max(y.ticks) * 0.95 # marginal smaller than max(x.ticks) to ensure that the text is not cut off.
+    stat_xpos <- max(x.ticks)
     pos <- 2
   }
 
@@ -1033,13 +1033,13 @@ surv.plot <- function(
       grp <- rep(1:stratum, times=obsStrata)
 
       # Initialize a matrix 'n.risk.matrix' with zeros
-      n.risk.matrix <- matrix(0,nrow = length(xlim), ncol = stratum)
+      n.risk.matrix <- matrix(0,nrow = length(x.ticks), ncol = stratum)
 
-      # Loop over each stratum and each time point defined by 'xlim'
+      # Loop over each stratum and each time point defined by 'x.ticks'
       for (stratum_i in 1:stratum) {
-        for (x in 1:length(xlim)) {
-          # Find the indices where the survival time for the current group is greater than the current 'xlim'
-          index <- which(fit$time[grp == stratum_i] > xlim[x])
+        for (x in 1:length(x.ticks)) {
+          # Find the indices where the survival time for the current group is greater than the current 'x.ticks'
+          index <- which(fit$time[grp == stratum_i] > x.ticks[x])
           # If there are no such indices, set the corresponding element in 'n.risk.matrix' to 0
           if (length(index) == 0)
             n.risk.matrix[x,stratum_i] <- 0
@@ -1067,10 +1067,10 @@ surv.plot <- function(
 
       ## Add vector of risk counts text to the margin ####
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
-            line = rep((1:stratum) + risktable.pos, each = length(xlim)),
-            at = rep(xlim, stratum),
+            line = rep((1:stratum) + risktable.pos, each = length(x.ticks)),
+            at = rep(x.ticks, stratum),
             cex = risktable.cex,
-            col = c(rep(risktable.col, each = length(xlim)))
+            col = c(rep(risktable.col, each = length(x.ticks)))
       )
     }
   } else {
