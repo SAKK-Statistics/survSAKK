@@ -6,8 +6,10 @@
 #' @docType package
 #'
 #' @param fit An object of class `survfit` containing survival data.
-#' @param mark.censoring A logical parameter indicating whether to mark censoring
+#' @param censoring.mark A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
+#' @param censoring.cex A numeric value specifying the size of the marks for
+#'    censored patients. Default: \code{TRUE}.
 #' @param conf.int Controlling the confidence interval on the survival curves.
 #'    When set to \code{TRUE}, the function displays default 95% confidence interval.
 #'    If set to \code{FALSE}, confidence intervals are not displayed.
@@ -45,15 +47,16 @@
 #'    Options: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
 #'    `'longdash'`, `'twodash'`.
 #' @param lwd A numeric value specifying the width of the line.
-#' @param x.ticks Limits for the x-axis. Specified as
-#'    `seq(starting value, end value, number of increment of the sequence)`.
-#' @param y.ticks Limits for the y-axis. Specified as
-#'    `seq(starting value, end value, number of increment of the sequence)`.
+#' @param xticks Ticks for the x-axis. Specified as
+#'    `seq(starting value, end value, number: increment of the sequence)`.
+#' @param yticks Ticks for the y-axis. Specified as
+#'    `seq(starting value, end value, number: increment of the sequence)`.
 #' @param time.unit The time unit of the survival curve.
 #'    Options:
-#'    - `'d'` days
-#'    - `'m'` months
-#'    - `'y'` years
+#'    - `'day'`
+#'    - `'week'`
+#'    - `'month'`
+#'    - `'year'`
 #' @param show.legend A logical parameter specifying whether to display legend.
 #'    Default: \code{TRUE}.
 #' @param legend.position Position of the legend.
@@ -125,6 +128,7 @@
 #' @param risktable.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 3.
 #' @param margin.bottom Specifies the bottom margin of the plotting area in line units.
 #' @param margin.left Specifies the left margin of the plotting area for in line units.
+#' @param margin.top Specifies the top margin of the plotting area for in line units.
 #' @param risktable.title Title of risk table.
 #' @param risktable.title.font Title font of risk table.
 #'    - `1` normal
@@ -188,8 +192,10 @@ surv.plot <- function(
     # Margin area
     margin.bottom = NULL,
     margin.left= NULL,
+    margin.top= NULL,
     # Censoring
-    mark.censoring = TRUE,
+    censoring.mark = TRUE,
+    censoring.cex = 1.3,
     # Confidence Interval options
     conf.int = fit$conf.int,
     conf.band = TRUE,
@@ -204,16 +210,16 @@ surv.plot <- function(
     sub = NULL,
     xlab = "Time",
     ylab = "Estimated survival probability",
-    xlab.pos =1.5,
-    ylab.pos = 2.5,
+    xlab.pos = 1.5,
+    ylab.pos = 3,
     cex = NULL,
     cex.lab = 1,
     cex.axis = 1,
     bty = "l",
-    lty = c("solid","dotted","dotted"),
+    lty = c("solid","dotted","dotted"), # todo: change to conf.band.lty, default leer. und nur 1 argument (curve immer solid).
     lwd = 3,
-    x.ticks,
-    y.ticks = seq(from = 0, to = 1, by = 0.25),
+    xticks,
+    yticks = seq(from = 0, to = 1, by = 0.25),
     time.unit,
     # Legend options
     show.legend = TRUE,
@@ -245,18 +251,18 @@ surv.plot <- function(
     stat.font = 1,
     # risk table options
     risktable = TRUE,
-    risktable.pos = 3,
-    risktable.title = "Number at risk",
+    risktable.pos = 2,
+    risktable.title = "# at risk",
     risktable.title.font = 2,
     risktable.title.col = "black",
-    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15, # todo: not sure if we should better calculate it differently
     risktable.cex = 1,
     risktable.title.cex = 1,
     risktable.name.cex = 1,
     risktable.col = "black",
     risktable.name.font = 1,
     risktable.name.col = "black",
-    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
+    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15 # todo: not sure if we should better calculate it differently
 ){
 
   # 1. PREPARTION ####
@@ -361,7 +367,7 @@ surv.plot <- function(
   data <- as.data.frame(eval(fit$call$data))
 
   ### Recalculate survival object ####
-  # Note: Recalculation is done to be sure that the survival object is correct, # todo: specify what is "correct"
+  # Note: Recalculation is done to be sure that the survival object is correct,
   # and for plotting with the desired CI and transformation.
 
   # recalculate the fit object based on defined `conf.type`
@@ -380,7 +386,7 @@ surv.plot <- function(
       col <- "black"
     } else {
       for (i in 1:stratum){
-        # Colors from brewer.pal(10,"Paired") are used
+        # Colors from RColorBrewer::display.brewer.pal(n = 10, name = "Paired") are used
         col[i] <- c("#1F78B4","#33A02C","#A6CEE3","#B2DF8A","#FB9A99","#E31A1C","#FDBF6F","#CAB2D6","#6A3D9A")[i]
       }
     }
@@ -399,6 +405,7 @@ surv.plot <- function(
   }
 
   ## Define Plotting area with and without risk table. ####
+  # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
   if(is.logical(risktable)){
     if (risktable == TRUE){
       # Bottom margin
@@ -409,13 +416,18 @@ surv.plot <- function(
       }
       # Left margin
       if(is.null(margin.left)){
-        left.lines = 6.5
+        left.lines = 6
       } else {
         left.lines = margin.left
       }
+      if(is.null(margin.top)){
+        top.lines = 3
+      } else {
+        top.lines = margin.top
+      }
       # Set up the plot with margin (ora) and outer margins (oma)
       # c(bottom, left, top, right)
-      par(mar = c(stratum + bottom.lines, stratum + left.lines, 4, 2) + 0.1,
+      par(mar = c(stratum + bottom.lines, left.lines, top.lines, 2) + 0.1,
           # distance (lines) of axis elements from plot region
           # c(axis title, axis label, axis ticks)
           mgp = c(3, 1, 0)
@@ -433,7 +445,12 @@ surv.plot <- function(
       } else {
         left.lines = margin.left
       }
-      par(mar = c(bottom.lines, left.lines, 4, 2) + 0.1,  # c(bottom, left, top, right)
+      if(is.null(margin.top)){
+        top.lines = 3
+      } else {
+        top.lines = margin.top
+      }
+      par(mar = c(bottom.lines, left.lines, top.lines, 2) + 0.1,  # c(bottom, left, top, right)
           mgp = c(3,1,0)              # c(axis title, axis label, axis ticks)
       )
     }
@@ -444,16 +461,19 @@ surv.plot <- function(
   # 2. SURV.PLOT ####
 
   # Customize the x ticks if they were not specified in the function call
-  if(missing(x.ticks)){
+  if(missing(xticks)){
     if(!missing(time.unit)){
-      if(time.unit == "m"){
-        x.ticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)    # choose increases by 6 if time unit is months
+      if(time.unit == "month"){
+        xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)    # choose increases by 6 if time unit is months
+      }
+      if(time.unit == "year"){
+        xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)    # choose increases by 1 if time unit is years
       }
       }
-    if(missing(x.ticks)){
-      x.ticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = ceiling(max(fit$time)/6))
+    if(missing(xticks)){
+      xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6), by = ceiling(max(fit$time)/6))
       }
-    }
+  }
 
   ## Main Plotting Function ####
   base::plot(
@@ -467,15 +487,15 @@ surv.plot <- function(
     lty = lty,
     lwd = lwd,
     # Add censoring information with ticks
-    mark.time = mark.censoring,
+    mark.time = censoring.mark,
     mark = "/",
-    cex = 1.3,                            # increase mark for censored patients. todo: discuss if value makes sense or if parameter is needed
+    cex = censoring.cex,                  # increase mark for censored patients.
     # Modify Layout
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
     bty = bty,                            # Remove borders
-    ylim = range(y.ticks),                   # Set y-axis limits  # todo: better just set it to c(0,1)??
-    xlim = range(x.ticks),                   # Set x-axis limits
+    ylim = range(yticks),                 # Set y-axis limits  # todo: better just set it to c(0,1)??
+    xlim = range(xticks),                 # Set x-axis limits
     xlab = "",                            # Draw x label
     ylab = "",                            # Draw y label
     cex.lab = cex.lab                     # Label size
@@ -490,8 +510,8 @@ surv.plot <- function(
     side = 1,                             # Specifies the side
     las = 0,                              # Rotate the labels
     mgp = c(3,0.50,0),                    # Adjust the label position (axis title, axis label, axis line)
-    at = x.ticks,                         # Specify tick mark position
-    labels = x.ticks,                     # Draw labels
+    at = xticks,                          # Specify tick mark position
+    labels = xticks,                      # Draw labels
     cex.axis = cex.axis                   # Axis size
   )
 
@@ -500,15 +520,15 @@ surv.plot <- function(
     side = 2,                             # Specifies the side
     las = 1,                              # Rotate the labels
     mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
-    at = y.ticks,                         # Specify tick mark position
-    labels = y.ticks,                     # Draw labels
+    at = yticks,                          # Specify tick mark position
+    labels = yticks,                      # Draw labels
     cex.axis = cex.axis                   # Axis size
   )
 
   ## Draw grid ####
   if (is.logical(grid)) {
     if (grid == TRUE) {
-      grid(nx = length(x.ticks)-1, ny = length(y.ticks)-1)
+      grid(nx = length(xticks)-1, ny = length(yticks)-1)
     }
   } else {
     stop("`gird` expecting TRUE or FALSE as an argument!")
@@ -607,15 +627,15 @@ surv.plot <- function(
     pos = 4
   } else if (segment.annotation == "bottomleft") {
     text_ypos <- 0.03
-    text_xpos <- min(x.ticks)
+    text_xpos <- min(xticks)
     pos <- 4
   } else if (segment.annotation == "left"){
     text_ypos <- 0.53
-    text_xpos <- min(x.ticks)
+    text_xpos <- min(xticks)
     pos <- 4
   } else if (segment.annotation == "right"){
     text_ypos <- 0.53
-    text_xpos <- max(x.ticks)
+    text_xpos <- max(xticks)
     # Position the text to the left of the specified (x,y)
     pos <- 2
   } else if (segment.annotation == "none"){
@@ -790,7 +810,7 @@ surv.plot <- function(
       # Draw horizontal Line
       segments(x0 = 0,
                y0 = segment_y,
-               x1 = max(x.ticks),
+               x1 = max(xticks),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -820,7 +840,7 @@ surv.plot <- function(
       segments(x0 = segment_x,
                y0 = 0,
                x1 = segment_x,
-               y1 = max(y.ticks),
+               y1 = max(yticks),
                col = segment.col,
                lty = segment.lty,
                lwd = segment.lwd)
@@ -874,24 +894,24 @@ surv.plot <- function(
     pos <- 4 #vorher 1
   } else if (stat.position == "bottomleft"){
     stat_ypos <- 0.03
-    stat_xpos <- min(x.ticks)
+    stat_xpos <- min(xticks)
     pos <- 4
   } else if (stat.position == "left"){
     stat_ypos <- 0.53
-    stat_xpos <- min(x.ticks)
+    stat_xpos <- min(xticks)
     pos <- 4
   }else if (stat.position == "right"){
     stat_ypos <- 0.53
-    stat_xpos <- max(x.ticks)
+    stat_xpos <- max(xticks)
     # Position the text to the left of the specified (x,y)
     pos <- 2
   } else if (stat.position == "bottomright"){
     stat_ypos <- 0.03
-    stat_xpos <- max(x.ticks)
+    stat_xpos <- max(xticks)
     pos <- 2
   } else if (stat.position == "topright"){
-    stat_ypos <- max(y.ticks) * 0.95 # marginal smaller than max(x.ticks) to ensure that the text is not cut off.
-    stat_xpos <- max(x.ticks)
+    stat_ypos <- max(yticks) * 0.95 # marginal smaller than max(x.ticks) to ensure that the text is not cut off.
+    stat_xpos <- max(xticks)
     pos <- 2
   }
 
@@ -1033,13 +1053,13 @@ surv.plot <- function(
       grp <- rep(1:stratum, times=obsStrata)
 
       # Initialize a matrix 'n.risk.matrix' with zeros
-      n.risk.matrix <- matrix(0,nrow = length(x.ticks), ncol = stratum)
+      n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = stratum)
 
-      # Loop over each stratum and each time point defined by 'x.ticks'
+      # Loop over each stratum and each time point defined by 'xticks'
       for (stratum_i in 1:stratum) {
-        for (x in 1:length(x.ticks)) {
-          # Find the indices where the survival time for the current group is greater than the current 'x.ticks'
-          index <- which(fit$time[grp == stratum_i] > x.ticks[x])
+        for (x in 1:length(xticks)) {
+          # Find the indices where the survival time for the current group is greater than the current 'xticks'
+          index <- which(fit$time[grp == stratum_i] > xticks[x])
           # If there are no such indices, set the corresponding element in 'n.risk.matrix' to 0
           if (length(index) == 0)
             n.risk.matrix[x,stratum_i] <- 0
@@ -1051,7 +1071,7 @@ surv.plot <- function(
 
       ## Add risktable.title text to the outer margin ####
       mtext(risktable.title, side = 1, outer = FALSE,
-            line = risktable.pos, adj = NA, at = risktable.title.position,
+            line = risktable.pos, adj = 0, at = risktable.title.position,
             font = risktable.title.font,
             cex = risktable.title.cex,
             col = risktable.title.col)
@@ -1059,7 +1079,7 @@ surv.plot <- function(
       ## Add legend text to the outer margin for each stratum ####
       for (i in 1:stratum){
         mtext(text = legend.name[i], side = 1, outer = FALSE,
-              line = i+risktable.pos, adj = NA, at = risktable.name.position,
+              line = i+risktable.pos, adj = 0, at = risktable.name.position,
               font = risktable.name.font,
               cex = risktable.name.cex,
               col = risktable.name.col)
@@ -1067,10 +1087,10 @@ surv.plot <- function(
 
       ## Add vector of risk counts text to the margin ####
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
-            line = rep((1:stratum) + risktable.pos, each = length(x.ticks)),
-            at = rep(x.ticks, stratum),
+            line = rep((1:stratum) + risktable.pos, each = length(xticks)),
+            at = rep(xticks, stratum),
             cex = risktable.cex,
-            col = c(rep(risktable.col, each = length(x.ticks)))
+            col = c(rep(risktable.col, each = length(xticks)))
       )
     }
   } else {
