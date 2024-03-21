@@ -6,7 +6,7 @@
 #' @docType package
 #'
 #' @param fit An object of class `survfit` containing survival data.
-#' @param reference.arm The arm which is the reference arm. Optional argument.
+#' @param reference.arm Defines the reference arm (optional).
 #'    Note: Even if the arm is a numeric variable the argument 'reference.arm' needs to be specified as character variable.
 #' @param censoring.mark A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
@@ -515,7 +515,7 @@ surv.plot <- function(
     main = main,
     sub = sub,
     col = col,
-    lty = lty,
+    lty = rep(lty, stratum),
     lwd = lwd,
     # Add censoring information with ticks
     mark.time = censoring.mark,
