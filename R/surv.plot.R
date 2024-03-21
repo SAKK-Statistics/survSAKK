@@ -6,6 +6,7 @@
 #' @docType package
 #'
 #' @param fit An object of class `survfit` containing survival data.
+#' @param reference.arm The arm which is the reference arm. Optional.
 #' @param censoring.mark A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
 #' @param censoring.cex A numeric value specifying the size of the marks for
@@ -51,14 +52,17 @@
 #'    `seq(starting value, end value, number: increment of the sequence)`.
 #' @param yticks Ticks for the y-axis. Specified as
 #'    `seq(starting value, end value, number: increment of the sequence)`.
+#'     It should always be specified as probability. For percent the parameter
+#'     y.unit can be used.
 #' @param time.unit The time unit of the survival curve.
 #'    Options:
 #'    - `'day'`
 #'    - `'week'`
 #'    - `'month'`
 #'    - `'year'`
+#' @param y.unit Unit of the y-axis. Options: `'probability'`, `'percent'`
 #' @param show.legend A logical parameter specifying whether to display legend.
-#'    Default: \code{TRUE}.
+#'    By default the legend is displayed if there is more than one stratum.
 #' @param legend.position Position of the legend.
 #'    Options: `c(x,y)`, `'bottomright'`, `'bottom'`, `'bottomleft'`, '`left`',
 #'    '`topleft'`, `'top'`, `'topright'`, `'right'`, `'center'`.
@@ -100,7 +104,9 @@
 #'    - `3` italic
 #'    - `4` bold-italic
 #' @param segment.annotation Position of the segment annotation.
-#'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'none'`.
+#'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'top'`, `'none'`.
+#' @param segment.annotation.short Display only a short version of the statistic.
+#'    Default: \code{FALSE}.
 #' @param segment.annotation.space Spacing between the text in unit of x-coordinates.
 #' @param stat  Statistics which is displayed in the plot.
 #'    Options:
@@ -137,6 +143,7 @@
 #'    - `4` bold and italic
 #' @param risktable.title.col Colour for the risk table title. Can accept a single value for colour.
 #' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
+#' @param risktable.name.short Renaming the name(s) of the stratum for the risk table only.
 #' @param risktable.cex A numeric value specifying the size of the risk table text size.
 #' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
 #' @param risktable.name.cex A numeric value specifying the size of the rsik table legend name size.
@@ -189,6 +196,7 @@
 
 surv.plot <- function(
     fit,
+    reference.arm,
     # Margin area
     margin.bottom = NULL,
     margin.left= NULL,
@@ -209,7 +217,7 @@ surv.plot <- function(
     main = NULL,
     sub = NULL,
     xlab = "Time",
-    ylab = "Estimated survival probability",
+    ylab = NULL,
     xlab.pos = 1.5,
     ylab.pos = 3,
     cex = NULL,
@@ -221,8 +229,9 @@ surv.plot <- function(
     xticks,
     yticks = seq(from = 0, to = 1, by = 0.25),
     time.unit,
+    y.unit = "probability",
     # Legend options
-    show.legend = TRUE,
+    show.legend,
     legend.position = "topright",
     legend.name = NULL,
     legend.text.font = 1,
@@ -237,9 +246,10 @@ surv.plot <- function(
     segment.annotation = "right",
     segment.col = "#666666",
     segment.annotation.col = col,
-    segment.lty = "dashed",
-    segment.lwd = 1,
+    segment.lty = "dotted",
+    segment.lwd = 1.3,
     segment.cex = 1,
+    segment.annotation.short = FALSE,
     segment.annotation.space = 0.06,
     segment.font = 1,
     segment.main.font = 1,
@@ -256,10 +266,11 @@ surv.plot <- function(
     risktable.title.font = 2,
     risktable.title.col = "black",
     risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15, # todo: not sure if we should better calculate it differently
+    risktable.name.short,
     risktable.cex = 1,
     risktable.title.cex = 1,
     risktable.name.cex = 1,
-    risktable.col = "black",
+    risktable.col,
     risktable.name.font = 1,
     risktable.name.col = "black",
     risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15 # todo: not sure if we should better calculate it differently
@@ -361,21 +372,34 @@ surv.plot <- function(
     }
   }
 
-  ## Extract Information from survfit object ####
-
-  ### Extract data from fit ####
-  data <- as.data.frame(eval(fit$call$data))
 
   ### Recalculate survival object ####
   # Note: Recalculation is done to be sure that the survival object is correct,
-  # and for plotting with the desired CI and transformation.
+  # and for plotting with the desired CI, transformation and reference arm.
 
   # recalculate the fit object based on defined `conf.type`
   fit$call$conf.type <- conf.type
   # recalculate the fit object based on defined `conf.int`
   fit$call$conf.int <- conf.int
+  # recalculate the fit object based on defined 'reference.arm'
+  data <- as.data.frame(eval(fit$call$data))
+  if(!missing(reference.arm)){
+    arm.variable <- as.character(fit$call$formula[3])
+    if(is.character(data[,arm.variable])){
+      data[,arm.variable] <- relevel(as.factor(data[,arm.variable]), ref = reference.arm)
+    }
+    if(is.numeric(data[,arm.variable])){
+      data[,arm.variable] <- relevel(as.factor(data[,arm.variable]), ref = reference.arm)
+    }
+    if(is.factor(data[,arm.variable])){
+      data[,arm.variable] <- relevel((data[,arm.variable]), ref = reference.arm)
+    }
+  }
+  fit$call$data <- data
 
   fit <- eval(fit$call)
+
+
 
   ### Extract level of stratum ####
   stratum <- max(1, length(fit$strata))
@@ -501,6 +525,16 @@ surv.plot <- function(
     cex.lab = cex.lab                     # Label size
   )
 
+  if(is.null(ylab)){
+    if(y.unit == "percent"){
+      ylab <- "Estimated survival (%)"
+      yticks.labels <- yticks*100
+    } else {
+      ylab = "Estimated survival probability"
+      yticks.labels <- yticks
+    }
+  }
+
   # xlab and ylab closer to axis line
   mtext(paste(xlab), side = 1, line = xlab.pos)
   mtext(paste(ylab), side = 2, line = ylab.pos)
@@ -521,7 +555,7 @@ surv.plot <- function(
     las = 1,                              # Rotate the labels
     mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
     at = yticks,                          # Specify tick mark position
-    labels = yticks,                      # Draw labels
+    labels = yticks.labels,               # Draw labels
     cex.axis = cex.axis                   # Axis size
   )
 
@@ -596,15 +630,23 @@ surv.plot <- function(
   }
 
   ## Add legend to plot  ####
+  # By default the legend is displayed if there is more than one stratum
+  if(missing(show.legend)){
+    if(stratum == 1){
+      show.legend <- FALSE
+    } else {
+      show.legend <- TRUE
+    }
+  }
   if (is.logical(show.legend)){
     if(show.legend == TRUE){
       graphics::legend(
         x = legend.position[1],   # the x coordinates to position the legend
-        y = legend.position[2],             # the y coordinates to position the legend
-        legend = legend.name ,            # the text of the legend
-        bty = "n",                          # boarder type for legend fixed as "none"
+        y = legend.position[2],   # the y coordinates to position the legend
+        legend = legend.name ,    # the text of the legend
+        bty = "n",                # boarder type for legend fixed as "none"
         col = col,
-        lty = "solid",                      # line type for legend fixed as "solid"
+        lty = "solid",            # line type for legend fixed as "solid"
         lwd = lwd,
         text.font = legend.text.font,
         title = legend.title,
@@ -626,7 +668,7 @@ surv.plot <- function(
     # Position the text to the right of the specified (x,y)
     pos = 4
   } else if (segment.annotation == "bottomleft") {
-    text_ypos <- 0.03
+    text_ypos <- 0.05 #0.03
     text_xpos <- min(xticks)
     pos <- 4
   } else if (segment.annotation == "left"){
@@ -638,6 +680,15 @@ surv.plot <- function(
     text_xpos <- max(xticks)
     # Position the text to the left of the specified (x,y)
     pos <- 2
+  } else if (segment.annotation == "top"){
+    if(stratum == 2){
+      text_ypos <- 0.85
+    } else {
+      text_ypos <- 0.9
+    }
+
+    text_xpos <- max(xticks)*0.5
+    pos <- 1
   } else if (segment.annotation == "none"){
     text_ypos <- NULL
     text_xpos <- NULL
@@ -647,7 +698,7 @@ surv.plot <- function(
   }
 
   ## Determining the y coordinate for each text ####
-  if (stratum == 1){
+  if (stratum == 1 | segment.annotation.short == T){
     text_ypos[i] <- text_ypos
   } else {
     for (i in stratum-1){
@@ -655,13 +706,85 @@ surv.plot <- function(
     }
   }
 
+
+  ## Prepare the label
+  if (!is.null(segment.quantile) & is.null(segment.timepoint)){
+    # Code for segment at a specific quantile
+    segment_y <- segment.quantile
+    segment_x <- quantile(fit,probs = 1 - segment_y)
+
+    if(!missing(time.unit)){
+      time.unit_temp <- paste0(" ", time.unit, "s")
+    } else {
+      time.unit_temp <- ""
+    }
+
+    if(segment.annotation.short == T & stratum == 2){
+      if(segment.quantile == 0.5) {quantile.temp <- "Median"}
+      else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
+      quantile_label <- paste0(quantile.temp, ": ",
+                               round(segment_x$quantile[1],digits = 1),
+                               " vs ",
+                               round(segment_x$quantile[2],digits = 1),
+                               time.unit_temp)
+      segment.annotation.col <- "black"
+    } else {
+      quantile_label <- paste0(round(segment_x$quantile,digits = 1),
+                               time.unit_temp,
+                               " [",
+                               round(segment_x$lower,digits = 1),
+                               ",",
+                               round(segment_x$upper,digits = 1),
+                               "]")
+    }
+
+  }
+
+
+  if (is.null(segment.quantile) & !is.null(segment.timepoint)){
+    # Code for segment at a specific time point
+    segment_x <- segment.timepoint
+    segment_y <- summary(fit,time = segment_x)
+
+    if(segment.annotation.short == T & stratum == 2){
+      if(missing(time.unit)){time_temp <- paste0("time ", segment.timepoint)}
+      else {time_temp <- paste0(segment.timepoint, " ", time.unit, "s")}
+
+      if(y.unit == "percent"){
+        timepoint_label <- paste0("Survival at ", time_temp, ": ", round(segment_y$surv[1], digits = 3)*100,
+                                  "% vs ",
+                                  round(segment_y$surv[2], digits = 3)*100, "%")
+      } else {
+        timepoint_label <- paste0("Survival at ", time_temp, ": ", round(segment_y$surv[1], digits = 2),
+                                  " vs ",
+                                  round(segment_y$surv[2], digits = 2))
+      }
+      segment.annotation.col <- "black"
+    } else {
+      if(y.unit == "percent"){
+        timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100,
+                                  "% [",
+                                  round(segment_y$lower, digits = 3)*100,
+                                  "%,",
+                                  round(segment_y$upper, digits = 3)*100,
+                                  "%]")
+      } else {
+        timepoint_label <- paste0(round(segment_y$surv, digits = 2),
+                                  " [",
+                                  round(segment_y$lower, digits = 2),
+                                  ",",
+                                  round(segment_y$upper, digits = 2),
+                                  "]")
+      }
+    }
+  }
+
+
+
   ## Main Segment Function ####
   if (segment.type == 3){
     ### Type 3: Drawing vertical and horizontal segments ####
     if (!is.null(segment.quantile) & is.null(segment.timepoint)){
-      # Code for segment at a specific quantile
-      segment_y <- segment.quantile
-      segment_x <- quantile(fit,probs = 1 - segment_y)
 
       # Draw vertical Line
       segments(x0 = segment_x$quantile,
@@ -685,21 +808,13 @@ surv.plot <- function(
       if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
-             labels = paste0(round(segment_x$quantile,digits = 2),
-                             " [",
-                             round(segment_x$lower,digits = 2),
-                             ",",
-                             round(segment_x$upper,digits = 2),
-                             "]"),
+             labels = quantile_label,
              pos = pos,
              col = segment.annotation.col,
              cex = segment.cex,
              font = segment.font)
       }
     } else if (is.null(segment.quantile) & !is.null(segment.timepoint)){
-      # Code for segment at a specific time point
-      segment_x <- segment.timepoint
-      segment_y <- summary(fit,time = segment_x)
 
       # Draw vertical Line
       segments(x0 = segment_x,
@@ -723,12 +838,7 @@ surv.plot <- function(
       if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
-             labels = paste0(round(segment_y$surv, digits = 2),
-                             " [",
-                             round(segment_y$lower, digits = 2),
-                             ",",
-                             round(segment_y$upper, digits = 2),
-                             "]"),
+             labels = timepoint_label,
              pos = pos,
              col = segment.annotation.col,
              cex = segment.cex,
@@ -740,9 +850,6 @@ surv.plot <- function(
   } else if (segment.type == 2){
     ### Type 2: Draw specified segment ####
     if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
-      # Code for segment at a specific quantile
-      segment_y <- segment.quantile
-      segment_x <- quantile(fit,probs = 1 - segment_y)
 
       # Horizontal Line
       segments(x0 = 0,
@@ -757,21 +864,13 @@ surv.plot <- function(
       if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
-             labels = paste0(round(segment_x$quantile,digits = 2),
-                             " [",
-                             round(segment_x$lower,digits = 2),
-                             ",",
-                             round(segment_x$upper,digits = 2),
-                             "]"),
+             labels = quantile_label,
              pos = pos,
              col = segment.annotation.col,
              cex = segment.cex,
              font = segment.font)
       }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
-      # Code for segment at a specific time point
-      segment_x <- segment.timepoint
-      segment_y <- summary(fit,time = segment_x)
 
       # Vertical Line
       segments(x0 = segment_x,
@@ -786,12 +885,7 @@ surv.plot <- function(
       if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
-             labels = paste0(round(segment_y$surv, digits = 2),
-                             " [",
-                             round(segment_y$lower, digits = 2),
-                             ",",
-                             round(segment_y$upper, digits = 2),
-                             "]"),
+             labels = timepoint_label,
              pos = pos,
              col = segment.col,
              cex = segment.cex,
@@ -803,9 +897,6 @@ surv.plot <- function(
   } else if (segment.type == 1){
     ### Type 1: Drawing specified segment (full bandwidth) ####
     if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
-      # Code for segment at a specific quantile
-      segment_y <- segment.quantile
-      segment_x <- quantile(fit,probs = 1 - segment_y)
 
       # Draw horizontal Line
       segments(x0 = 0,
@@ -820,21 +911,13 @@ surv.plot <- function(
       if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
-             labels = paste0(round(segment_x$quantile,digits = 2),
-                             " [",
-                             round(segment_x$lower,digits = 2),
-                             ",",
-                             round(segment_x$upper,digits = 2),
-                             "]"),
+             labels = quantile_label,
              pos = pos,
              col = segment.annotation.col,
              cex = segment.cex,
              font = segment.font)
       }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
-      # Code for segment at a specific time point
-      segment_x <- segment.timepoint
-      segment_y <- summary(fit,time = segment_x)
 
       # Draw vertical Line
       segments(x0 = segment_x,
@@ -849,12 +932,7 @@ surv.plot <- function(
       if (!("none" %in% segment.annotation)){
         text(x = text_xpos,
              y = text_ypos,
-             labels = paste0(round(segment_y$surv, digits = 2),
-                             " [",
-                             round(segment_y$lower, digits = 2),
-                             ",",
-                             round(segment_y$upper, digits = 2),
-                             "]"),
+             labels = timepoint_label,
              pos = pos,
              col = segment.annotation.col,
              cex = segment.cex,
@@ -866,19 +944,24 @@ surv.plot <- function(
   }
 
   ### Draw title for segment text ####
-  if (!("none" %in% segment.annotation)){
+  if (!("none" %in% segment.annotation) & (segment.annotation.short == F | stratum !=2)){
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
     } else if (is.null(segment.main) & !is.null(segment.quantile)){
       if (segment.quantile == 0.5){
-        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [95%]"), pos = pos,
+        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int, "% CI]"), pos = pos,
              col = "black", cex = segment.cex, font = segment.main.font)
-      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [95%]"), pos = pos,
+      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int, "% CI]"), pos = pos, # todo: add option for %!
                    col = "black", cex = segment.cex, font = segment.main.font)
       }
     } else if (is.null(segment.main) & !is.null(segment.timepoint)){
-      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival [95%]"), pos = pos,
+      if(!missing(time.unit)){
+        time_point_temp <- paste0(" at ", segment.timepoint, " ", time.unit, "s")
+      } else {
+        time_point_temp <- paste0(" at time ", segment.timepoint)
+      }
+      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival", time_point_temp, " [", conf.int, "% CI]"), pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
     }
   }
@@ -1077,15 +1160,23 @@ surv.plot <- function(
             col = risktable.title.col)
 
       ## Add legend text to the outer margin for each stratum ####
-      for (i in 1:stratum){
-        mtext(text = legend.name[i], side = 1, outer = FALSE,
-              line = i+risktable.pos, adj = 0, at = risktable.name.position,
-              font = risktable.name.font,
-              cex = risktable.name.cex,
-              col = risktable.name.col)
+      if (missing(risktable.name.short)) {
+        ristkable.name <- legend.name
+      } else {
+        ristkable.name <- risktable.name.short
+      }
+      if(stratum > 1){
+        for (i in 1:stratum){
+          mtext(text = ristkable.name[i], side = 1, outer = FALSE,
+                line = i+risktable.pos, adj = 0, at = risktable.name.position,
+                font = risktable.name.font,
+                cex = risktable.name.cex,
+                col = risktable.name.col)
+        }
       }
 
       ## Add vector of risk counts text to the margin ####
+      if(missing(risktable.col)) { risktable.col <- col}
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
             line = rep((1:stratum) + risktable.pos, each = length(xticks)),
             at = rep(xticks, stratum),
