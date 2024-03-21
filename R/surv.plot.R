@@ -6,7 +6,8 @@
 #' @docType package
 #'
 #' @param fit An object of class `survfit` containing survival data.
-#' @param reference.arm The arm which is the reference arm. Optional.
+#' @param reference.arm The arm which is the reference arm. Optional argument.
+#'    Note: Even if the arm is a numeric variable the argument 'reference.arm' needs to be specified as character variable.
 #' @param censoring.mark A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
 #' @param censoring.cex A numeric value specifying the size of the marks for
@@ -116,13 +117,19 @@
 #'    - `'coxph'`  gives the hazard ratio (HR) and its 95% CI of the conducted
 #'      Cox proportional hazards regression using `coxph{survival}`.
 #'
+#'    - `'coxph_logrank'`  combines the hazard ratio (HR), its 95% CI and the
+#'      logrank test.
+#'
+#'    - `'coxph_logrank_2'`  combines the hazard ratio (HR), its 95% CI and the
+#'      logrank test. A space is inserted between the HR and logrank test.
+#'
 #'    - `'coxmodel'` gives `N` (number of observations), `Events` (Number of events),
 #'      `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval),
 #'      `uprCI` (upper 95% confidence interval) and `Logrank` (p-value corresponding to the Chisquare statistic)
 #'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
 #'    - `'none'` no statistic is displayed (default).
 #' @param stat.position Position where the stat should be displayed.
-#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'topright'`,`'bottomright'`, `'none'`.
+#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'top'`, `'topright'`,`'bottomright'`, `'none'`.
 #' @param stat.col Colour of the `stat` text. Can accept a single value for colour.
 #' @param stat.cex A numeric value specifying the size of the `stat` text size.
 #' @param stat.font The font face.
@@ -666,7 +673,7 @@ surv.plot <- function(
     text_xpos <- segment.annotation[1]
     text_ypos <- segment.annotation[2]
     # Position the text to the right of the specified (x,y)
-    pos = 4
+    pos = 1 # 4
   } else if (segment.annotation == "bottomleft") {
     text_ypos <- 0.05 #0.03
     text_xpos <- min(xticks)
@@ -686,7 +693,6 @@ surv.plot <- function(
     } else {
       text_ypos <- 0.9
     }
-
     text_xpos <- max(xticks)*0.5
     pos <- 1
   } else if (segment.annotation == "none"){
@@ -974,9 +980,13 @@ surv.plot <- function(
     stat_xpos <- stat.position[1]
     stat_ypos <- stat.position[2]
     # Position the text to the right of the specified (x,y)
-    pos <- 4 #vorher 1
+    pos <- 1 #vorher 1
   } else if (stat.position == "bottomleft"){
-    stat_ypos <- 0.03
+    if(stat == "coxph_logrank_2") {
+      stat_ypos <- 0.08
+    } else {
+      stat_ypos <- 0.05
+    }
     stat_xpos <- min(xticks)
     pos <- 4
   } else if (stat.position == "left"){
@@ -989,9 +999,17 @@ surv.plot <- function(
     # Position the text to the left of the specified (x,y)
     pos <- 2
   } else if (stat.position == "bottomright"){
-    stat_ypos <- 0.03
+    if(stat == "coxph_logrank_2") {
+      stat_ypos <- 0.08
+    } else {
+      stat_ypos <- 0.05
+    }
     stat_xpos <- max(xticks)
     pos <- 2
+  } else if (stat.position == "top"){
+    stat_ypos <- max(yticks) * 0.95
+    stat_xpos <- max(xticks) * 0.5
+    pos <- 1
   } else if (stat.position == "topright"){
     stat_ypos <- max(yticks) * 0.95 # marginal smaller than max(x.ticks) to ensure that the text is not cut off.
     stat_xpos <- max(xticks)
@@ -1034,9 +1052,27 @@ surv.plot <- function(
                     round(model$conf.int[,"exp(coef)"], digits = 2),
                     " (95% CI: ",
                     round(model$conf.int[,"lower .95"], digits = 2),
-                    " to ",
+                    " - ",
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")")
+  } else if(stat == "coxph_logrank"){
+    stats <- paste0("HR ",
+                    round(model$conf.int[,"exp(coef)"], digits = 2),
+                    " (95% CI: ",
+                    round(model$conf.int[,"lower .95"], digits = 2),
+                    " - ",
+                    round(model$conf.int[,"upper .95"], digits = 2),
+                    ") logrank test: ",
+                    logrankpval)
+  } else if(stat == "coxph_logrank_2"){
+    stats <- paste0("HR ",
+                    round(model$conf.int[,"exp(coef)"], digits = 2),
+                    " (95% CI: ",
+                    round(model$conf.int[,"lower .95"], digits = 2),
+                    " - ",
+                    round(model$conf.int[,"upper .95"], digits = 2),
+                    ")", "\n", "logrank test: ",
+                    logrankpval)
   } else if(stat == "coxmodel"){
     if(stat.position == "right"){
       # table is always written from the specified x,y pos from left to right
