@@ -37,6 +37,8 @@
 #' @param ylab Y-axis label.
 #' @param xlab.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards.
 #' @param ylab.pos Defines on which MARgin line the ylab is displayed. Starting at 0 counting outwards.
+#' @param xlab.cex A numeric value specifying the size of the X-axis label.
+#' @param ylab.cex A numeric value specifying the size of the y-axis label.
 #' @param cex A numeric value specifying all size of the text elements at once
 #'    (labels, annotations, ...).
 #' @param cex.lab A numeric value specifying the size of the `xlab` and `ylab` text.
@@ -106,8 +108,8 @@
 #'    - `4` bold-italic
 #' @param segment.annotation Position of the segment annotation.
 #'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'top'`, `'none'`.
-#' @param segment.annotation.short Display only a short version of the statistic.
-#'    Default: \code{FALSE}.
+#' @param segment.confint Display the confidence interval.
+#'    Default: \code{TRUE}.
 #' @param segment.annotation.space Spacing between the text in unit of x-coordinates.
 #' @param stat  Statistics which is displayed in the plot.
 #'    Options:
@@ -119,9 +121,6 @@
 #'
 #'    - `'coxph_logrank'`  combines the hazard ratio (HR), its 95% CI and the
 #'      logrank test.
-#'
-#'    - `'coxph_logrank_2'`  combines the hazard ratio (HR), its 95% CI and the
-#'      logrank test. A space is inserted between the HR and logrank test.
 #'
 #'    - `'coxmodel'` gives `N` (number of observations), `Events` (Number of events),
 #'      `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval),
@@ -150,7 +149,7 @@
 #'    - `4` bold and italic
 #' @param risktable.title.col Colour for the risk table title. Can accept a single value for colour.
 #' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
-#' @param risktable.name.short Renaming the name(s) of the stratum for the risk table only.
+#' @param risktable.name Renaming the name(s) of the stratum for the risk table only.
 #' @param risktable.cex A numeric value specifying the size of the risk table text size.
 #' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
 #' @param risktable.name.cex A numeric value specifying the size of the rsik table legend name size.
@@ -223,13 +222,15 @@ surv.plot <- function(
     col = NULL,
     main = NULL,
     sub = NULL,
-    xlab = "Time",
+    xlab = NULL,
     ylab = NULL,
     xlab.pos = 1.5,
     ylab.pos = 3,
+    xlab.cex = NULL,
+    ylab.cex = NULL,
     cex = NULL,
-    cex.lab = 1,
-    cex.axis = 1,
+    cex.lab,  # todo: ändert nichts...
+    cex.axis,
     bty = "l",
     lty = c("solid","dotted","dotted"), # todo: change to conf.band.lty, default leer. und nur 1 argument (curve immer solid).
     lwd = 3,
@@ -242,9 +243,9 @@ surv.plot <- function(
     legend.position = "topright",
     legend.name = NULL,
     legend.text.font = 1,
-    legend.cex = 1,
+    legend.cex,
     legend.title = NULL,
-    legend.title.cex = 1,
+    legend.title.cex,
     # Segment options
     segment.type = 3,
     segment.timepoint = NULL,
@@ -255,8 +256,8 @@ surv.plot <- function(
     segment.annotation.col = col,
     segment.lty = "dotted",
     segment.lwd = 1.3,
-    segment.cex = 1,
-    segment.annotation.short = FALSE,
+    segment.cex,
+    segment.confint = TRUE,
     segment.annotation.space = 0.06,
     segment.font = 1,
     segment.main.font = 1,
@@ -264,7 +265,7 @@ surv.plot <- function(
     stat = "none",
     stat.position = "bottomleft",
     stat.col = "black",
-    stat.cex = 1,
+    stat.cex,
     stat.font = 1,
     # risk table options
     risktable = TRUE,
@@ -273,10 +274,10 @@ surv.plot <- function(
     risktable.title.font = 2,
     risktable.title.col = "black",
     risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15, # todo: not sure if we should better calculate it differently
-    risktable.name.short,
-    risktable.cex = 1,
-    risktable.title.cex = 1,
-    risktable.name.cex = 1,
+    risktable.name,
+    risktable.cex,
+    risktable.title.cex,
+    risktable.name.cex,
     risktable.col,
     risktable.name.font = 1,
     risktable.name.col = "black",
@@ -303,17 +304,18 @@ surv.plot <- function(
 
 
   ## Global font parameter ####
-  if(!is.null(cex)){
-    cex.lab <- cex
-    cex.axis <- cex
-    legend.cex <- cex
-    legend.title.cex <- cex
-    segment.cex <- cex
-    stat.cex <- cex
-    risktable.cex <- cex
-    risktable.title.cex <- cex
-    risktable.name.cex <- cex
-  }
+  if(is.null(cex)){cex <- 1}
+  if(missing(cex.lab)){cex.lab <- cex}
+  if(missing(cex.axis)){cex.axis <- cex}
+  if(missing(legend.cex)){legend.cex <- cex}
+  if(missing(legend.title.cex)){legend.title.cex <- cex}
+  if(missing(segment.cex)){segment.cex <- cex}
+  if(missing(stat.cex)){stat.cex <- cex}
+  if(missing(risktable.cex)){risktable.cex <- cex}
+  if(missing(risktable.title.cex)){risktable.title.cex <- cex}
+  if(missing(risktable.name.cex)){risktable.name.cex <- cex}
+  if(missing(xlab.cex)){xlab.cex <- cex}
+  if(missing(ylab.cex)){ylab.cex <- cex}
 
   ## Display confidence Line ####
   if(is.logical(conf.line)){
@@ -506,6 +508,15 @@ surv.plot <- function(
       }
   }
 
+  # Customize the x-axis label if it was not specified in the function call
+  if(is.null(xlab)){
+    if(!missing(time.unit)){
+      xlab <- paste0("Time (", time.unit, "s)")
+    } else {
+      xlab <- "Time"
+    }
+  }
+
   ## Main Plotting Function ####
   base::plot(
     # Plot the survival curve
@@ -543,8 +554,8 @@ surv.plot <- function(
   }
 
   # xlab and ylab closer to axis line
-  mtext(paste(xlab), side = 1, line = xlab.pos)
-  mtext(paste(ylab), side = 2, line = ylab.pos)
+  mtext(paste(xlab), side = 1, line = xlab.pos, cex = xlab.cex)
+  mtext(paste(ylab), side = 2, line = ylab.pos, cex = ylab.cex)
 
   # Customize the x coordinates
   graphics::axis(
@@ -704,14 +715,9 @@ surv.plot <- function(
   }
 
   ## Determining the y coordinate for each text ####
-  if (stratum == 1 | segment.annotation.short == T){
-    text_ypos[i] <- text_ypos
-  } else {
-    for (i in stratum-1){
-      text_ypos[i+1] <- text_ypos[i]+ segment.annotation.space
-    }
-  }
-
+   if (stratum > 1 & (segment.confint == T)){
+     text_ypos <- rep(text_ypos, stratum) + (stratum-1):0*segment.annotation.space
+   }
 
   ## Prepare the label
   if (!is.null(segment.quantile) & is.null(segment.timepoint)){
@@ -725,7 +731,7 @@ surv.plot <- function(
       time.unit_temp <- ""
     }
 
-    if(segment.annotation.short == T & stratum == 2){
+    if(segment.confint == F & stratum == 2){
       if(segment.quantile == 0.5) {quantile.temp <- "Median"}
       else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
       quantile_label <- paste0(quantile.temp, ": ",
@@ -743,7 +749,6 @@ surv.plot <- function(
                                round(segment_x$upper,digits = 1),
                                "]")
     }
-
   }
 
 
@@ -752,7 +757,7 @@ surv.plot <- function(
     segment_x <- segment.timepoint
     segment_y <- summary(fit,time = segment_x)
 
-    if(segment.annotation.short == T & stratum == 2){
+    if(segment.confint == F & stratum == 2){
       if(missing(time.unit)){time_temp <- paste0("time ", segment.timepoint)}
       else {time_temp <- paste0(segment.timepoint, " ", time.unit, "s")}
 
@@ -766,22 +771,47 @@ surv.plot <- function(
                                   round(segment_y$surv[2], digits = 2))
       }
       segment.annotation.col <- "black"
+
+      # if(y.unit == "percent"){
+      #   timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100, "%")
+      # } else {
+      #   timepoint_label <- paste0(round(segment_y$surv, digits = 2))
+      # }
+
     } else {
+    #   if(y.unit == "percent"){
+    #     timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100,
+    #                               "% [",
+    #                               round(segment_y$lower, digits = 3)*100,
+    #                               "%,",
+    #                               round(segment_y$upper, digits = 3)*100,
+    #                               "%]")
+    #   } else {
+    #     timepoint_label <- paste0(round(segment_y$surv, digits = 2),
+    #                               " [",
+    #                               round(segment_y$lower, digits = 2),
+    #                               ",",
+    #                               round(segment_y$upper, digits = 2),
+    #                               "]")
+    #   }
+
+
       if(y.unit == "percent"){
         timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100,
-                                  "% [",
+                                  "% (95% CI: ",
                                   round(segment_y$lower, digits = 3)*100,
-                                  "%,",
+                                  " to ",
                                   round(segment_y$upper, digits = 3)*100,
-                                  "%]")
+                                  ")")
       } else {
         timepoint_label <- paste0(round(segment_y$surv, digits = 2),
-                                  " [",
+                                  " (95% CI: ",
                                   round(segment_y$lower, digits = 2),
-                                  ",",
+                                  " to ",
                                   round(segment_y$upper, digits = 2),
-                                  "]")
+                                  ")")
       }
+
     }
   }
 
@@ -950,24 +980,26 @@ surv.plot <- function(
   }
 
   ### Draw title for segment text ####
-  if (!("none" %in% segment.annotation) & (segment.annotation.short == F | stratum !=2)){
+  if (!("none" %in% segment.annotation)){
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
-    } else if (is.null(segment.main) & !is.null(segment.quantile)){
+    } else if (is.null(segment.main) & !is.null(segment.quantile) & (segment.confint == T | stratum !=2)){
       if (segment.quantile == 0.5){
         text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int, "% CI]"), pos = pos,
              col = "black", cex = segment.cex, font = segment.main.font)
-      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int, "% CI]"), pos = pos, # todo: add option for %!
+      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int, "% CI]"), pos = pos,
                    col = "black", cex = segment.cex, font = segment.main.font)
       }
-    } else if (is.null(segment.main) & !is.null(segment.timepoint)){
+    } else if (is.null(segment.main) & !is.null(segment.timepoint) & (segment.confint == T | stratum !=2)){
       if(!missing(time.unit)){
         time_point_temp <- paste0(" at ", segment.timepoint, " ", time.unit, "s")
       } else {
         time_point_temp <- paste0(" at time ", segment.timepoint)
       }
-      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival", time_point_temp, " [", conf.int, "% CI]"), pos = pos,
+      # text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival", time_point_temp, " [", conf.int, "% CI]"), pos = pos,
+      #      col = "black", cex = segment.cex, font = segment.main.font)
+      text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival", time_point_temp), pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
     }
   }
@@ -1052,7 +1084,7 @@ surv.plot <- function(
                     round(model$conf.int[,"exp(coef)"], digits = 2),
                     " (95% CI: ",
                     round(model$conf.int[,"lower .95"], digits = 2),
-                    " - ",
+                    " to ",
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")")
   } else if(stat == "coxph_logrank"){
@@ -1060,16 +1092,7 @@ surv.plot <- function(
                     round(model$conf.int[,"exp(coef)"], digits = 2),
                     " (95% CI: ",
                     round(model$conf.int[,"lower .95"], digits = 2),
-                    " - ",
-                    round(model$conf.int[,"upper .95"], digits = 2),
-                    ") logrank test: ",
-                    logrankpval)
-  } else if(stat == "coxph_logrank_2"){
-    stats <- paste0("HR ",
-                    round(model$conf.int[,"exp(coef)"], digits = 2),
-                    " (95% CI: ",
-                    round(model$conf.int[,"lower .95"], digits = 2),
-                    " - ",
+                    " to ",
                     round(model$conf.int[,"upper .95"], digits = 2),
                     ")", "\n", "logrank test: ",
                     logrankpval)
@@ -1196,10 +1219,10 @@ surv.plot <- function(
             col = risktable.title.col)
 
       ## Add legend text to the outer margin for each stratum ####
-      if (missing(risktable.name.short)) {
+      if (missing(risktable.name)) {
         ristkable.name <- legend.name
       } else {
-        ristkable.name <- risktable.name.short
+        ristkable.name <- risktable.name
       }
       if(stratum > 1){
         for (i in 1:stratum){
