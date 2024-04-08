@@ -29,21 +29,6 @@ S1 <- survfit(Surv(pfs_time, pfs) ~ 1, data = data.subgroup, conf.type = "log-lo
 # by treatment line
 S2 <- survfit(Surv(pfs_time, pfs) ~ subgroup_line, data = data.subgroup, conf.type = "log-log")
 
-
-as.character(S2$call$formula[3])
-
-# chose another reference arm
-ds_new <- data.subgroup
-str(ds_new$subgroup_line)
-ds_new$arm <- factor(ds_new$subgroup_line, levels = c("1L", "2L/later line"))
-ds_new$arm <- factor(ds_new$subgroup_line, levels = c("2L/later line", "1L"))
-S4 <- survfit(Surv(pfs_time, pfs) ~ arm, data = ds_new, conf.type = "log-log", conf.int = 0.025)
-coxph(Surv(pfs_time, pfs) ~ arm, data = ds_new)
-
-data <- as.data.frame(eval(S4$call$data))
-names(S4$strata)[2]
-str(S4$strata)
-
 # by survival status
 S3 <- survfit(Surv(pfs_time, pfs) ~ fuss, data = data.subgroup, conf.type = "log-log")
 
@@ -58,6 +43,13 @@ surv.plot(S1, censoring.mark = T, censoring.cex = 2)
 surv.plot(S1, censoring.mark = T)
 surv.plot(S1, yticks = seq(0,1,0.2))
 surv.plot(S1, yticks = seq(0,1,0.2), y.unit = "percent")
+
+surv.plot(S2, legend.title.cex = 3, legend.title = "title")
+surv.plot(S2, segment.cex = 3, segment.timepoint = 8)
+surv.plot(S2, stat = "logrank", stat.cex = 3)
+surv.plot(S2, risktable.name.cex = 3)
+surv.plot(S2, xlab.cex = 3)
+surv.plot(S2, cex = 1.2)
 
 surv.plot(S2)
 surv.plot(S2, time.unit ="month")
@@ -121,6 +113,7 @@ surv.plot(S2, segment.quantile=0.5, segment.annotation = "bottomleft")
 surv.plot(S2, segment.quantile=0.5, segment.annotation = "sddffd")
 surv.plot(S1, segment.quantile=0.5, segment.annotation = "top")
 surv.plot(S2, segment.quantile=0.5, segment.annotation = "top")
+surv.plot(S2, segment.quantile=0.5, segment.annotation = c(10, 0.75))
 
 surv.plot(S2, segment.quantile=0.5, segment.annotation = "top", segment.lwd = 1.2, segment.lty = "dashed")
 surv.plot(S2, segment.quantile=0.5, segment.annotation = "top", segment.lwd = 2, segment.lty = "dashed")
@@ -137,9 +130,10 @@ surv.plot(S1, time.unit = "month")
 
 surv.plot(S1, segment.quantile=0.5, time.unit = "month")
 surv.plot(S2, segment.quantile=0.5, time.unit = "month")
-surv.plot(S2, segment.quantile=0.25, segment.annotation.short = T)
+surv.plot(S2, segment.quantile=0.25, segment.confint = F)
+surv.plot(S2, segment.quantile=0.5, segment.confint = F)
+surv.plot(S2, segment.quantile=0.5, segment.confint = F, time.unit= "month")
 surv.plot(S2, segment.quantile=0.25)
-# choose the reference arm
 surv.plot(S2, segment.quantile=0.25)
 
 
@@ -150,9 +144,10 @@ surv.plot(S2, segment.quantile=0.5, time.unit = "month", segment.lty = "blank")
 
 # short text (median: .. vs ..)
 surv.plot(S2, segment.quantile=0.5)
-surv.plot(S2, segment.quantile=0.5, time.unit = "month", segment.annotation.short = T)
-surv.plot(S2, segment.quantile=0.5, segment.annotation.short = T)
-surv.plot(S2, segment.quantile=0.5, segment.annotation.short = T, segment.lty = "blank", segment.annotation = "bottomleft")
+surv.plot(S2, segment.quantile=0.5, reference.arm = "2L/later line", segment.confint = F)
+surv.plot(S2, segment.quantile=0.5, time.unit = "month", segment.confint = F)
+surv.plot(S2, segment.quantile=0.5, segment.confint = F)
+surv.plot(S2, segment.quantile=0.5, segment.confint = F, segment.lty = "blank", segment.annotation = "bottomleft")
 
 
 # segment.timepoint
@@ -165,26 +160,49 @@ surv.plot(S2, segment.timepoint=8, y.unit = "percent", segment.annotation = "bot
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top")
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top")
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent")
+
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top", time.unit = "month")
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top", time.unit = "month", y.unit = "percent")
 
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top")
-surv.plot(S2, segment.timepoint=8, segment.annotation = "top", segment.annotation.short = T)
-surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.annotation.short = T)
-surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.annotation.short = T, time.unit = "month")
-surv.plot(S1, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.annotation.short = T, time.unit = "month")
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top", segment.confint = F)
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.confint = F)
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.confint = F, time.unit = "month")
+surv.plot(S1, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.confint = F, time.unit = "month")
 
 
 # test statistics ###############################################
 
 surv.plot(S2, stat = "logrank")
 surv.plot(S2, stat = "coxph")
-surv.plot(S2, stat = "coxmodel", stat.position = c(1, 0.1)) # disappears
+surv.plot(S2, stat = "coxph", stat.position = c(8, 0.75))
+surv.plot(S2, stat = "coxph", stat.position = "bottomleft")
+surv.plot(S2, stat = "coxph", stat.position = c(8, 0.75), conf.int = 0.9)
+surv.plot(S2, stat = "coxmodel")
+surv.plot(S2, stat = "coxmodel", stat.position = c(8, 0.75)) # Does not work. Why?
 surv.plot(S2, stat = "coxmodel", stat.position = "left")
+surv.plot(S2, stat = "coxph_logrank")
+surv.plot(S2, stat = "coxph_logrank") # too close tho x-axis
+surv.plot(S2, stat = "coxph_logrank", stat.position = "right")
+surv.plot(S2, stat = "coxph_logrank", stat.position = "topright")
+surv.plot(S2, stat = "coxph_logrank", stat.position = "top")
+surv.plot(S2, stat = "coxph_logrank", stat.position = "bottomleft")
+surv.plot(S2, stat = "coxph_logrank", stat.position = "bottomleft")
+surv.plot(S2, stat = "coxph_logrank", stat.position = "top")
+surv.plot(S2, stat = "coxph", stat.position = "top")
+surv.plot(S2, stat = "coxph_logrank", stat.position = c(12, 0.9))
+
+surv.plot(S2, stat = "coxph_logrank", stat.position = "bottomleft", reference.arm = "2L/later line")
+surv.plot(S2, stat = "coxph", stat.position = "bottomleft")
+surv.plot(S2, stat = "coxph", stat.position = "left")
+surv.plot(S2, stat = "coxph", stat.position = "top")
+surv.plot(S2, stat = "coxph", stat.position = "topright")
+surv.plot(S2, stat = "coxph", stat.position = "bottomright")
 
 
 # test risktable ###############################################
 surv.plot(S2, time.unit ="month")
+surv.plot(S2, time.unit ="month", risktable.col = TRUE)
 surv.plot(S2, time.unit ="month", risktable.col = "black")
 surv.plot(S2, time.unit ="month", risktable.col = c("red", "blue"))
 surv.plot(S2, time.unit ="month", risktable.col = c("red", "blue", "green"))
@@ -193,10 +211,11 @@ surv.plot(S1, time.unit ="month")
 surv.plot(S2, time.unit ="month")
 surv.plot(S1, time.unit ="month", show.legend = TRUE)
 
+
 # test stratum name ###############################################
 surv.plot(S2, time.unit ="month")
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"))
-surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"), risktable.name.short = c("aaa", "bbb"))
+surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"), risktable.name = c("aaa", "bbb"))
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A"))
 surv.plot(S1, time.unit ="month", legend.name = c("Arm A"), show.legend = T)
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"), legend.title = "Treatment arm", risktable.name.short = c("A", "B"))
@@ -213,9 +232,169 @@ surv.plot(S2, conf.type = "log")
 surv.plot(S2, segment.quantile=0.5, time.unit = "month")
 surv.plot(S2, reference.arm = "2L/later line", segment.quantile=0.5, time.unit = "month")
 ds <- data.subgroup
+ds$arm <- 2
+ds$arm[ds$subgroup_line == "1L"] <- 1
+S2b <- survfit(Surv(pfs_time, pfs) ~ arm, data = ds, conf.type = "log-log")
+surv.plot(S2b, segment.quantile=0.5, time.unit = "month")
+surv.plot(S2b, segment.quantile=0.5, time.unit = "month", reference.arm = "2")
+
+
+# test conf.int, does it also change statistics? ###############################################
+
+surv.plot(S2, segment.quantile=0.5)
+surv.plot(S2, segment.quantile=0.5, conf.int = 0.8)
+
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top")
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top", conf.int = 0.8)
+
+
+# test 3 strata ###############################################
+
+ds <- data.subgroup
+str(ds)
+ds$arm <- c(rep("A", 35), rep("B", 35), rep("C", 39))
+S4 <- survfit(Surv(pfs_time, pfs) ~ arm, data = ds, conf.type = "log-log")
+surv.plot(S4)
+surv.plot(S4, segment.quantile=0.5, time.unit = "month")
+surv.plot(S3, segment.quantile=0.5, time.unit = "month")
+surv.plot(S2, segment.quantile=0.5, time.unit = "month")
+surv.plot(S4, segment.timepoint=8, time.unit = "month")
+surv.plot(S4, stat = "logrank", time.unit = "month")
+
+surv.plot(S2, stat = "coxph", time.unit = "month")
+surv.plot(S2, stat = "coxph_logrank", time.unit = "month")
+surv.plot(S4, stat = "coxph", time.unit = "month")
+
+
+# test stat with SAKK 08/15 ###############################################
+
+analysis <- '20220808'
+
+rootdir <- file.path('L:', 'Trials', 'Terminated_trials', 'SAKK_08_15_PROMET', '_Files_after_termination', 'Stat', '2_primary_analysis')
+derived_path <- file.path('data', 'derived', analysis)
+setwd(rootdir)
+
+library(haven)
+library(survival)
+ttp <- read_sas(file.path(derived_path,  "ttp.sas7bdat"))
+ttp_fas <- ttp[ttp$fas==1,]
+
+
+# Estimate Kaplan-Meier curve
+S_0815 <- survfit(Surv(ttp_m, ttp_event) ~ ra2, data = ttp_fas, conf.type="log-log")
+surv.plot(S_0815)
+surv.plot(S_0815, risktable = FALSE)
+surv.plot(S_0815, conf.int = TRUE)
+surv.plot(S_0815, conf.int = FALSE)
+surv.plot(S_0815, conf.int = 0.95)
+surv.plot(S_0815, conf.int = 0.9)
+surv.plot(S_0815, conf.int = 0)
+surv.plot(S_0815, time.unit = "month")
+surv.plot(S_0815, time.unit = "month", stat = "coxph")
+surv.plot(S_0815, time.unit = "month", stat = "logrank")
+surv.plot(S_0815, time.unit = "month", stat = "coxph_logrank")
+surv.plot(S_0815, time.unit = "month", stat = "coxph", stat.conf.int = 0.9)
+surv.plot(S_0815, time.unit = "month", stat = "coxph_logrank", stat.conf.int = 0.9)
+
+S_0815_strata <- survfit(Surv(ttp_m, ttp_event) ~ ra2+strata(gleason, resmarg, psa_ra, adtplyn), data = ttp_fas, conf.type="log-log")
+surv.plot(S_0815, time.unit = "month", stat = "coxph", stat.fit = S_0815_strata)
+surv.plot(S_0815, time.unit = "month", stat = "logrank", stat.fit = S_0815_strata)
+surv.plot(S_0815, time.unit = "month", stat = "coxph_logrank", stat.fit = S_0815_strata)
+surv.plot(S_0815, time.unit = "month", stat = "coxph", stat.conf.int = 0.9, stat.fit = S_0815_strata)
+surv.plot(S_0815, time.unit = "month", stat = "coxph_logrank", stat.conf.int = 0.9, stat.fit = S_0815_strata)
+
+
+surv.plot(S_0815, time.unit = "month", stat = "coxph", stat.fit = S_0815_strata, reference.arm = "RT")
+surv.plot(S_0815, time.unit = "month", stat = "coxph", stat.fit = S_0815_strata, reference.arm = "RT + Metformin")
+
+ttp_fas$ra_new <- as.factor(ttp_fas$ra2)
+S_0815_temp <- survfit(Surv(ttp_m, ttp_event) ~ ra_new, data = ttp_fas, conf.type="log-log")
+S_0815_strata_temp <- survfit(Surv(ttp_m, ttp_event) ~ ra_new+strata(gleason, resmarg, psa_ra, adtplyn), data = ttp_fas, conf.type="log-log")
+surv.plot(S_0815_temp, time.unit = "month", stat = "coxph", stat.fit = S_0815_strata_temp)
+surv.plot(S_0815_temp, time.unit = "month", stat = "coxph", stat.fit = S_0815_strata_temp, reference.arm = "RT")
+surv.plot(S_0815_temp, time.unit = "month", stat = "coxph", stat.fit = S_0815_strata_temp, reference.arm = "RT + Metformin")
+
+
+
+
+# test margins #################################################################
+
+surv.plot(S_0815)
+surv.plot(S_0815, risktable = FALSE)
+surv.plot(S_0815, margin.bottom = 4)
+surv.plot(S_0815, margin.top = 4)
+surv.plot(S_0815, margin.right = 1)
+
+
+
+# test to plot multiple curves in one figure ###############################################
+
+split.screen(c(2,2))
+screen(1)
+surv.plot(S1, margin.left = 4, margin.top = 1)
+screen(2)
+surv.plot(S2, margin.left = 4, margin.top = 1)
+screen(3)
+surv.plot(S3, margin.left = 4, margin.top = 1)
+screen(4)
+surv.plot(S_0815, margin.left = 4, margin.top = 1)
+close.screen(all = TRUE)
+
+
+
+
+# test different parameters ###############################################
+
+surv.plot(S1, lty = c("dotted","dotted","dotted"))
+surv.plot(S1, conf.line = TRUE, lty = c("dotted","dotted","dotted"))
+surv.plot(S1, conf.line = TRUE, lty = c("solid","solid","solid"))
+surv.plot(S1, conf.line = TRUE, lty = c("solid","solid","solid"), lwd = 1, col = "grey")
+surv.plot(S1, conf.line = TRUE, lty = c("solid","dotted","dotted"), lwd = 1, col = "grey")
+surv.plot(S1, conf.int = TRUE)
+
+surv.plot(S1, conf.int = 0.95)
+surv.plot(S1, conf.int = 0.8)
+surv.plot(S1, conf.int = 0)
+
+
+S_temp <- survfit(Surv(pfs_time, pfs) ~ 1, data = data.subgroup, conf.type = "log-log", conf.int = 0.9)
+summary(S_temp)
+surv.plot(S_temp)
+surv.plot(S_temp, conf.int = 0.9)
+
+
+ds <- data.subgroup
 ds$arm <- 1
-ds$arm[ds$subgroup_line == 1L] <- 2
-S2b <- survfit(Surv(pfs_time, pfs) ~ subgroup_line, data = data.subgroup, conf.type = "log-log")
+ds$arm[ds$subgroup_line == "1L"] <- 2
+S_temp <- survfit(Surv(pfs_time, pfs) ~ arm, data = ds, conf.type = "log-log", conf.int = 0.9)
+surv.plot(S_temp)
+surv.plot(S_temp, reference.arm = "2")
+surv.plot(S_temp, reference.arm = 2)
+surv.plot(S_temp, reference.arm = 2, col = c("red", "blue"), conf.band.col = c("lightblue", "grey"))
+surv.plot(S_temp, reference.arm = 2, col = c("red", "blue"), conf.band.col = c("lightblue", "grey"), main = "Test title", sub = "Subtitle")
+
+
+
+base::plot(
+  # Plot the survival curve
+  S_temp,
+  conf.int = 0.95,
+  main = "Title",
+  sub = "Subtitle",
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
