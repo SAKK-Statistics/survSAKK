@@ -381,25 +381,46 @@ base::plot(
   conf.int = 0.95,
   main = "Title",
   sub = "Subtitle",
+  #cex.lab = 3
+)
 
+base::plot(
+  # Plot the survival curve
+  S_temp,
+  main = "test",
+  # Add censoring information with ticks
+  mark.time = T,
+  mark = "/",
+  cex = 3,                  # increase mark for censored patients.
+  # Modify Layout
+  xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
+  xaxt = "n", yaxt = "n",               # Remove the original axes
+  ylim = c(0,1),                        # Set y-axis limits
+  xlim = seq(1,24,by = 6),                 # Set x-axis limits
+  xlab = "Hallo ",                            # Draw x label
+  ylab = "Hallo",                            # Draw y label
+  cex.lab = 4
 )
 
 
+surv.plot(S2)
+surv.plot(S2, xlab.cex = 2)
+surv.plot(S2, bty = "n")
 
 
+surv.plot(S2, segment.quantile = 0.5, segment.col="grey")
+surv.plot(S2, segment.quantile = 0.5, segment.annotation.col = c("blue"))
+surv.plot(S2, segment.quantile = 0.5, segment.lty = c("twodash"), segment.lwd = 3)
+surv.plot(S2, segment.quantile = 0.5, segment.lty = c("dotted"), segment.lwd = 3)
+surv.plot(S2, segment.quantile = 0.5, segment.lty = c("dotted"), segment.lwd = 3, segment.cex = 1.2)
+surv.plot(S2, segment.quantile = 0.5, segment.lty = c("dotted"), segment.lwd = 3, segment.cex = 1.2, segment.annotation = "top")
 
 
+surv.plot(S2, segment.quantile = 0.5, segment.confint = F)
+surv.plot(S1, segment.quantile = 0.5, segment.confint = T)
+surv.plot(S4, segment.quantile = 0.5, segment.confint = F)
+surv.plot(S4, segment.quantile = 0.5, segment.annotation.space = 0.05)
 
 
-
-
-
-
-
-
-
-
-
-
-
+surv.plot(S2, segment.quantile = 0.5, cex.lab = 3)
 
