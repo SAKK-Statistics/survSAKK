@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   echo = TRUE,
-  eval = TRUE,
+  eval = FALSE,
   fig.height = 6,
   fig.width = 7,
   fig.align='center'
@@ -25,7 +25,7 @@ To show some benefit of this function,  *Veterans' Administration Lung Cancer st
 
 # Data
 
-```{r setup, warning=FALSE, eval = TRUE}
+```{r setup, warning=FALSE}
 # Load required libraries
 library(survSAKK)
 library(survival)
@@ -48,7 +48,7 @@ veteran_trt_fit_mt <- survfit(Surv(time / 365.25 * 12, status) ~ trt, data = vet
 
 # Drawing survival plot
 
-```{r baseplot, eval = TRUE}
+```{r baseplot}
 surv.plot(veteran_fit_yr)
 ```
 
@@ -56,26 +56,26 @@ surv.plot(veteran_fit_yr)
 
 ### Renaming of the labels and Axis:
 
-```{r label_1, eval=TRUE}
+```{r label_1}
 surv.plot(veteran_fit_yr,
           # Label
           main = "Veterans' Administration Lung Cancer study", 
           xlab = "Time (year)", 
           legend.name = c("Veteran's"),
           # Limits
-          xlim = seq(0,3,by = 0.5))
+          x.ticks = seq(0,3,by = 0.5))
 ```
 
 ### Global adjustment of font size:
 
-```{r label_2, eval=TRUE}
+```{r label_2}
 surv.plot(veteran_fit_yr,
           # Label
           main = "Veterans' Administration Lung Cancer study", 
           xlab = "Time (year)", 
           legend.name = c("Veteran's"),
           # Limits
-          xlim = seq(0,3,by = 0.5),
+          x.ticks = seq(0,3,by = 0.5),
           cex = 0.8)
 ```
 
@@ -107,7 +107,7 @@ In this section is shown how to highlight a specific quantile or time point as a
 
 Drawing a segment line for the median, which corresponds to 0.5 quantile.
 
-```{r median, eval = TRUE}
+```{r median}
 surv.plot(veteran_fit_yr,
           # Segment Options
           segment.quantile = 0.5)
@@ -117,7 +117,7 @@ surv.plot(veteran_fit_yr,
 
 Drawing a segment line at time point 1.
 
-```{r timepoint, eval = TRUE}
+```{r timepoint}
 surv.plot(veteran_fit_yr,
           # Segment Options
           segment.timepoint = 1)
@@ -125,7 +125,7 @@ surv.plot(veteran_fit_yr,
 
 ## Renaming segment title, font size, and colour
 
-```{r segmentOption1, eval = TRUE}
+```{r segmentOption1}
 surv.plot(veteran_fit_yr,
           # Segment Options
           segment.quantile = 0.5,
@@ -138,7 +138,7 @@ surv.plot(veteran_fit_yr,
 
 ## Add several segment lines, change line type
 
-```{r segmentOption2, eval = TRUE}
+```{r segmentOption2}
 surv.plot(veteran_fit_yr,
           # Segment Options
           segment.timepoint = c(0.5,1,2),
@@ -148,7 +148,7 @@ surv.plot(veteran_fit_yr,
 
 ## Modify segment font
 
-```{r segmentOption4, eval = TRUE}
+```{r segmentOption4}
 surv.plot(veteran_fit_yr,
           # Segment Options
           segment.quantile = 0.5,
@@ -160,7 +160,7 @@ surv.plot(veteran_fit_yr,
 
 ## Modify segment line type, line width and text spacing
 
-```{r segmentOption5, eval = TRUE}
+```{r segmentOption5}
 surv.plot(veteran_fit_yr,
           # Segment Options
           segment.quantile = 0.5,
@@ -194,7 +194,7 @@ gives `N` (number of observations), `Events` (Number of events), `HR`(hazard rat
 
 ## `logrank test`
 
-```{r stat1, eval = TRUE}
+```{r stat1}
 
 surv.plot(veteran_trt_fit_yr,
           stat = "logrank")
@@ -202,7 +202,7 @@ surv.plot(veteran_trt_fit_yr,
 
 ## `coxph`
 
-```{r stat2, eval = TRUE}
+```{r stat2}
 surv.plot(veteran_trt_fit_yr,
           show.legend = FALSE,
           stat = "coxph",
@@ -211,7 +211,7 @@ surv.plot(veteran_trt_fit_yr,
 
 ## `coxmodel`
 
-```{r stat3, eval = TRUE, fig.width=8}
+```{r stat3, fig.width=8}
 surv.plot(veteran_trt_fit_yr,
           cex = 0.8,
           legend.position = "right",
@@ -221,7 +221,7 @@ surv.plot(veteran_trt_fit_yr,
 
 ## Modify stat position, colour, text size, and text font
 
-```{r stat4, eval = TRUE}
+```{r stat4}
 surv.plot(veteran_trt_fit_yr,
           # Segment Options
           stat = "logrank",
@@ -301,7 +301,7 @@ surv.plot(fit = veteran_fit_yr,
           risktable.name.position = -0.7)
 # Plot 2
 surv.plot(fit = veteran_fit_yr, 
-          xlim = seq(0,3,0.5),
+          x.ticks = seq(0,3,0.5),
           cex = 0.8,
           segment.quantile = 0.5,
           segment.annotation = "none",
@@ -309,7 +309,7 @@ surv.plot(fit = veteran_fit_yr,
 # Plot 3
 surv.plot(fit = veteran_fit_yr, 
           col = "darkred",
-          xlim = seq(0,3,0.5),
+          x.ticks = seq(0,3,0.5),
           cex = 0.8,
           legend.name = "Veterans",
           show.legend = FALSE,
@@ -330,7 +330,7 @@ surv.plot(fit = veteran_trt_fit_yr,
           legend.name = c("LT60","OV60"),
           legend.text.font = 2,
           col = c("darkred", "darkblue"),
-          xlim = seq(0,3, by = 0.5),
+          x.ticks = seq(0,3, by = 0.5),
           xlab = ("Time (month)"),
           segment.quantile = 0.5,
           stat = "logrank", 
@@ -343,7 +343,7 @@ surv.plot(fit = veteran_trt_fit_yr,
           cex = 0.75,
           col = c("darkgreen","yellow4"),
           xlab = "Time (year)",
-          xlim = seq(0,3, by = 1),
+          x.ticks = seq(0,3, by = 1),
           legend.position = "bottomleft",
           stat = "coxmodel",
           stat.position = "bottomright")
