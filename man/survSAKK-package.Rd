@@ -2,6 +2,7 @@
 % Please edit documentation in R/survSAKK-package.R
 \docType{package}
 \name{survSAKK-package}
+\alias{survSAKK}
 \alias{survSAKK-package}
 \title{survSAKK: Create publication ready Kaplan-Meier plot}
 \description{

@@ -2,7 +2,6 @@
 % Please edit documentation in R/surv.plot.R
 \docType{package}
 \name{surv.plot}
-\alias{-package}
 \alias{surv.plot}
 \title{A package for publication ready Kaplan-Meier plots.}
 \usage{
