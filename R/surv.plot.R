@@ -34,28 +34,27 @@
 #' @param sub Subtitle of the plot. A subtitle only works if no risk table is displayed.
 #' @param xlab X-axis label.
 #' @param ylab Y-axis label.
-#' @param xlab.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards.
-#' @param ylab.pos Defines on which MARgin line the ylab is displayed. Starting at 0 counting outwards.
+#' @param xlab.pos Defines on which margin line the xlab is displayed. Starting at 0 counting outwards.
+#' @param ylab.pos Defines on which margin line the ylab is displayed. Starting at 0 counting outwards.
 #' @param xlab.cex A numeric value specifying the size of the X-axis label.
 #' @param ylab.cex A numeric value specifying the size of the y-axis label.
 #' @param cex A numeric value specifying all size of the text elements at once
 #'    (labels, annotations, ...).
-#' @param cex.lab A numeric value specifying the size of the `xlab` and `ylab` text.
 #' @param cex.axis A numeric value specifying the size of the `axis` size.
 #' @param bty Determines the style of the box drawn around the plot.
-#'    Options: `'n'`,`'o'`,`'7'`,`'L'`,`'C'`,`'U'`.
+#'    Options: `'n'` (default),`'o'`,`'c'`,`'u'`.
 #' @param lty A vector with three arguments specifying line types for the curve
 #'    and the lower and upper confidence lines
 #'    Options for the three arguments: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
 #'    `'longdash'`, `'twodash'`.
 #'    E.g. `c('solid', 'dashed', 'dashed')`.
 #' @param lwd A numeric value specifying the width of the line.
-#' @param xticks Ticks for the x-axis. Specified as
+#' @param xticks A numeric vector specifying the ticks of the x-axis. Can be specified as
 #'    `seq(starting value, end value, number: increment of the sequence)`.
-#' @param yticks Ticks for the y-axis. Specified as
+#' @param yticks A numeric vector specifying the ticks of the y-axis. Can be specified as
 #'    `seq(starting value, end value, number: increment of the sequence)`.
 #'     It should always be specified as probability. For percent the parameter
-#'     y.unit can be used.
+#'     `y.unit` can be used.
 #' @param time.unit The time unit of the survival curve.
 #'    Options:
 #'    - `'day'`
@@ -64,11 +63,11 @@
 #'    - `'year'`
 #' @param y.unit Unit of the y-axis. Options: `'probability'`, `'percent'`
 #' @param show.legend A logical parameter specifying whether to display legend.
-#'    By default the legend is displayed if there is more than one stratum.
+#'    By default the legend is displayed if there is more than one arm.
 #' @param legend.position Position of the legend.
-#'    Options: `c(x,y)`, `'bottomright'`, `'bottom'`, `'bottomleft'`, '`left`',
+#'    Options: `c(x,y)`, `'bottomright'`, `'bottom'`, `'bottomleft'`, `'left'`,
 #'    '`topleft'`, `'top'`, `'topright'`, `'right'`, `'center'`.
-#' @param legend.name Renaming the name(s) of the stratum.
+#' @param legend.name Renaming the name(s) of the arm.
 #' @param legend.text.font Font style of the legend text.
 #'    - `1` normal
 #'    - `2` bold
@@ -78,14 +77,14 @@
 #' @param legend.title Title of the legend.
 #' @param legend.title.cex A numeric value specifying the size of the legend title.
 #' @param segment.type A numeric value specifying the layout of the segment.
-#'    - `1` (full width)
-#'    - `2` (half width)
-#'    - `3` (vertical and horizontal segment)
+#'    - `1` full width
+#'    - `2` half width
+#'    - `3` vertical and horizontal segment (default)
 #' @param segment.timepoint A single value or a vector of fixed time points
 #'    to be drawn as segment(s).
 #' @param segment.quantile A single value or a vector of fixed quantile to be
 #'    drawn as segment(s) e.g. 0.5 corresponds to median.
-#' @param segment.col Colour for the segment.  Can accept a single value for colour.
+#' @param segment.col Colour for the segment. Can accept a single value for colour.
 #' @param segment.annotation.col Colour(s) for the segment annotation.
 #'    Can accept a single value for colour, or a vector of colour values to
 #'    set colour(s).
@@ -108,6 +107,7 @@
 #' @param segment.annotation Position of the segment annotation.
 #'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'top'`, `'none'`.
 #' @param segment.confint Display the confidence interval.
+#'    `segment.confint` = `FALSE` is only possible if there are two arms.
 #'    Default: \code{TRUE}.
 #' @param segment.annotation.space Spacing between the text in unit of x-coordinates.
 #' @param stat  Statistics which is displayed in the plot.
@@ -115,11 +115,12 @@
 #'    - `'logrank'` gives the p value of the conducted logrank test using `survdiff{survival}`.
 #'      To tests if there is a difference between two or more survival curves.
 #'
-#'    - `'coxph'`  gives the hazard ratio (HR) and its 95% CI of the conducted
-#'      Cox proportional hazards regression using `coxph{survival}`.
+#'    - `'coxph'`  gives the hazard ratio (HR) and its CI (default: 95% CI) of the conducted
+#'      Cox proportional hazards regression using `coxph{survival}`. This option
+#'      only works if there are two arms.
 #'
-#'    - `'coxph_logrank'`  combines the hazard ratio (HR), its 95% CI and the
-#'      logrank test.
+#'    - `'coxph_logrank'`  combines the hazard ratio (HR), its CI (default: 95% CI) and the
+#'      logrank test. This option only works if there are two arms.
 #'
 #'    - `'coxmodel'` gives `N` (number of observations), `Events` (Number of events),
 #'      `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval),
@@ -127,12 +128,14 @@
 #'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
 #'    - `'none'` no statistic is displayed (default).
 #' @param stat.position Position where the stat should be displayed.
-#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'top'`, `'topright'`,`'bottomright'`, `'none'`.
+#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`,
+#'    `'top'`, `'topright'`,`'bottomright'`, `'none'`.
 #' @param stat.conf.int Controlling the confidence interval on the hazard ratio.
 #'    If a numeric value between 0 and 1 is provided, it represents the desired
 #'    coverage for the confidence interval (e.g. 0.9 for 90%).
 #'    Default: 0.95
-#' @param stat.fit An second object of class `survfit` which is used for calculation of statistics. This allows to add stratification factors.
+#' @param stat.fit An second object of class `survfit` which is used for
+#'    calculation of statistics. This allows to add stratification factors.
 #'    Optional parameter.
 #' @param stat.col Colour of the `stat` text. Can accept a single value for colour.
 #' @param stat.cex A numeric value specifying the size of the `stat` text size.
@@ -142,7 +145,7 @@
 #'    - `3` italic
 #'    - `4` bold-italic
 #' @param risktable A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.
-#' @param risktable.pos Defines on which MARgin line the xlab is displayed. Starting at 0 counting outwards. Default at line 3.
+#' @param risktable.pos Defines on which margin line the xlab is displayed. Starting at 0 counting outwards. Default at line 3.
 #' @param margin.bottom Specifies the bottom margin of the plotting area in line units. Default: 5
 #' @param margin.left Specifies the left margin of the plotting area in line units. Default: 6 (with risktable) or 4 (without risktable)
 #' @param margin.top Specifies the top margin of the plotting area in line units. Default: 3
@@ -155,10 +158,10 @@
 #'    - `4` bold and italic
 #' @param risktable.title.col Colour for the risk table title. Can accept a single value for colour.
 #' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
-#' @param risktable.name Renaming the name(s) of the stratum for the risk table only.
+#' @param risktable.name Names of the arms for the risk table only.
 #' @param risktable.cex A numeric value specifying the size of the risk table text size.
 #' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
-#' @param risktable.name.cex A numeric value specifying the size of the rsik table legend name size.
+#' @param risktable.name.cex A numeric value specifying the size of the risk table legend name size.
 #' @param risktable.col Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).
 #'    If it is set to \code{TRUE} then the colors of the curves are used.
 #'    Default: black
@@ -236,9 +239,8 @@ surv.plot <- function(
     xlab.cex = NULL,
     ylab.cex = NULL,
     cex = NULL,
-    cex.lab,  # todo: ändert nichts...
     cex.axis,
-    bty = "l",
+    bty = "n",
     lty = c("solid","dotted","dotted"),
     lwd = 3,
     xticks,
@@ -282,7 +284,7 @@ surv.plot <- function(
     risktable.title = "# at risk",
     risktable.title.font = 2,
     risktable.title.col = "black",
-    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15, # todo: not sure if we should better calculate it differently
+    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
     risktable.name,
     risktable.cex,
     risktable.title.cex,
@@ -290,7 +292,7 @@ surv.plot <- function(
     risktable.col = "black",
     risktable.name.font = 1,
     risktable.name.col = "black",
-    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15 # todo: not sure if we should better calculate it differently
+    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
 
   # 1. PREPARTION ####
@@ -314,7 +316,6 @@ surv.plot <- function(
 
   ## Global font parameter ####
   if(is.null(cex)){cex <- 1}
-  if(missing(cex.lab)){cex.lab <- cex}
   if(missing(cex.axis)){cex.axis <- cex}
   if(missing(legend.cex)){legend.cex <- cex}
   if(missing(legend.title.cex)){legend.title.cex <- cex}
@@ -509,11 +510,10 @@ surv.plot <- function(
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
     bty = bty,                            # Remove borders
-    ylim = range(yticks),                 # Set y-axis limits  # todo: better just set it to c(0,1)??
+    ylim = c(0,1),                        # Set y-axis limits
     xlim = range(xticks),                 # Set x-axis limits
     xlab = "",                            # Draw x label
-    ylab = "",                            # Draw y label
-    cex.lab = cex.lab                     # Label size
+    ylab = ""                             # Draw y label
   )
 
   if(is.null(ylab)){
