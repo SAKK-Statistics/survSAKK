@@ -1,12 +1,22 @@
-#' A package for publication ready Kaplan-Meier plots.
+#' A package for publication ready Kaplan-Meier plots
 #'
-#' Plot Kaplan-Meier plot using the results from `survival::survfit()`.
+#' The survSAKK R package provides the function [`surv.plot()`] to perform Kaplan-Meier survival analysis.
+#' This package is designed to be user-friendly and efficient, offering robust tool for
+#' analysing survival data and generating Kaplan-Meier plot using the results
+#' from [`survival::survfit()`].
 #'
 #'
 #' @docType package
 #'
-#' @param fit An object of class `survfit` containing survival data.
-#' @param reference.arm String defining the reference arm (optional).
+#' @param fit An object of class [survival::survfit] containing survival data.
+#' @param reference.arm String defining the reference arm (optional)
+#' @param time.unit The time unit of the survival curve.
+#'    Options:
+#'    - `'day'`
+#'    - `'week'`
+#'    - `'month'`
+#'    - `'year'`
+#' @param y.unit Unit of the y-axis. Options: `'probability'`, `'percent'`
 #' @param censoring.mark A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
 #' @param censoring.cex A numeric value specifying the size of the marks for
@@ -55,13 +65,6 @@
 #'    `seq(starting value, end value, number: increment of the sequence)`.
 #'     It should always be specified as probability. For percent the parameter
 #'     `y.unit` can be used.
-#' @param time.unit The time unit of the survival curve.
-#'    Options:
-#'    - `'day'`
-#'    - `'week'`
-#'    - `'month'`
-#'    - `'year'`
-#' @param y.unit Unit of the y-axis. Options: `'probability'`, `'percent'`
 #' @param show.legend A logical parameter specifying whether to display legend.
 #'    By default the legend is displayed if there is more than one arm.
 #' @param legend.position Position of the legend.
@@ -172,46 +175,43 @@
 #'    - `4` bold and italic
 #' @param risktable.name.col Colour for the risk table name. Can accept a single value for colour.
 #' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
-#'
 #' @return Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
 #'
+#' @export
+#'
+#' @seealso
+#'  - https://sakk-statistics.github.io/survSAKK/
+#'  - [survival::survfit()] which this function wraps.
+#'
 #' @examples
-#' # Load Libraray
 #'  require(survival)
 #'  require(survSAKK)
 #'
-#' # Load Data
-#'  veteran$time_yr <- veteran$time/365.25
-#'  veteran$time_mt <- veteran$time_yr*12
-#'
 #' # Create survival object
-#'  veteran_fit_yr <- survfit(Surv(time / 365.25, status) ~ 1, data = veteran)
 #'  veteran_trt_fit_mt <- survfit(Surv(time / 365.12 * 12, status) ~ trt, data = veteran)
 #'
 #' # Generate survival plots
-#'  survSAKK::surv.plot(fit = veteran_fit_yr)
-#'
-#'  survSAKK::surv.plot(
-#'  fit = veteran_trt_fit_mt,
-#'  col = c("#5ab4ac","#d8b365"),
-#'  cex = 0.8,
-#'  segment.quantile = 0.5,
-#'  stat = "coxph",
-#'  risktable.col = c("#5ab4ac","#d8b365"))
+#'  surv.plot(fit = veteran_trt_fit_mt,
+#'    time.unit = "month",
+#'    reference.arm = 1,
+#'    legend.name =  c("Standard", "Test"))
 #'
 #' @references
 #' \code{vignette("surv.plot", package = "survSAKK")}
+#'
+#' @author Vithersan Somasundaram and Katrin Gysel
 #'
 #' @import survival
 #' @import graphics
 #' @import stats
 #' @importFrom grDevices adjustcolor
 #'
-#' @export
 
 surv.plot <- function(
     fit,
     reference.arm,
+    time.unit,
+    y.unit = "probability",
     # Margin area
     margin.bottom = 5,
     margin.left= NULL,
@@ -245,8 +245,6 @@ surv.plot <- function(
     lwd = 3,
     xticks,
     yticks = seq(from = 0, to = 1, by = 0.25),
-    time.unit,
-    y.unit = "probability",
     # Legend options
     show.legend,
     legend.position = "topright",

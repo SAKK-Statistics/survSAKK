@@ -3,11 +3,13 @@
 \docType{package}
 \name{surv.plot}
 \alias{surv.plot}
-\title{A package for publication ready Kaplan-Meier plots.}
+\title{A package for publication ready Kaplan-Meier plots}
 \usage{
 surv.plot(
   fit,
   reference.arm,
+  time.unit,
+  y.unit = "probability",
   margin.bottom = 5,
   margin.left = NULL,
   margin.top = 3,
@@ -37,8 +39,6 @@ surv.plot(
   lwd = 3,
   xticks,
   yticks = seq(from = 0, to = 1, by = 0.25),
-  time.unit,
-  y.unit = "probability",
   show.legend,
   legend.position = "topright",
   legend.name = NULL,
@@ -84,9 +84,20 @@ surv.plot(
 )
 }
 \arguments{
-\item{fit}{An object of class \code{survfit} containing survival data.}
+\item{fit}{An object of class \link[survival:survfit]{survival::survfit} containing survival data.}
 
-\item{reference.arm}{String defining the reference arm (optional).}
+\item{reference.arm}{String defining the reference arm (optional)}
+
+\item{time.unit}{The time unit of the survival curve.
+Options:
+\itemize{
+\item \code{'day'}
+\item \code{'week'}
+\item \code{'month'}
+\item \code{'year'}
+}}
+
+\item{y.unit}{Unit of the y-axis. Options: \code{'probability'}, \code{'percent'}}
 
 \item{margin.bottom}{Specifies the bottom margin of the plotting area in line units. Default: 5}
 
@@ -168,17 +179,6 @@ E.g. \code{c('solid', 'dashed', 'dashed')}.}
 \verb{seq(starting value, end value, number: increment of the sequence)}.
 It should always be specified as probability. For percent the parameter
 \code{y.unit} can be used.}
-
-\item{time.unit}{The time unit of the survival curve.
-Options:
-\itemize{
-\item \code{'day'}
-\item \code{'week'}
-\item \code{'month'}
-\item \code{'year'}
-}}
-
-\item{y.unit}{Unit of the y-axis. Options: \code{'probability'}, \code{'percent'}}
 
 \item{show.legend}{A logical parameter specifying whether to display legend.
 By default the legend is displayed if there is more than one arm.}
@@ -345,33 +345,34 @@ Default: black}
 Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
 }
 \description{
-Plot Kaplan-Meier plot using the results from \code{survival::survfit()}.
+The survSAKK R package provides the function \code{\link[=surv.plot]{surv.plot()}} to perform Kaplan-Meier survival analysis.
+This package is designed to be user-friendly and efficient, offering robust tool for
+analysing survival data and generating Kaplan-Meier plot using the results
+from \code{\link[survival:survfit]{survival::survfit()}}.
 }
 \examples{
-# Load Libraray
  require(survival)
  require(survSAKK)
 
-# Load Data
- veteran$time_yr <- veteran$time/365.25
- veteran$time_mt <- veteran$time_yr*12
-
 # Create survival object
- veteran_fit_yr <- survfit(Surv(time / 365.25, status) ~ 1, data = veteran)
  veteran_trt_fit_mt <- survfit(Surv(time / 365.12 * 12, status) ~ trt, data = veteran)
 
 # Generate survival plots
- survSAKK::surv.plot(fit = veteran_fit_yr)
-
- survSAKK::surv.plot(
- fit = veteran_trt_fit_mt,
- col = c("#5ab4ac","#d8b365"),
- cex = 0.8,
- segment.quantile = 0.5,
- stat = "coxph",
- risktable.col = c("#5ab4ac","#d8b365"))
+ surv.plot(fit = veteran_trt_fit_mt,
+   time.unit = "month",
+   reference.arm = 1,
+   legend.name =  c("Standard", "Test"))
 
 }
 \references{
 \code{vignette("surv.plot", package = "survSAKK")}
+}
+\seealso{
+\itemize{
+\item https://sakk-statistics.github.io/survSAKK/
+\item \code{\link[survival:survfit]{survival::survfit()}} which this function wraps.
+}
+}
+\author{
+Vithersan Somasundaram and Katrin Gysel
 }
