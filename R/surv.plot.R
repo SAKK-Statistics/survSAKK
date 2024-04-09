@@ -1,15 +1,20 @@
-#' A package for publication ready Kaplan-Meier plots
+#' Publication Ready Kaplan-Meier Estimator
 #'
+#' @description
+#' `surv.plot(fit, ...)` returns Kaplan-Meier survival times curves.
+#'
+#' @details
 #' The survSAKK R package provides the function [`surv.plot()`] to perform Kaplan-Meier survival analysis.
 #' This package is designed to be user-friendly and efficient, offering robust tool for
-#' analysing survival data and generating Kaplan-Meier plot using the results
+#' analysing survival data and generating Kaplan-Meier curves using the results
 #' from [`survival::survfit()`].
 #'
+#' For a comprehensive manual visit: \url{https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html}
 #'
 #' @docType package
 #'
 #' @param fit An object of class [survival::survfit] containing survival data.
-#' @param reference.arm String defining the reference arm (optional)
+#' @param reference.arm A string defining the reference arm.
 #' @param time.unit The time unit of the survival curve.
 #'    Options:
 #'    - `'day'`
@@ -175,13 +180,12 @@
 #'    - `4` bold and italic
 #' @param risktable.name.col Colour for the risk table name. Can accept a single value for colour.
 #' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
-#' @return Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
+#'
+#' @return Publication-Ready Kaplan-Meier plot of the input \code{fit}, incorporating various statistics and layout option(s).
 #'
 #' @export
 #'
-#' @seealso
-#'  - https://sakk-statistics.github.io/survSAKK/
-#'  - [survival::survfit()] which this function wraps.
+#' @usage NULL
 #'
 #' @examples
 #'  require(survival)
@@ -196,8 +200,12 @@
 #'    reference.arm = 1,
 #'    legend.name =  c("Standard", "Test"))
 #'
+#' @seealso
+#'  - [survival::survfit()] which this function wraps.
 #' @references
-#' \code{vignette("surv.plot", package = "survSAKK")}
+#' Therneau T (2024). A Package for Survival Analysis in R. R package version 3.5-8, \url{https://CRAN.R-project.org/package=survival}.
+#'
+#' Terry M. Therneau, Patricia M. Grambsch (2000). Modeling Survival Data: Extending the Cox Model. Springer, New York. ISBN 0-387-98784-3.
 #'
 #' @author Vithersan Somasundaram and Katrin Gysel
 #'

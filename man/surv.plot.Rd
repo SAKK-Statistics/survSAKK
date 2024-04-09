@@ -3,90 +3,11 @@
 \docType{package}
 \name{surv.plot}
 \alias{surv.plot}
-\title{A package for publication ready Kaplan-Meier plots}
-\usage{
-surv.plot(
-  fit,
-  reference.arm,
-  time.unit,
-  y.unit = "probability",
-  margin.bottom = 5,
-  margin.left = NULL,
-  margin.top = 3,
-  margin.right = 2,
-  censoring.mark = TRUE,
-  censoring.cex = 1.3,
-  conf.int = 0.95,
-  conf.band = TRUE,
-  conf.line = FALSE,
-  conf.band.col = col,
-  conf.band.transparent = 0.25,
-  conf.type = "log-log",
-  grid = FALSE,
-  col = NULL,
-  main = NULL,
-  sub = NULL,
-  xlab = NULL,
-  ylab = NULL,
-  xlab.pos = 1.5,
-  ylab.pos = 3,
-  xlab.cex = NULL,
-  ylab.cex = NULL,
-  cex = NULL,
-  cex.axis,
-  bty = "n",
-  lty = c("solid", "dotted", "dotted"),
-  lwd = 3,
-  xticks,
-  yticks = seq(from = 0, to = 1, by = 0.25),
-  show.legend,
-  legend.position = "topright",
-  legend.name = NULL,
-  legend.text.font = 1,
-  legend.cex,
-  legend.title = NULL,
-  legend.title.cex,
-  segment.type = 3,
-  segment.timepoint = NULL,
-  segment.quantile = NULL,
-  segment.main = NULL,
-  segment.annotation = "right",
-  segment.col = "#666666",
-  segment.annotation.col = col,
-  segment.lty = "dotted",
-  segment.lwd = 1.3,
-  segment.cex,
-  segment.confint = TRUE,
-  segment.annotation.space = 0.06,
-  segment.font = 1,
-  segment.main.font = 1,
-  stat = "none",
-  stat.position = "bottomleft",
-  stat.conf.int = 0.95,
-  stat.fit,
-  stat.col = "black",
-  stat.cex,
-  stat.font = 1,
-  risktable = TRUE,
-  risktable.pos = 2,
-  risktable.title = "# at risk",
-  risktable.title.font = 2,
-  risktable.title.col = "black",
-  risktable.title.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.15,
-  risktable.name,
-  risktable.cex,
-  risktable.title.cex,
-  risktable.name.cex,
-  risktable.col = "black",
-  risktable.name.font = 1,
-  risktable.name.col = "black",
-  risktable.name.position = par("usr")[1] - (par("usr")[2] - par("usr")[1]) * 0.15
-)
-}
+\title{Publication Ready Kaplan-Meier Estimator}
 \arguments{
 \item{fit}{An object of class \link[survival:survfit]{survival::survfit} containing survival data.}
 
-\item{reference.arm}{String defining the reference arm (optional)}
+\item{reference.arm}{A string defining the reference arm.}
 
 \item{time.unit}{The time unit of the survival curve.
 Options:
@@ -342,13 +263,18 @@ Default: black}
 \item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the x-axis.}
 }
 \value{
-Publication-Ready Kaplan-Meier Plot incorporating various statistics and layout customisation options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
+Publication-Ready Kaplan-Meier plot of the input \code{fit}, incorporating various statistics and layout option(s).
 }
 \description{
+\code{surv.plot(fit, ...)} returns Kaplan-Meier survival times curves.
+}
+\details{
 The survSAKK R package provides the function \code{\link[=surv.plot]{surv.plot()}} to perform Kaplan-Meier survival analysis.
 This package is designed to be user-friendly and efficient, offering robust tool for
-analysing survival data and generating Kaplan-Meier plot using the results
+analysing survival data and generating Kaplan-Meier curves using the results
 from \code{\link[survival:survfit]{survival::survfit()}}.
+
+For a comprehensive manual visit: \url{https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html}
 }
 \examples{
  require(survival)
@@ -365,11 +291,12 @@ from \code{\link[survival:survfit]{survival::survfit()}}.
 
 }
 \references{
-\code{vignette("surv.plot", package = "survSAKK")}
+Therneau T (2024). A Package for Survival Analysis in R. R package version 3.5-8, \url{https://CRAN.R-project.org/package=survival}.
+
+Terry M. Therneau, Patricia M. Grambsch (2000). Modeling Survival Data: Extending the Cox Model. Springer, New York. ISBN 0-387-98784-3.
 }
 \seealso{
 \itemize{
-\item https://sakk-statistics.github.io/survSAKK/
 \item \code{\link[survival:survfit]{survival::survfit()}} which this function wraps.
 }
 }
