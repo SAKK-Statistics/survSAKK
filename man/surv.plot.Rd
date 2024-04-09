@@ -9,16 +9,9 @@
 
 \item{reference.arm}{A string that specifies the reference arm for comparison.}
 
-\item{time.unit}{The time unit of the survival curve.
-Options:
-\itemize{
-\item \code{'day'}
-\item \code{'week'}
-\item \code{'month'}
-\item \code{'year'}
-}}
+\item{time.unit}{The unit of the survival time (option: \code{"day"}, \code{"week"}, \code{"month"},\code{"year"}).}
 
-\item{y.unit}{Unit of the y-axis. Options: \code{'probability'}, \code{'percent'}}
+\item{y.unit}{Unit of the y-axis (option: \code{"probability"}, \code{"percent"}).}
 
 \item{margin.bottom}{Specifies the bottom margin of the plotting area in line units. Default: 5}
 
@@ -101,7 +94,7 @@ E.g. \code{c('solid', 'dashed', 'dashed')}.}
 \item{lwd}{A numeric value specifying the width of the line.
 \code{y.unit} can be used.}
 
-\item{show.legend}{A logical parameter specifying whether to display legend.
+\item{legend}{A logical parameter specifying whether to display legend.
 By default the legend is displayed if there is more than one arm.}
 
 \item{legend.position}{Position of the legend.

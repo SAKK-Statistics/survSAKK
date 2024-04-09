@@ -15,13 +15,8 @@
 #'
 #' @param fit An object of class [survival::survfit] containing survival data.
 #' @param reference.arm A string that specifies the reference arm for comparison.
-#' @param time.unit The time unit of the survival curve.
-#'    Options:
-#'    - `'day'`
-#'    - `'week'`
-#'    - `'month'`
-#'    - `'year'`
-#' @param y.unit Unit of the y-axis. Options: `'probability'`, `'percent'`
+#' @param time.unit The unit of the survival time (option: `"day"`, `"week"`, `"month"`,`"year"`).
+#' @param y.unit Unit of the y-axis (option: `"probability"`, `"percent"`).
 #' @param censoring.mark A logical parameter indicating whether to mark censoring
 #'    events on the survival curves. Default: \code{TRUE}.
 #' @param censoring.cex A numeric value specifying the size of the marks for
@@ -70,7 +65,7 @@
 #'    E.g. `c('solid', 'dashed', 'dashed')`.
 #' @param lwd A numeric value specifying the width of the line.
 #'     `y.unit` can be used.
-#' @param show.legend A logical parameter specifying whether to display legend.
+#' @param legend A logical parameter specifying whether to display legend.
 #'    By default the legend is displayed if there is more than one arm.
 #' @param legend.position Position of the legend.
 #'    Options: `c(x,y)`, `'bottomright'`, `'bottom'`, `'bottomleft'`, `'left'`,
@@ -254,7 +249,7 @@ surv.plot <- function(
     lty = c("solid","dotted","dotted"),
     lwd = 3,
     # Legend options
-    show.legend,
+    legend,
     legend.position = "topright",
     legend.name = NULL,
     legend.text.font = 1,
@@ -301,7 +296,7 @@ surv.plot <- function(
     risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
   #----------------------------------------------------------------------------#
-  # 1. PREPARTION ####
+  # 1. Preparation ####
   #----------------------------------------------------------------------------#
 
   #----------------------------------------------------------------------------#
@@ -465,7 +460,7 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.9 Define Plotting area with and without risk table. ####
+  ## 1.9 Plotting area with and without risktable ####
   #----------------------------------------------------------------------------#
   # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
 
@@ -496,40 +491,61 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
+  ## 1.10 Customization of xticks ####
+  #----------------------------------------------------------------------------#
+  # Customize the xticks if not manually specified
+
+  # 11.04.2024
+  # (Code von KGY)
+  # if(missing(xticks)){
+  #   if(!missing(time.unit)){
+  #     if(time.unit == "month"){
+  #       # month: xticks by 6 unit
+  #       xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
+  #     }
+  #     if(time.unit == "year"){
+  #       # year: xticks by 1 unit
+  #       xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
+  #     }
+  #     }
+  #   if(missing(xticks)){
+  #     xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6), by = ceiling(max(fit$time)/6))
+  #     }
+  # }
+
+  # VSO (Entscheiden am: 11.04.2024):
+  if(missing(xticks)){
+    if(!missing(time.unit)){
+      # Check if proper option is provided
+      if (!(time.unit %in% c("day", "week", "month", "year"))) {
+        stop("Undefined parameter provided for argument: `time.unit`")
+      } else {
+        if(time.unit == "month"){
+          # month: xticks by 6 unit
+          xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
+        }
+        if(time.unit == "year"){
+          # year: xticks by 1 unit
+          xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
+        }
+        if(time.unit %in% c("day", "week")){
+          xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
+                        by = ceiling(max(fit$time)/6))
+        }
+      }
+    } else {
+      xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
+                    by = ceiling(max(fit$time)/6))
+    }
+  }
+
+  #----------------------------------------------------------------------------#
   # 2. survPlot ####
   #----------------------------------------------------------------------------#
 
   #----------------------------------------------------------------------------#
-  ## 2.1 Customization of xticks and xlab ####
+  ## 2.1 Plotting Function (main) ####
   #----------------------------------------------------------------------------#
-  # Customize the xticks if not manually specified
-
-  if(missing(xticks)){
-    if(!missing(time.unit)){
-      if(time.unit == "month"){
-        # month: xticks by 6 unit
-        xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
-      }
-      if(time.unit == "year"){
-        # year: xticks by 1 unit
-        xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
-      }
-      }
-    if(missing(xticks)){
-      xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6), by = ceiling(max(fit$time)/6))
-      }
-  }
-
-  # Customize the x-axis label if it was not specified in the function call
-  if(is.null(xlab)){
-    if(!missing(time.unit)){
-      xlab <- paste0("Time (", time.unit, "s)")
-    } else {
-      xlab <- "Time"
-    }
-  }
-
-  ## Main Plotting Function ####
   base::plot(
     # Plot the survival curve
     fit,
@@ -554,6 +570,20 @@ surv.plot <- function(
     ylab = ""                             # Draw y label
   )
 
+  #----------------------------------------------------------------------------#
+  ## 2.2 Customization of xlab and ylab ####
+  #----------------------------------------------------------------------------#
+
+  # Customize the xlab if not manually specified
+  if(is.null(xlab)){
+    if(!missing(time.unit)){
+      xlab <- paste0("Time (", time.unit, "s)")
+    } else {
+      xlab <- "Time"
+    }
+  }
+
+  # Customize the ylab if not manually specified
   if(is.null(ylab)){
     if(y.unit == "percent"){
       ylab <- "Estimated survival (%)"
@@ -564,9 +594,14 @@ surv.plot <- function(
     }
   }
 
-  # xlab and ylab closer to axis line
+  # xlab closer to axis line
   mtext(paste(xlab), side = 1, line = xlab.pos, cex = xlab.cex)
+  # ylab closer to axis line
   mtext(paste(ylab), side = 2, line = ylab.pos, cex = ylab.cex)
+
+  #----------------------------------------------------------------------------#
+  ## 2.3 Customization of coordinates ####
+  #----------------------------------------------------------------------------#
 
   # Customize the x coordinates
   graphics::axis(
@@ -587,8 +622,10 @@ surv.plot <- function(
     labels = yticks.labels,               # Draw labels
     cex.axis = axis.cex                   # Axis size
   )
+  #----------------------------------------------------------------------------#
+  ## 2.4 Draw grid ####
+  #----------------------------------------------------------------------------#
 
-  ## Draw grid ####
   if (is.logical(grid)) {
     if (grid == TRUE) {
       grid(nx = length(xticks)-1, ny = length(yticks)-1)
@@ -597,7 +634,10 @@ surv.plot <- function(
     stop("`gird` expecting TRUE or FALSE as an argument!")
   }
 
-  ## Add confidence band ####
+  #----------------------------------------------------------------------------#
+  ## 2.5 Confidence band ####
+  #----------------------------------------------------------------------------#
+
   if(conf.band == TRUE){
     mapping <- 0
     # Loop for drawing polygons
@@ -658,17 +698,21 @@ surv.plot <- function(
     }
   }
 
-  ## Add legend to plot  ####
-  # By default the legend is displayed if there is more than one stratum
-  if(missing(show.legend)){
+  #----------------------------------------------------------------------------#
+  ## 2.6 Add legend to plot  ####
+  #----------------------------------------------------------------------------#
+  # Note: by default the legend is displayed if there is more than one stratum
+
+  if(missing(legend)){
     if(stratum == 1){
-      show.legend <- FALSE
+      legend <- FALSE
     } else {
-      show.legend <- TRUE
+      legend <- TRUE
     }
   }
-  if (is.logical(show.legend)){
-    if(show.legend == TRUE){
+
+  if (is.logical(legend)){
+    if(legend == TRUE){
       graphics::legend(
         x = legend.position[1],   # the x coordinates to position the legend
         y = legend.position[2],   # the y coordinates to position the legend
@@ -684,12 +728,21 @@ surv.plot <- function(
       )
     }
   } else {
-    stop("`show.legend` expecting TRUE or FAlSE as an argument!")
+    stop("`legend` expecting TRUE or FAlSE as an argument!")
   }
 
-  # 3.SURV.SEGMENT ####
+  #----------------------------------------------------------------------------#
+  # 3. survSegment ####
+  #----------------------------------------------------------------------------#
 
-  ## Define different options to display the segment text  ####
+  #----------------------------------------------------------------------------#
+  ## 3.1 Segment annotation ####
+  #----------------------------------------------------------------------------#
+  #----------------------------------------------------------------------------#
+  ### 3.1.1 Define different options ####
+  #----------------------------------------------------------------------------#
+  # Possible options to display the segment text
+
   if (length(segment.annotation) == 2) {
     # Checks if it's a numeric vector (x, y coordinates)
     text_xpos <- segment.annotation[1]
@@ -725,17 +778,22 @@ surv.plot <- function(
     stop(paste0("'",segment.annotation,"'"," is not a valid argument!"))
   }
 
-  ## Determining the y coordinate for each text ####
+  #----------------------------------------------------------------------------#
+  ### 3.1.2 Determining the y coordinate for each text ####
+  #----------------------------------------------------------------------------#
+  # ?(11.04.2024)
    if (stratum > 1 & (segment.confint == T)){
      text_ypos <- rep(text_ypos, stratum) + (stratum-1):0*segment.annotation.space
    }
 
-  ## Prepare the label
+  # Prepare the label
   if (!is.null(segment.quantile) & is.null(segment.timepoint)){
+
     # Code for segment at a specific quantile
     segment_y <- segment.quantile
     segment_x <- quantile(fit,probs = 1 - segment_y)
 
+    # ? (11.04.2024)
     if(!missing(time.unit)){
       time.unit_temp <- paste0(" ", time.unit, "s")
     } else {
@@ -761,7 +819,6 @@ surv.plot <- function(
                                "]")
     }
   }
-
 
   if (is.null(segment.quantile) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -825,14 +882,15 @@ surv.plot <- function(
 
     }
   }
+  #----------------------------------------------------------------------------#
+  ## 3.2 Segment Function (main) ####
+  #----------------------------------------------------------------------------#
+  # Drawing segments with different options
 
-
-
-  ## Main Segment Function ####
   if (segment.type == 3){
-    ### Type 3: Drawing vertical and horizontal segments ####
-    if (!is.null(segment.quantile) & is.null(segment.timepoint)){
 
+    ### 3.2.1 Drawing vertical and horizontal segments ####
+    if (!is.null(segment.quantile) & is.null(segment.timepoint)){
       # Draw vertical Line
       segments(x0 = segment_x$quantile,
                y0 = 0,
@@ -894,8 +952,10 @@ surv.plot <- function(
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
+
   } else if (segment.type == 2){
-    ### Type 2: Draw specified segment ####
+
+    ### 3.2.2 Drawing specified segment (half bandwidth) ####
     if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
 
       # Horizontal Line
@@ -941,8 +1001,10 @@ surv.plot <- function(
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
+
   } else if (segment.type == 1){
-    ### Type 1: Drawing specified segment (full bandwidth) ####
+
+    ### 3.2.3 Drawing specified segment (full bandwidth) ####
     if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
 
       # Draw horizontal Line
@@ -990,7 +1052,12 @@ surv.plot <- function(
     }
   }
 
-  ### Draw title for segment text ####
+  #----------------------------------------------------------------------------#
+  ### 3.3 Segment title ####
+  #----------------------------------------------------------------------------#
+  # Title for the segment text
+  # Hier braucht es sicher ein paar code wo die stabilität der funktion kontrolliert.
+
   if (!("none" %in% segment.annotation)){
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
@@ -1015,21 +1082,28 @@ surv.plot <- function(
     }
   }
 
-  # 4. SURV.STATS ####
+  #----------------------------------------------------------------------------#
+  # 4. survStats ####
+  #----------------------------------------------------------------------------#
 
-  ## Stopp function if stat = coxph or coxph_logrank is chosen but number of arms is unequal 2
+  # Stop function if stat = coxph or coxph_logrank is chosen
+  # but number of arms is unequal 2
   if ((stat == "coxph" | stat == "coxph_logrank") & stratum != 2) {
     stop("It is not possible to set `stat` equal to `coxph` or`coxph_logrank`
-          if number of arms is unequal 2. ")
+          if number of arms is unequal 2.")
   }
 
-  ## Define different options for stat position ####
+  #----------------------------------------------------------------------------#
+  ## 4.1 Stat position ####
+  #----------------------------------------------------------------------------#
+  # Define different options for stat position
+
   if (length(stat.position) == 2){
     # If it's a numeric vector (x, y coordinates)
     stat_xpos <- stat.position[1]
     stat_ypos <- stat.position[2]
     # Position the text to the right of the specified (x,y)
-    pos <- 1 #vorher 1
+    pos <- 1
   } else if (stat.position == "bottomleft"){
     if(stat == "coxph_logrank") {
       stat_ypos <- 0.08
@@ -1042,7 +1116,7 @@ surv.plot <- function(
     stat_ypos <- 0.53
     stat_xpos <- min(xticks)
     pos <- 4
-  }else if (stat.position == "right"){
+  } else if (stat.position == "right"){
     stat_ypos <- 0.53
     stat_xpos <- max(xticks)
     # Position the text to the left of the specified (x,y)
@@ -1065,7 +1139,11 @@ surv.plot <- function(
     pos <- 2
   }
 
-  ## recalculate the stat.fit object based on defined 'reference.arm'
+  #----------------------------------------------------------------------------#
+  ## 4.2 Recalculate Stat ####
+  #----------------------------------------------------------------------------#
+  # Recalculate the stat.fit object based on defined 'reference.arm'
+
   if(!missing(reference.arm) & !missing(stat.fit)){
     data <- as.data.frame(eval(stat.fit$call$data))
     arm.variable <- as.character(fit$call$formula[3])
@@ -1074,7 +1152,9 @@ surv.plot <- function(
     stat.fit <- eval(stat.fit$call)
   }
 
-  ## Log rank test ####
+  #----------------------------------------------------------------------------#
+  ### 4.2.1 Log rank test ####
+  #----------------------------------------------------------------------------#
 
   # To compare the survival curves of two or more groups
   if(missing(stat.fit)){
@@ -1087,6 +1167,7 @@ surv.plot <- function(
   logrank[1] <- call("survdiff")
 
   # Check first if strata > 1
+  # VSO (09.04.2024) Wird schon im 4.) kontrolliert, sollten wir das streichen.
   if(is.null(fit$strata)){
     logrank <- NULL
   } else {
@@ -1096,9 +1177,12 @@ surv.plot <- function(
     logrankpval <- round.pval(logrankpval)
   }
 
-  ## Cox proportional hazard regression ####
-
+  #----------------------------------------------------------------------------#
+  ### 4.2.2 Cox regression ####
+  #----------------------------------------------------------------------------#
   # To describe the effect of variables on survival
+
+  # To compare the survival curves of two or more groups
   if(missing(stat.fit)){
     model <- fit$call
   } else {
@@ -1109,7 +1193,11 @@ surv.plot <- function(
   model[1] <- call("coxph")
   model <- summary(eval(model), conf.int = stat.conf.int)
 
-  ## Display statistics in the plot ####
+  #----------------------------------------------------------------------------#
+  ## 4.3 Stat Function (main) ####
+  #----------------------------------------------------------------------------#
+  # Display statistics in the plot
+  # Coxmodel aus der funktion heraus nehmen?
 
   if(stat == "logrank"){
     stats <- paste0("Logrank test: ", logrankpval)
@@ -1216,10 +1304,15 @@ surv.plot <- function(
          font = stat.font)
   }
 
-  # 5. SURV.RISKTABLE ####
+  #----------------------------------------------------------------------------#
+  # 5. survRisktable ####
+  #----------------------------------------------------------------------------#
+
   if(is.logical(risktable)){
     if (risktable == TRUE){
-      ## Extract risktable data ####
+  #----------------------------------------------------------------------------#
+  ### 5.1 Extract data ####
+  #----------------------------------------------------------------------------#
       obsStrata <- if(is.null(fit$strata)){
         obsStrata <- 1
       } else {
@@ -1234,25 +1327,30 @@ surv.plot <- function(
       # Loop over each stratum and each time point defined by 'xticks'
       for (stratum_i in 1:stratum) {
         for (x in 1:length(xticks)) {
-          # Find the indices where the survival time for the current group is greater than the current 'xticks'
+          # Find the indices where the survival time for the current group is
+          # greater than the current 'xticks'
           index <- which(fit$time[grp == stratum_i] > xticks[x])
-          # If there are no such indices, set the corresponding element in 'n.risk.matrix' to 0
+          # If there are no such indices,
+          # set the corresponding element in 'n.risk.matrix' to 0
           if (length(index) == 0)
             n.risk.matrix[x,stratum_i] <- 0
           else
-            # Otherwise, set the element to the minimum number at risk for the specified group and time point
+            # Otherwise, set the element to the minimum number at risk
+            # for the specified group and time point
             n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
         }
       }
-
-      ## Add risktable.title text to the outer margin ####
+  #----------------------------------------------------------------------------#
+  ### 5.1.1 Add risktable.title text to the outer margin ####
+  #----------------------------------------------------------------------------#
       mtext(risktable.title, side = 1, outer = FALSE,
             line = risktable.pos, adj = 0, at = risktable.title.position,
             font = risktable.title.font,
             cex = risktable.title.cex,
             col = risktable.title.col)
-
-      ## Add legend text to the outer margin for each stratum ####
+  #----------------------------------------------------------------------------#
+  ### 5.1.2 Add legend text to the outer margin for each stratum ####
+  #----------------------------------------------------------------------------#
       if (missing(risktable.name)) {
         ristkable.name <- legend.name
       } else {
@@ -1267,8 +1365,9 @@ surv.plot <- function(
                 col = risktable.name.col)
         }
       }
-
-      ## Add vector of risk counts text to the margin ####
+  #----------------------------------------------------------------------------#
+  ### 5.1.3 Add vector of risk counts text to the margin ####
+  #----------------------------------------------------------------------------#
       if(max(risktable.col == TRUE)) { risktable.col <- col}
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
             line = rep((1:stratum) + risktable.pos, each = length(xticks)),
