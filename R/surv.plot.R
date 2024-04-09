@@ -1,20 +1,20 @@
 #' Publication Ready Kaplan-Meier Estimator
 #'
 #' @description
-#' `surv.plot(fit, ...)` returns Kaplan-Meier survival times curves.
+#' `surv.plot(fit, ...)` returns Kaplan-Meier survival time curves.
 #'
 #' @details
-#' The survSAKK R package provides the function [`surv.plot()`] to perform Kaplan-Meier survival analysis.
-#' This package is designed to be user-friendly and efficient, offering robust tool for
-#' analysing survival data and generating Kaplan-Meier curves using the results
-#' from [`survival::survfit()`].
+#' The survSAKK R package provides the [`surv.plot()`] function, facilitating
+#' Kaplan-Meier survival analysis. Designed with user-friendliness and efficiency
+#' in mind. Offering robust tool for analysing survival data. It utilises the
+#' functionalities of [`survival::survfit()`].
 #'
 #' For a comprehensive manual visit: \url{https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html}
 #'
 #' @docType package
 #'
 #' @param fit An object of class [survival::survfit] containing survival data.
-#' @param reference.arm A string defining the reference arm.
+#' @param reference.arm A string that specifies the reference arm for comparison.
 #' @param time.unit The time unit of the survival curve.
 #'    Options:
 #'    - `'day'`
@@ -49,13 +49,18 @@
 #' @param sub Subtitle of the plot. A subtitle only works if no risk table is displayed.
 #' @param xlab X-axis label.
 #' @param ylab Y-axis label.
+#' @param xticks A numeric vector specifying the ticks of the x-axis. Can be specified as
+#'    `seq(starting value, end value, number: increment of the sequence)`.
+#' @param yticks A numeric vector specifying the ticks of the y-axis. Can be specified as
+#'    `seq(starting value, end value, number: increment of the sequence)`.
+#'     It should always be specified as probability. For percent the parameter
 #' @param xlab.pos Defines on which margin line the xlab is displayed. Starting at 0 counting outwards.
 #' @param ylab.pos Defines on which margin line the ylab is displayed. Starting at 0 counting outwards.
 #' @param xlab.cex A numeric value specifying the size of the X-axis label.
 #' @param ylab.cex A numeric value specifying the size of the y-axis label.
 #' @param cex A numeric value specifying all size of the text elements at once
 #'    (labels, annotations, ...).
-#' @param cex.axis A numeric value specifying the size of the `axis` size.
+#' @param axis.cex A numeric value specifying the size of the `axis` size.
 #' @param bty Determines the style of the box drawn around the plot.
 #'    Options: `'n'` (default),`'o'`,`'c'`,`'u'`.
 #' @param lty A vector with three arguments specifying line types for the curve
@@ -64,11 +69,6 @@
 #'    `'longdash'`, `'twodash'`.
 #'    E.g. `c('solid', 'dashed', 'dashed')`.
 #' @param lwd A numeric value specifying the width of the line.
-#' @param xticks A numeric vector specifying the ticks of the x-axis. Can be specified as
-#'    `seq(starting value, end value, number: increment of the sequence)`.
-#' @param yticks A numeric vector specifying the ticks of the y-axis. Can be specified as
-#'    `seq(starting value, end value, number: increment of the sequence)`.
-#'     It should always be specified as probability. For percent the parameter
 #'     `y.unit` can be used.
 #' @param show.legend A logical parameter specifying whether to display legend.
 #'    By default the legend is displayed if there is more than one arm.
@@ -181,7 +181,7 @@
 #' @param risktable.name.col Colour for the risk table name. Can accept a single value for colour.
 #' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
 #'
-#' @return Publication-Ready Kaplan-Meier plot of the input \code{fit}, incorporating various statistics and layout option(s).
+#' @return Kaplan-Meier curves t of the input \code{fit}, incorporating various statistics and layout option(s).
 #'
 #' @export
 #'
@@ -242,17 +242,17 @@ surv.plot <- function(
     sub = NULL,
     xlab = NULL,
     ylab = NULL,
+    xticks,
+    yticks = seq(from = 0, to = 1, by = 0.25),
     xlab.pos = 1.5,
     ylab.pos = 3,
     xlab.cex = NULL,
     ylab.cex = NULL,
     cex = NULL,
-    cex.axis,
+    axis.cex,
     bty = "n",
     lty = c("solid","dotted","dotted"),
     lwd = 3,
-    xticks,
-    yticks = seq(from = 0, to = 1, by = 0.25),
     # Legend options
     show.legend,
     legend.position = "topright",
@@ -300,10 +300,13 @@ surv.plot <- function(
     risktable.name.col = "black",
     risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
 ){
-
+  #----------------------------------------------------------------------------#
   # 1. PREPARTION ####
+  #----------------------------------------------------------------------------#
 
-  ## Function for rounding p-value ####
+  #----------------------------------------------------------------------------#
+  ## 1.1 Function for rounding p-value ####
+  #----------------------------------------------------------------------------#
   # two significant digit e.g. p = 0.43 or 0.057
   # if 0.001 > p > 0.0001, then round to one significant digit
   # else p < 0.0001
@@ -319,10 +322,12 @@ surv.plot <- function(
     return(pval)
   }
 
+  #----------------------------------------------------------------------------#
+  ## 1.2 Global font parameter  ####
+  #----------------------------------------------------------------------------#
 
-  ## Global font parameter ####
   if(is.null(cex)){cex <- 1}
-  if(missing(cex.axis)){cex.axis <- cex}
+  if(missing(axis.cex)){axis.cex <- cex}
   if(missing(legend.cex)){legend.cex <- cex}
   if(missing(legend.title.cex)){legend.title.cex <- cex}
   if(missing(segment.cex)){segment.cex <- cex}
@@ -333,7 +338,10 @@ surv.plot <- function(
   if(missing(xlab.cex)){xlab.cex <- cex}
   if(missing(ylab.cex)){ylab.cex <- cex}
 
-  ## Display confidence Line ####
+  #----------------------------------------------------------------------------#
+  ## 1.3 Display confidence Line ####
+  #----------------------------------------------------------------------------#
+
   if(is.logical(conf.line)){
     if(conf.line == FALSE){
       lty[c(2, 3)] <-  c("blank","blank")
@@ -346,8 +354,11 @@ surv.plot <- function(
     stop("`conf.line` expecting TRUE or FALSE as an argument!")
   }
 
-  ## Function to draw table (surv.stats) into plot ####
+  #----------------------------------------------------------------------------#
+  ## 1.4 Function to draw table into plot ####
+  #----------------------------------------------------------------------------#
   # plottbl() function allows to plot reproducible different tables in the graphics
+
   plottbl <- function (x, y,
                        table, # A data frame, matrix or similar object that will be displayed
                        cex = stat.cex,
@@ -397,16 +408,19 @@ surv.plot <- function(
     }
   }
 
-
-  ### Recalculate survival object ####
+  #----------------------------------------------------------------------------#
+  ## 1.5 Recalculating survival object ####
+  #----------------------------------------------------------------------------#
   # Note: Recalculation is done to be sure that the survival object is correct,
   # and for plotting with the desired CI, transformation and reference arm.
 
   # recalculate the fit object based on defined `conf.type`
   fit$call$conf.type <- conf.type
+
   # recalculate the fit object based on defined `conf.int`
   fit$call$conf.int <- conf.int
-  # recalculate the fit object based on defined 'reference.arm'
+
+  # recalculate the fit object based on defined `reference.arm`
   data <- as.data.frame(eval(fit$call$data))
   if(!missing(reference.arm)){
     arm.variable <- as.character(fit$call$formula[3])
@@ -415,23 +429,30 @@ surv.plot <- function(
   fit$call$data <- data
   fit <- eval(fit$call)
 
-
-  ### Extract level of stratum ####
+  #----------------------------------------------------------------------------#
+  ## 1.6 Extraction level of stratum ####
+  #----------------------------------------------------------------------------#
   stratum <- max(1, length(fit$strata))
 
-  ## Define colour for KM-plot if not manually specified ####
+  #----------------------------------------------------------------------------#
+  ## 1.7 Define default colour(s) ####
+  #----------------------------------------------------------------------------#
   if (is.null(col)){
     if(is.null(fit$strata)){
       col <- "black"
     } else {
       for (i in 1:stratum){
-        # Colors from RColorBrewer::display.brewer.pal(n = 10, name = "Paired") are used
-        col[i] <- c("#1F78B4","#33A02C","#A6CEE3","#B2DF8A","#FB9A99","#E31A1C","#FDBF6F","#CAB2D6","#6A3D9A")[i]
+        # RColorBrewer::display.brewer.pal(n = 10, name = "Paired")
+        col[i] <- c("#1F78B4","#4DAF4A","#A6CEE3","#B2DF8A","#FB9A99","#E31A1C","#FDBF6F","#CAB2D6","#6A3D9A")[i]
       }
     }
   }
 
-  ## Extract Group (stratum) names for legend if not manually specified ####
+  #----------------------------------------------------------------------------#
+  ## 1.8 Extract group (stratum) names ####
+  #----------------------------------------------------------------------------#
+  # Extract group names if not manually specified for legend
+
   if (is.null(legend.name)){
     if(is.null(fit$strata)){
       group <- "Cohort"
@@ -443,8 +464,11 @@ surv.plot <- function(
     }
   }
 
-  ## Define Plotting area with and without risk table. ####
+  #----------------------------------------------------------------------------#
+  ## 1.9 Define Plotting area with and without risk table. ####
+  #----------------------------------------------------------------------------#
   # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
+
   if(is.logical(risktable)){
     if (risktable == TRUE){
       # Left margin
@@ -463,24 +487,32 @@ surv.plot <- function(
       if(is.null(margin.left)){
         margin.left = 4
       }
-      par(mar = c(margin.bottom, margin.left, margin.top, margin.right) + 0.1,  # c(bottom, left, top, right)
-          mgp = c(3,1,0)              # c(axis title, axis label, axis ticks)
+      par(mar = c(margin.bottom, margin.left, margin.top, margin.right) + 0.1,
+          mgp = c(3,1,0) #c(axis title, axis label, axis ticks)
       )
     }
   } else{
     stop("`risktable` expecting TRUE or FALSE as an argument!")
   }
 
-  # 2. SURV.PLOT ####
+  #----------------------------------------------------------------------------#
+  # 2. survPlot ####
+  #----------------------------------------------------------------------------#
 
-  # Customize the x ticks if they were not specified in the function call
+  #----------------------------------------------------------------------------#
+  ## 2.1 Customization of xticks and xlab ####
+  #----------------------------------------------------------------------------#
+  # Customize the xticks if not manually specified
+
   if(missing(xticks)){
     if(!missing(time.unit)){
       if(time.unit == "month"){
-        xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)    # choose increases by 6 if time unit is months
+        # month: xticks by 6 unit
+        xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
       }
       if(time.unit == "year"){
-        xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)    # choose increases by 1 if time unit is years
+        # year: xticks by 1 unit
+        xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
       }
       }
     if(missing(xticks)){
@@ -543,7 +575,7 @@ surv.plot <- function(
     mgp = c(3,0.50,0),                    # Adjust the label position (axis title, axis label, axis line)
     at = xticks,                          # Specify tick mark position
     labels = xticks,                      # Draw labels
-    cex.axis = cex.axis                   # Axis size
+    cex.axis = axis.cex                   # Axis size
   )
 
   # Customize the y coordinates
@@ -553,7 +585,7 @@ surv.plot <- function(
     mgp = c(3,0.75,0),                    # Adjust the label position (axis title, axis label, axis line)
     at = yticks,                          # Specify tick mark position
     labels = yticks.labels,               # Draw labels
-    cex.axis = cex.axis                   # Axis size
+    cex.axis = axis.cex                   # Axis size
   )
 
   ## Draw grid ####

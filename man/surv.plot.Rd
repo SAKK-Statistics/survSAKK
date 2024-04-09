@@ -7,7 +7,7 @@
 \arguments{
 \item{fit}{An object of class \link[survival:survfit]{survival::survfit} containing survival data.}
 
-\item{reference.arm}{A string defining the reference arm.}
+\item{reference.arm}{A string that specifies the reference arm for comparison.}
 
 \item{time.unit}{The time unit of the survival curve.
 Options:
@@ -69,6 +69,13 @@ colour, or a vector of colour values to set colour(s).}
 
 \item{ylab}{Y-axis label.}
 
+\item{xticks}{A numeric vector specifying the ticks of the x-axis. Can be specified as
+\verb{seq(starting value, end value, number: increment of the sequence)}.}
+
+\item{yticks}{A numeric vector specifying the ticks of the y-axis. Can be specified as
+\verb{seq(starting value, end value, number: increment of the sequence)}.
+It should always be specified as probability. For percent the parameter}
+
 \item{xlab.pos}{Defines on which margin line the xlab is displayed. Starting at 0 counting outwards.}
 
 \item{ylab.pos}{Defines on which margin line the ylab is displayed. Starting at 0 counting outwards.}
@@ -80,7 +87,7 @@ colour, or a vector of colour values to set colour(s).}
 \item{cex}{A numeric value specifying all size of the text elements at once
 (labels, annotations, ...).}
 
-\item{cex.axis}{A numeric value specifying the size of the \code{axis} size.}
+\item{axis.cex}{A numeric value specifying the size of the \code{axis} size.}
 
 \item{bty}{Determines the style of the box drawn around the plot.
 Options: \code{'n'} (default),\code{'o'},\code{'c'},\code{'u'}.}
@@ -91,14 +98,7 @@ Options for the three arguments: \code{'blank'}, \code{'solid'}, \code{'dashed'}
 \code{'longdash'}, \code{'twodash'}.
 E.g. \code{c('solid', 'dashed', 'dashed')}.}
 
-\item{lwd}{A numeric value specifying the width of the line.}
-
-\item{xticks}{A numeric vector specifying the ticks of the x-axis. Can be specified as
-\verb{seq(starting value, end value, number: increment of the sequence)}.}
-
-\item{yticks}{A numeric vector specifying the ticks of the y-axis. Can be specified as
-\verb{seq(starting value, end value, number: increment of the sequence)}.
-It should always be specified as probability. For percent the parameter
+\item{lwd}{A numeric value specifying the width of the line.
 \code{y.unit} can be used.}
 
 \item{show.legend}{A logical parameter specifying whether to display legend.
@@ -263,16 +263,16 @@ Default: black}
 \item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the x-axis.}
 }
 \value{
-Publication-Ready Kaplan-Meier plot of the input \code{fit}, incorporating various statistics and layout option(s).
+Kaplan-Meier curves t of the input \code{fit}, incorporating various statistics and layout option(s).
 }
 \description{
-\code{surv.plot(fit, ...)} returns Kaplan-Meier survival times curves.
+\code{surv.plot(fit, ...)} returns Kaplan-Meier survival time curves.
 }
 \details{
-The survSAKK R package provides the function \code{\link[=surv.plot]{surv.plot()}} to perform Kaplan-Meier survival analysis.
-This package is designed to be user-friendly and efficient, offering robust tool for
-analysing survival data and generating Kaplan-Meier curves using the results
-from \code{\link[survival:survfit]{survival::survfit()}}.
+The survSAKK R package provides the \code{\link[=surv.plot]{surv.plot()}} function, facilitating
+Kaplan-Meier survival analysis. Designed with user-friendliness and efficiency
+in mind. Offering robust tool for analysing survival data. It utilises the
+functionalities of \code{\link[survival:survfit]{survival::survfit()}}.
 
 For a comprehensive manual visit: \url{https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html}
 }
