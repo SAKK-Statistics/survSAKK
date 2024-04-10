@@ -7,103 +7,122 @@
 \arguments{
 \item{fit}{An object of class \link[survival:survfit]{survival::survfit} containing survival data.}
 
-\item{reference.arm}{A string that specifies the reference arm for comparison.}
+\item{reference.arm}{A character string specifying the reference arm for comparison.}
 
-\item{time.unit}{The unit of the survival time (option: \code{"day"}, \code{"week"}, \code{"month"},\code{"year"}).}
+\item{time.unit}{A character string specifying the unit of the of survival time.
 
-\item{y.unit}{Unit of the y-axis (option: \code{"probability"}, \code{"percent"}).}
+Option include: \code{"day"}, \code{"week"}, \code{"month"},\code{"year"}.}
 
-\item{margin.bottom}{Specifies the bottom margin of the plotting area in line units. Default: 5}
+\item{y.unit}{A character string specifying the unit of the y-axis.
 
-\item{margin.left}{Specifies the left margin of the plotting area in line units. Default: 6 (with risktable) or 4 (without risktable)}
+Option include: \code{"probability"}, \code{"percent"}.}
 
-\item{margin.top}{Specifies the top margin of the plotting area in line units. Default: 3}
-
-\item{margin.right}{Specifies the right margin of the plotting area in line units. Default: 2}
-
-\item{censoring.mark}{A logical parameter indicating whether to mark censoring
-events on the survival curves. Default: \code{TRUE}.}
+\item{censoring.mark}{A logical parameter indicating whether censoring events
+should be marked on the survival curves. Default is \code{TRUE}.}
 
 \item{censoring.cex}{A numeric value specifying the size of the marks for
-censored patients. Default: 1.3.}
+censored patients. Default is \code{1.3}.}
 
-\item{conf.int}{A numeric value between 0 and 1 controlling the confidence interval on the survival curves.
-The default is 0.95 which corresponds to the 95\% confidence interval.
-If set to 0, no confidence intervals are not displayed.
-If a numeric value between 0 and 1 is provided, it represents the desired
-coverage for the confidence interval (e.g. 0.9 for 90\%).}
+\item{conf.int}{A numeric value controlling the confidence interval on survival curves.
+Default is \code{0.95}, corresponding to a 95\% confidence interval.
+Values between \code{0} and \code{1} represent the desired confidence interval.
+If set to \code{0}, no confidence intervals are displayed.}
 
 \item{conf.band}{A logical parameter indicating whether to display the
-confidence band on the survival curves. Default: \code{TRUE}.}
+confidence band on the survival curves. Default is \code{TRUE}.}
 
 \item{conf.line}{A logical parameter indicating whether to draw the confidence
-line on the survival curves. Default: \code{FALSE}.}
+line on the survival curves. Default is \code{FALSE}.}
 
-\item{conf.band.col}{Colour(s) for confidence band. Can accept a single value
-for colour, or a vector of colour values.}
+\item{conf.band.col}{Specifies the colours for confidence band.
+Can accept a single colour value or a vector of colours.}
 
-\item{conf.band.transparent}{A numeric values from 0 to 1. Controlling the
-transparency of the confidence band. Default: 0.25.}
+\item{conf.band.transparent}{A numeric value between \code{0} and \code{1} controlling the
+transparency of the confidence band. Default is \code{0.25}.}
 
 \item{conf.type}{Transformation type for the confidence interval.
-\code{'log'}, \code{'log-log'} (default), \code{'plain'}, \code{'logit'}, \code{'arcsin'}.}
+
+Options include: \code{"log"}, \code{"log-log"}, \code{"plain"}, \code{"logit"}, \code{"arcsin"}.
+Default is \code{log-log}.}
 
 \item{grid}{A logical parameter specifying whether to draw a grid.
-Default: \code{FALSE}.}
+Default is \code{FALSE}.}
 
-\item{col}{Colour(s) for the survival curves. Can accept a single value for
-colour, or a vector of colour values to set colour(s).}
+\item{col}{Specifies  the colours for survival curves.
+Can accept a single colour value  or a vector of colours.}
 
 \item{main}{Title of the plot.}
 
-\item{sub}{Subtitle of the plot. A subtitle only works if no risk table is displayed.}
+\item{sub}{Subtitle of the plot.
+Note: A subtitle is only displayed if no risk table is shown.}
 
 \item{xlab}{X-axis label.}
 
 \item{ylab}{Y-axis label.}
 
-\item{xticks}{A numeric vector specifying the ticks of the x-axis. Can be specified as
-\verb{seq(starting value, end value, number: increment of the sequence)}.}
+\item{xticks}{A numeric vector specifying the ticks of the x-axis.
 
-\item{yticks}{A numeric vector specifying the ticks of the y-axis. Can be specified as
-\verb{seq(starting value, end value, number: increment of the sequence)}.
-It should always be specified as probability. For percent the parameter}
+Can be specified as \code{seq(from = , to = , by = )}.
+\itemize{
+\item \code{from}: starting value
+\item \code{to}: end value
+\item \code{by}: number; increment of the sequence
+}}
 
-\item{xlab.pos}{Defines on which margin line the xlab is displayed. Starting at 0 counting outwards.}
+\item{yticks}{A numeric vector specifying the ticks of the y-axis.
 
-\item{ylab.pos}{Defines on which margin line the ylab is displayed. Starting at 0 counting outwards.}
+Can be specified as \code{seq(from = , to = , by = )}.
+\itemize{
+\item \code{from}: starting value
+\item \code{to}: end value
+\item \code{by}: number; increment of the sequence
+}
+
+\emph{Note}: It should always be specified as probability. For percent the parameter}
+
+\item{xlab.pos}{Defines the margin line where the x-axis label (xlab) is displayed,
+starting at 0 and counting outwards.}
+
+\item{ylab.pos}{Defines the margin line the y-axis label (ylab) is displayed,
+starting at 0 counting outwards.}
 
 \item{xlab.cex}{A numeric value specifying the size of the X-axis label.}
 
 \item{ylab.cex}{A numeric value specifying the size of the y-axis label.}
 
-\item{cex}{A numeric value specifying all size of the text elements at once
-(labels, annotations, ...).}
+\item{cex}{A numeric value specifying the size of all all text elements
+(labels, annotations, etc.).}
 
-\item{axis.cex}{A numeric value specifying the size of the \code{axis} size.}
+\item{axis.cex}{A numeric value specifying the size of the axis elements.}
 
 \item{bty}{Determines the style of the box drawn around the plot.
-Options: \code{'n'} (default),\code{'o'},\code{'c'},\code{'u'}.}
 
-\item{lty}{A vector with three arguments specifying line types for the curve
-and the lower and upper confidence lines
-Options for the three arguments: \code{'blank'}, \code{'solid'}, \code{'dashed'}, \code{'dotted'}, \code{'dotdash'},
-\code{'longdash'}, \code{'twodash'}.
-E.g. \code{c('solid', 'dashed', 'dashed')}.}
+Options include: \code{"n"} ,\code{"o"},\code{"c"},\code{"u"}. Default is: \code{"n"}.}
+
+\item{lty}{A vector with three arguments specifying line types for the curve,
+lower confidence line and upper confidence line.
+
+Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"}, \code{"dotdash"},
+\code{"longdash"}, \code{"twodash"}.
+
+\emph{Example:} \code{c("solid", "dashed", "dashed")}.}
 
 \item{lwd}{A numeric value specifying the width of the line.
-\code{y.unit} can be used.}
+\code{y.unit} can be used.(?)}
 
 \item{legend}{A logical parameter specifying whether to display legend.
-By default the legend is displayed if there is more than one arm.}
+By default, the legend is displayed if there is more than one arm.}
 
 \item{legend.position}{Position of the legend.
-Options: \code{c(x,y)}, \code{'bottomright'}, \code{'bottom'}, \code{'bottomleft'}, \code{'left'},
-'\verb{topleft'}, \code{'top'}, \code{'topright'}, \code{'right'}, \code{'center'}.}
+
+Options include: "c(x,y)"\verb{, }"bottomright"\verb{, }"bottom"\verb{, }"bottomleft"\verb{, }"left"`,}
 
 \item{legend.name}{Renaming the name(s) of the arm.}
 
+\item{legend.cex}{A numeric value specifying the size of the legend text.}
+
 \item{legend.text.font}{Font style of the legend text.
+Possible values:
 \itemize{
 \item \code{1} normal
 \item \code{2} bold
@@ -111,13 +130,12 @@ Options: \code{c(x,y)}, \code{'bottomright'}, \code{'bottom'}, \code{'bottomleft
 \item \code{4} bold and italic
 }}
 
-\item{legend.cex}{A numeric value specifying the size of the legend text.}
-
 \item{legend.title}{Title of the legend.}
 
 \item{legend.title.cex}{A numeric value specifying the size of the legend title.}
 
 \item{segment.type}{A numeric value specifying the layout of the segment.
+Possible values:
 \itemize{
 \item \code{1} full width
 \item \code{2} half width
@@ -128,34 +146,38 @@ Options: \code{c(x,y)}, \code{'bottomright'}, \code{'bottom'}, \code{'bottomleft
 to be drawn as segment(s).}
 
 \item{segment.quantile}{A single value or a vector of fixed quantile to be
-drawn as segment(s) e.g. 0.5 corresponds to median.}
+drawn as segment(s). Example: 0.5 corresponds to median.}
 
-\item{segment.main}{Title of segment text.}
+\item{segment.main}{Title of the segment text.}
+
+\item{segment.confint}{A logical parameter specifying whether to display
+the confidence interval for the segment.
+
+\emph{NOTE:} Only possible to set \code{segment.confint = FALSE} if there are two arms.
+Default is \code{TRUE}.}
 
 \item{segment.annotation}{Position of the segment annotation.
-Options: \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'}, \code{'top'}, \code{'none'}.}
 
-\item{segment.col}{Colour for the segment. Can accept a single value for colour.}
+Options include: \code{c(x,y)},\code{"bottomleft"}, \code{"left"}, \code{"right"}, \code{"top"}, \code{"none"}.}
 
-\item{segment.annotation.col}{Colour(s) for the segment annotation.
-Can accept a single value for colour, or a vector of colour values to
-set colour(s).}
+\item{segment.annotation.col}{Specifies the colours for the segment annotation.
+Can accept a single colour value or a vector of colours.}
 
-\item{segment.lty}{A vector of string specifying line types for each curve.
-Options: \code{'blank'}, \code{'solid'}, \code{'dashed'}, \code{'dotted'}, \code{'dotdash'},
-\code{'longdash'}, \code{'twodash'}.}
+\item{segment.annotation.space}{Spacing between the text in units of x-coordinates.}
+
+\item{segment.col}{Specifies the colour for the segment. Can accept a single colour value.}
+
+\item{segment.lty}{A vector of strings specifying line types for each curve.
+
+Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"}, \code{"dotdash"},
+\code{"longdash"}, \code{"twodash"}.}
 
 \item{segment.lwd}{A numeric value specifying the width of the segment line.}
 
 \item{segment.cex}{A numeric value specifying the size of the segment text size.}
 
-\item{segment.confint}{Display the confidence interval.
-\code{segment.confint} = \code{FALSE} is only possible if there are two arms.
-Default: \code{TRUE}.}
-
-\item{segment.annotation.space}{Spacing between the text in unit of x-coordinates.}
-
 \item{segment.font}{A numeric value specifying the font face.
+Possible values:
 \itemize{
 \item \code{1} plain
 \item \code{2} bold
@@ -163,7 +185,8 @@ Default: \code{TRUE}.}
 \item \code{4} bold-italic
 }}
 
-\item{segment.main.font}{A numeric value specifying the font face.
+\item{segment.main.font}{A numeric value specifying the font face for the segment text.
+Possible values:
 \itemize{
 \item \code{1} plain
 \item \code{2} bold
@@ -171,41 +194,45 @@ Default: \code{TRUE}.}
 \item \code{4} bold-italic
 }}
 
-\item{stat}{Statistics which is displayed in the plot.
+\item{stat.fit}{An object of class \link[survival:survfit]{survival::survfit} containg survival data.
+Used for calculation of statistics, allowing to add stratification factors.}
+
+\item{stat}{Statistics displayed in the plot.
+
 Options:
 \itemize{
-\item \code{'logrank'} gives the p value of the conducted logrank test using \verb{survdiff\{survival\}}.
+\item \code{"logrank"} gives the p value of the conducted logrank test using \verb{survdiff\{survival\}}.
 To tests if there is a difference between two or more survival curves.
-\item \code{'coxph'}  gives the hazard ratio (HR) and its CI (default: 95\% CI) of the conducted
-Cox proportional hazards regression using \verb{coxph\{survival\}}. This option
+\item \code{"coxph"}  gives the hazard ratio (HR) and its CI (default: 95\% CI)of the conducted
+Cox proportional hazards regression using \verb{coxph\{survival\}}. \emph{Note}: This option
 only works if there are two arms.
-\item \code{'coxph_logrank'}  combines the hazard ratio (HR), its CI (default: 95\% CI) and the
-logrank test. This option only works if there are two arms.
-\item \code{'coxmodel'} gives \code{N} (number of observations), \code{Events} (Number of events),
+\item \code{"coxph_logrank"} combines the hazard ratio (HR), its CI (default: 95\% CI) and the
+logrank test. \emph{Note:} This option only works if there are two arms.
+\item \code{"coxmodel"} gives \code{N} (number of observations), \code{Events} (Number of events),
 \code{HR}(hazard ratio), \code{lwrCI} (lower 95\% confidence interval),
 \code{uprCI} (upper 95\% confidence interval) and \code{Logrank} (p-value corresponding to the Chisquare statistic)
 of the conduct Cox proportional hazards regression using \verb{summary(coxph\{survival\})}.
 \item \code{'none'} no statistic is displayed (default).
-}}
+}
 
-\item{stat.position}{Position where the stat should be displayed.
-Options: specify explicit by \code{c(x,y)},\code{'bottomleft'}, \code{'left'}, \code{'right'},
-\code{'top'}, \code{'topright'},\code{'bottomright'}, \code{'none'}.}
+Note: Confidence interval can be adjusted with the argument \code{stat.conf.int}.}
 
-\item{stat.conf.int}{Controlling the confidence interval on the hazard ratio.
-If a numeric value between 0 and 1 is provided, it represents the desired
-coverage for the confidence interval (e.g. 0.9 for 90\%).
-Default: 0.95}
+\item{stat.position}{Position where the \code{stat} should be displayed.
 
-\item{stat.fit}{An second object of class \code{survfit} which is used for
-calculation of statistics. This allows to add stratification factors.
-Optional parameter.}
+Options include: \code{c(x,y)},\code{"bottomleft"}, \code{"left"}, \code{"right"},
+\code{"top"}, \code{"topright"},\code{"bottomright"}, \code{"none"}.}
 
-\item{stat.col}{Colour of the \code{stat} text. Can accept a single value for colour.}
+\item{stat.conf.int}{A numeric value controlling the confidence interval on
+the \code{stat} (hazard ratio). Default is \code{0.95}, corresponds to a 95\% confidence interval.
+Values between \code{0} and \code{1} represent the desired confidence interval.}
 
-\item{stat.cex}{A numeric value specifying the size of the \code{stat} text size.}
+\item{stat.col}{Specifies the colours of the statistics text.
+Can accept a single colour value or a vector of colours.}
 
-\item{stat.font}{The font face.
+\item{stat.cex}{A numeric value specifying the size of the `statistics text size.}
+
+\item{stat.font}{The font face of the statistics
+Possible values:
 \itemize{
 \item \code{1} plain
 \item \code{2} bold
@@ -213,13 +240,27 @@ Optional parameter.}
 \item \code{4} bold-italic
 }}
 
-\item{risktable}{A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.}
+\item{risktable}{A logical parameter indicating whether to draw risk table.
+Default is \code{TRUE}.}
 
-\item{risktable.pos}{Defines on which margin line the xlab is displayed. Starting at 0 counting outwards. Default at line 3.}
+\item{risktable.pos}{Defines on which margin line of the xlab is displayed,
+starting at 0 counting outwards.
+Default is at line \code{3}.}
+
+\item{risktable.name}{Names of the arms for the risk table.}
+
+\item{risktable.cex}{A numeric value specifying the size of the risk table text size.}
+
+\item{risktable.col}{Specifies the colours of the risk table.
+Can accept a single colour value or a vector of colours.
+Default is \code{black}.
+
+\emph{Note:} If \code{risktable.col = TRUE} then the colours of the curves are used.}
 
 \item{risktable.title}{Title of risk table.}
 
-\item{risktable.title.font}{Title font of risk table.
+\item{risktable.title.font}{Font style of the risk table.
+Possible values:
 \itemize{
 \item \code{1} normal
 \item \code{2} bold
@@ -227,23 +268,17 @@ Optional parameter.}
 \item \code{4} bold and italic
 }}
 
-\item{risktable.title.col}{Colour for the risk table title. Can accept a single value for colour.}
+\item{risktable.title.col}{Specifies the colour for the risk table title.
+Can accept a single colour value.}
 
 \item{risktable.title.position}{A numeric value specifying the position of the title on the x-axis.}
-
-\item{risktable.name}{Names of the arms for the risk table only.}
-
-\item{risktable.cex}{A numeric value specifying the size of the risk table text size.}
 
 \item{risktable.title.cex}{A numeric value specifying the size of the risk table title size.}
 
 \item{risktable.name.cex}{A numeric value specifying the size of the risk table legend name size.}
 
-\item{risktable.col}{Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).
-If it is set to \code{TRUE} then the colors of the curves are used.
-Default: black}
-
-\item{risktable.name.font}{legend name(s) font of risk table.
+\item{risktable.name.font}{Font style of the risk table legend name(s).
+Possible values:
 \itemize{
 \item \code{1} normal
 \item \code{2} bold
@@ -251,12 +286,26 @@ Default: black}
 \item \code{4} bold and italic
 }}
 
-\item{risktable.name.col}{Colour for the risk table name. Can accept a single value for colour.}
+\item{risktable.name.col}{Specifies the colour for the risk table name.
+Can accept a single colour value.}
 
 \item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the x-axis.}
+
+\item{margin.bottom}{Specifies the bottom margin of the plotting area in line units.
+Default is \code{5}.}
+
+\item{margin.left}{Specifies the left margin of the plotting area in line units.
+Default is \code{6} (with risktable) or \code{4} (without risktable).}
+
+\item{margin.top}{Specifies the top margin of the plotting area in line units.
+Default is \code{3}.}
+
+\item{margin.right}{Specifies the right margin of the plotting area in line units.
+Default is \code{2}.}
 }
 \value{
-Kaplan-Meier curves t of the input \code{fit}, incorporating various statistics and layout option(s).
+Kaplan-Meier curves of the input \code{fit},
+incorporating various statistics and layout option(s).
 }
 \description{
 \code{surv.plot(fit, ...)} returns Kaplan-Meier survival time curves.
