@@ -31,6 +31,7 @@ library(survSAKK)
 library(survival)
 
 # Load data
+# lung data
 veteran <- survival::veteran
 
 # Define the reference arm
@@ -46,58 +47,55 @@ veteran_trt_fit_mt <- survfit(Surv(time / 365.25 * 12, status) ~ trt, data = vet
 
 ```
 
-# Drawing survival plot
+# Drawing basic survival plot
 
+##
 ```{r baseplot}
 surv.plot(veteran_fit_yr)
 ```
 
-## Customisation of axis limits and label
+## Customize colour, legend names, title, axis
 
-### Renaming of the labels and Axis:
+## Customisation of ticks and axis limits
 
-```{r label_1}
-surv.plot(veteran_fit_yr,
-          # Label
-          main = "Veterans' Administration Lung Cancer study", 
-          xlab = "Time (year)", 
-          legend.name = c("Veteran's"),
-          # Limits
-          x.ticks = seq(0,3,by = 0.5))
-```
+## Adjustment of font size:
 
-### Global adjustment of font size:
+### Global adjustment of the size
 
-```{r label_2}
-surv.plot(veteran_fit_yr,
-          # Label
-          main = "Veterans' Administration Lung Cancer study", 
-          xlab = "Time (year)", 
-          legend.name = c("Veteran's"),
-          # Limits
-          x.ticks = seq(0,3,by = 0.5),
-          cex = 0.8)
-```
+### Specified adjustment of the size
 
-### Custamisation of the x and y axis label position
 
-```{r label3}
-surv.plot(veteran_trt_fit_yr,
-          # Specifies on which line on the plotting area 
-          # X and Y label should be drawn
-          xlab.pos = 3,
-          ylab.pos = 3.75)
-```
+## Custamisation of the x and y axis label position
 
 ## Custamisation of the marging area
 
-```{r label4}
+## Custamization of Time.unit und y.unit
+
+# Drawing risk table
+
+Per default the risk table is provided below the Kaplan-Meier plot. It provides information about the number of patients at risk at different time points thought the study.
+
+## Undisplay risk table
+
+```{r risktable1}
+surv.plot(veteran_trt_fit_yr,
+          risktable = FALSE)
+```
+
+## Modify risktable position
+
+```{r risktable.pos}
 surv.plot(veteran_fit_yr,  
           # How many bottom lines should be drawn
           margin.bottom = 10,
           # How many left lines should be drawn
-          margin.left = 8)
+          margin.left = 4,
+          # Define position of the risk table
+          risktable.pos = 8.5)
 ```
+
+## Modify risk table title, label names, colour
+
 
 # Drawing segment
 
@@ -123,28 +121,9 @@ surv.plot(veteran_fit_yr,
           segment.timepoint = 1)
 ```
 
-## Renaming segment title, font size, and colour
-
-```{r segmentOption1}
-surv.plot(veteran_fit_yr,
-          # Segment Options
-          segment.quantile = 0.5,
-          segment.main = "Median survival time",
-          segment.annotation = "bottomleft",
-          segment.cex = 0.75,
-          segment.col = "darkred")
-
-```
+## Customization of segment title, font size, and colour
 
 ## Add several segment lines, change line type
-
-```{r segmentOption2}
-surv.plot(veteran_fit_yr,
-          # Segment Options
-          segment.timepoint = c(0.5,1,2),
-          segment.type = 2,
-          segment.annotation = "none")
-```
 
 ## Modify segment font
 
@@ -188,9 +167,7 @@ gives the p value of the conducted log rank test using `survdiff{survival}`.
 
 gives the hazard ratio (HR) and its 95% CI of the conducted Cox proportional hazards regression using `coxph{survival}`.⁠
 
-- `coxmodel` 
-
-gives `N` (number of observations), `Events` (Number of events), `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval), `uprCI` (upper 95% confidence interval) and `Logrank` (p-value corresponding to the Chisquare statistic) of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
+- . . .
 
 ## `logrank test`
 
@@ -209,15 +186,10 @@ surv.plot(veteran_trt_fit_yr,
           stat.position = "bottomright")
 ```
 
-## `coxmodel`
+## `..`
 
-```{r stat3, fig.width=8}
-surv.plot(veteran_trt_fit_yr,
-          cex = 0.8,
-          legend.position = "right",
-          stat = "coxmodel",
-          stat.position = "topright")
-```
+
+## short version ... 
 
 ## Modify stat position, colour, text size, and text font
 
@@ -229,65 +201,6 @@ surv.plot(veteran_trt_fit_yr,
           stat.col = "darkblue",
           stat.cex = 0.85,
           stat.font = 2)
-```
-
-# Drawing risk table
-
-Per default the risk table is provided below the Kaplan-Meier plot. It provides information about the number of patients at risk at different time points thought the study.
-
-## Undisplay risk table
-
-```{r risktable1}
-surv.plot(veteran_trt_fit_yr,
-          risktable = FALSE)
-```
-
-## Modify risktable position
-
-```{r risktable.pos}
-surv.plot(veteran_fit_yr,  
-          # How many bottom lines should be drawn
-          margin.bottom = 10,
-          # How many left lines should be drawn
-          margin.left = 4,
-          # Define position of the risk table
-          risktable.pos = 8.5)
-```
-
-## Modify risk table title
-
-```{r risktable4}
-surv.plot(veteran_fit_yr,
-          risktable.title = "# at risk",
-          risktable.title.font = 3,
-          risktable.title.col = "purple",
-          # specifying the position of the title on the x-axis
-          risktable.title.position = -0.5)
-```
-## Modify risk table label names
-
-```{r risktable5}
-surv.plot(veteran_fit_yr,
-          risktable.name.col = "darkgreen",
-          risktable.name.font = 3,
-          # specifying the position of the title on the x-axis
-          risktable.name.position = -0.45)
-```
-
-## Modify risktable colour
-
-```{r risktable6}
-surv.plot(veteran_fit_yr,
-          risktable.col = "darkred")
-```
-
-## Modify risk table font size
-
-```{r risktable7}
-surv.plot(veteran_fit_yr,
-          risktable.cex = 0.9,
-          risktable.title.cex = 0.85,
-          risktable.name.cex = 0.80)
 ```
 
 # Multiple survival plots
