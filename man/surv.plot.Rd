@@ -34,7 +34,7 @@ confidence band on the survival curves. Default is \code{TRUE}.}
 \item{conf.line}{A logical parameter indicating whether to draw the confidence
 line on the survival curves. Default is \code{FALSE}.}
 
-\item{conf.band.col}{Specifies the colours for confidence band.
+\item{conf.band.col}{A colour which is used for the confidence band.
 Can accept a single colour value or a vector of colours.}
 
 \item{conf.band.transparent}{A numeric value between \code{0} and \code{1} controlling the
@@ -48,7 +48,7 @@ Default is \code{log-log}.}
 \item{grid}{A logical parameter specifying whether to draw a grid.
 Default is \code{FALSE}.}
 
-\item{col}{Specifies  the colours for survival curves.
+\item{col}{A colour which is used for the survival curves.
 Can accept a single colour value  or a vector of colours.}
 
 \item{main}{Title of the plot.}
@@ -78,7 +78,7 @@ Can be specified as \code{seq(from = , to = , by = )}.
 \item \code{by}: number; increment of the sequence
 }
 
-\emph{Note}: It should always be specified as probability. For percent the parameter}
+\emph{Note}: It should always be specified as probability.}
 
 \item{xlab.pos}{Defines the margin line where the x-axis label (xlab) is displayed,
 starting at 0 and counting outwards.}
@@ -107,8 +107,7 @@ Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"
 
 \emph{Example:} \code{c("solid", "dashed", "dashed")}.}
 
-\item{lwd}{A numeric value specifying the width of the line.
-\code{y.unit} can be used.(?)}
+\item{lwd}{A numeric value specifying the width of the line.}
 
 \item{legend}{A logical parameter specifying whether to display legend.
 By default, the legend is displayed if there is more than one arm.}
@@ -117,7 +116,7 @@ By default, the legend is displayed if there is more than one arm.}
 
 Options include: "c(x,y)"\verb{, }"bottomright"\verb{, }"bottom"\verb{, }"bottomleft"\verb{, }"left"`,}
 
-\item{legend.name}{Renaming the name(s) of the arm.}
+\item{legend.name}{A vector of character string specifying of the name(s) of the arm(s).}
 
 \item{legend.cex}{A numeric value specifying the size of the legend text.}
 
@@ -160,12 +159,13 @@ Default is \code{TRUE}.}
 
 Options include: \code{c(x,y)},\code{"bottomleft"}, \code{"left"}, \code{"right"}, \code{"top"}, \code{"none"}.}
 
-\item{segment.annotation.col}{Specifies the colours for the segment annotation.
+\item{segment.annotation.col}{A colour which is used for the segment annotation.
 Can accept a single colour value or a vector of colours.}
 
 \item{segment.annotation.space}{Spacing between the text in units of x-coordinates.}
 
-\item{segment.col}{Specifies the colour for the segment. Can accept a single colour value.}
+\item{segment.col}{A colour which is used for the segment.
+Can accept a single colour value.}
 
 \item{segment.lty}{A vector of strings specifying line types for each curve.
 
@@ -194,8 +194,10 @@ Possible values:
 \item \code{4} bold-italic
 }}
 
-\item{stat.fit}{An object of class \link[survival:survfit]{survival::survfit} containg survival data.
-Used for calculation of statistics, allowing to add stratification factors.}
+\item{stat.fit}{An object of class \link[survival:survfit]{survival::survfit} containing survival data.
+Used for calculation of statistics, allowing to add stratification factors.
+
+\emph{Note:} If not specified the \code{fit} object will be used for the \code{stat}.}
 
 \item{stat}{Statistics displayed in the plot.
 
@@ -208,10 +210,6 @@ Cox proportional hazards regression using \verb{coxph\{survival\}}. \emph{Note}:
 only works if there are two arms.
 \item \code{"coxph_logrank"} combines the hazard ratio (HR), its CI (default: 95\% CI) and the
 logrank test. \emph{Note:} This option only works if there are two arms.
-\item \code{"coxmodel"} gives \code{N} (number of observations), \code{Events} (Number of events),
-\code{HR}(hazard ratio), \code{lwrCI} (lower 95\% confidence interval),
-\code{uprCI} (upper 95\% confidence interval) and \code{Logrank} (p-value corresponding to the Chisquare statistic)
-of the conduct Cox proportional hazards regression using \verb{summary(coxph\{survival\})}.
 \item \code{'none'} no statistic is displayed (default).
 }
 
@@ -226,7 +224,7 @@ Options include: \code{c(x,y)},\code{"bottomleft"}, \code{"left"}, \code{"right"
 the \code{stat} (hazard ratio). Default is \code{0.95}, corresponds to a 95\% confidence interval.
 Values between \code{0} and \code{1} represent the desired confidence interval.}
 
-\item{stat.col}{Specifies the colours of the statistics text.
+\item{stat.col}{A colour which is used for the statistics text.
 Can accept a single colour value or a vector of colours.}
 
 \item{stat.cex}{A numeric value specifying the size of the `statistics text size.}
@@ -251,7 +249,7 @@ Default is at line \code{3}.}
 
 \item{risktable.cex}{A numeric value specifying the size of the risk table text size.}
 
-\item{risktable.col}{Specifies the colours of the risk table.
+\item{risktable.col}{A coulour which is used for the risk table.
 Can accept a single colour value or a vector of colours.
 Default is \code{black}.
 
@@ -268,7 +266,7 @@ Possible values:
 \item \code{4} bold and italic
 }}
 
-\item{risktable.title.col}{Specifies the colour for the risk table title.
+\item{risktable.title.col}{A colour which is used for the risk table title.
 Can accept a single colour value.}
 
 \item{risktable.title.position}{A numeric value specifying the position of the title on the x-axis.}
@@ -286,7 +284,7 @@ Possible values:
 \item \code{4} bold and italic
 }}
 
-\item{risktable.name.col}{Specifies the colour for the risk table name.
+\item{risktable.name.col}{A colour which is used for the risk table name.
 Can accept a single colour value.}
 
 \item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the x-axis.}

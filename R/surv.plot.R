@@ -42,7 +42,7 @@
 #' @param conf.line  A logical parameter indicating whether to draw the confidence
 #' line on the survival curves. Default is \code{FALSE}.
 #'
-#' @param conf.band.col Specifies the colours for confidence band.
+#' @param conf.band.col A colour which is used for the confidence band.
 #' Can accept a single colour value or a vector of colours.
 #'
 #' @param conf.band.transparent A numeric value between `0` and `1` controlling the
@@ -56,7 +56,7 @@
 #' @param grid A logical parameter specifying whether to draw a grid.
 #' Default is \code{FALSE}.
 #'
-#' @param col Specifies  the colours for survival curves.
+#' @param col A colour which is used for the survival curves.
 #' Can accept a single colour value  or a vector of colours.
 #'
 #' @param main Title of the plot.
@@ -82,7 +82,7 @@
 #' - `to`: end value
 #' - `by`: number; increment of the sequence
 #'
-#' *Note*: It should always be specified as probability. For percent the parameter
+#' *Note*: It should always be specified as probability.
 #'
 #' @param xlab.pos Defines the margin line where the x-axis label (xlab) is displayed,
 #' starting at 0 and counting outwards.
@@ -112,7 +112,6 @@
 #' *Example:* `c("solid", "dashed", "dashed")`.
 #'
 #' @param lwd A numeric value specifying the width of the line.
-#' `y.unit` can be used.(?)
 #'
 #' @param legend A logical parameter specifying whether to display legend.
 #' By default, the legend is displayed if there is more than one arm.
@@ -122,7 +121,7 @@
 #' Options include: "c(x,y)"`, `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`,
 #" "`topleft"`, `"top"`, `"topright"`, `"right"`, `"center"`.
 #'
-#' @param legend.name Renaming the name(s) of the arm.
+#' @param legend.name A vector of character string specifying of the name(s) of the arm(s).
 #'
 #' @param legend.text.font Font style of the legend text.
 #' Possible values:
@@ -149,9 +148,10 @@
 #' @param segment.quantile A single value or a vector of fixed quantile to be
 #'    drawn as segment(s). Example: 0.5 corresponds to median.
 #'
-#' @param segment.col Specifies the colour for the segment. Can accept a single colour value.
+#' @param segment.col A colour which is used for the segment.
+#' Can accept a single colour value.
 #'
-#' @param segment.annotation.col Specifies the colours for the segment annotation.
+#' @param segment.annotation.col A colour which is used for the segment annotation.
 #' Can accept a single colour value or a vector of colours.
 #'
 #' @param segment.lty A vector of strings specifying line types for each curve.
@@ -192,8 +192,10 @@
 #'
 #' @param segment.annotation.space Spacing between the text in units of x-coordinates.
 #'
-#' @param stat.fit An object of class [survival::survfit] containg survival data.
+#' @param stat.fit An object of class [survival::survfit] containing survival data.
 #' Used for calculation of statistics, allowing to add stratification factors.
+#'
+#' *Note:* If not specified the `fit` object will be used for the `stat`.
 #'
 #' @param stat  Statistics displayed in the plot.
 #'
@@ -209,11 +211,6 @@
 #'    - `"coxph_logrank"` combines the hazard ratio (HR), its CI (default: 95% CI) and the
 #'      logrank test. *Note:* This option only works if there are two arms.
 #'
-#'    - `"coxmodel"` gives `N` (number of observations), `Events` (Number of events),
-#'      `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval),
-#'      `uprCI` (upper 95% confidence interval) and `Logrank` (p-value corresponding to the Chisquare statistic)
-#'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
-#'
 #'    - `'none'` no statistic is displayed (default).
 #'
 #'    Note: Confidence interval can be adjusted with the argument `stat.conf.int`.
@@ -227,7 +224,7 @@
 #' the `stat` (hazard ratio). Default is `0.95`, corresponds to a 95% confidence interval.
 #' Values between `0` and `1` represent the desired confidence interval.
 #'
-#' @param stat.col Specifies the colours of the statistics text.
+#' @param stat.col A colour which is used for the statistics text.
 #' Can accept a single colour value or a vector of colours.
 #'
 #' @param stat.cex A numeric value specifying the size of the `statistics text size.
@@ -251,7 +248,7 @@
 #'
 #' @param risktable.cex A numeric value specifying the size of the risk table text size.
 #'
-#' @param risktable.col Specifies the colours of the risk table.
+#' @param risktable.col A coulour which is used for the risk table.
 #' Can accept a single colour value or a vector of colours.
 #' Default is `black`.
 #'
@@ -267,7 +264,7 @@
 #'
 #' @param risktable.title Title of risk table.
 #'
-#' @param risktable.title.col Specifies the colour for the risk table title.
+#' @param risktable.title.col A colour which is used for the risk table title.
 #' Can accept a single colour value.
 #'
 #' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
@@ -284,7 +281,7 @@
 #'    - `3` italic
 #'    - `4` bold and italic
 #'
-#' @param risktable.name.col Specifies the colour for the risk table name.
+#' @param risktable.name.col A colour which is used for the risk table name.
 #' Can accept a single colour value.
 #'
 #' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
@@ -621,25 +618,6 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # Customize the xticks if not manually specified
 
-  # 11.04.2024
-  # (Code von KGY)
-  # if(missing(xticks)){
-  #   if(!missing(time.unit)){
-  #     if(time.unit == "month"){
-  #       # month: xticks by 6 unit
-  #       xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
-  #     }
-  #     if(time.unit == "year"){
-  #       # year: xticks by 1 unit
-  #       xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
-  #     }
-  #     }
-  #   if(missing(xticks)){
-  #     xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6), by = ceiling(max(fit$time)/6))
-  #     }
-  # }
-
-  # VSO (Entscheiden am: 11.04.2024):
   if(missing(xticks)){
     if(!missing(time.unit)){
       # Check if proper option is provided
@@ -709,15 +687,21 @@ surv.plot <- function(
     }
   }
 
-  # Customize the ylab if not manually specified
-  if(is.null(ylab)){
-    if(y.unit == "percent"){
-      ylab <- "Estimated survival (%)"
+  if (y.unit %in% c("percent", "probability")){
+    if (y.unit == "percent"){
+      if(is.null(ylab)){
+        ylab <- "Estimated survival (%)"
+      }
       yticks.labels <- yticks*100
-    } else {
-      ylab = "Estimated survival probability"
+    }
+    if (y.unit == "probability"){
+      if(is.null(ylab)){
+        ylab <- "Estimated survival prbability"
+      }
       yticks.labels <- yticks
     }
+  } else {
+    stop(paste0("'",y.unit,"'"," is not a valid argument for `y.unit`!"))
   }
 
   # xlab closer to axis line
@@ -1323,7 +1307,6 @@ surv.plot <- function(
   ## 4.3 Stat Function (main) ####
   #----------------------------------------------------------------------------#
   # Display statistics in the plot
-  # Coxmodel aus der funktion heraus nehmen?
 
   if(stat == "logrank"){
     stats <- paste0("Logrank test: ", logrankpval)
@@ -1344,82 +1327,8 @@ surv.plot <- function(
                     round(model$conf.int[4], digits = 2),
                     ")", "\n", "logrank test: ",
                     logrankpval)
-  } else if(stat == "coxmodel"){
-    if(stat.position == "right"){
-      # table is always written from the specified x,y pos from left to right
-      # therefore tables _right position is outside of the border.
-      # And has to be corrected for tables.
-
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.6,
-              y = stat_ypos,
-              tbl,
-              cex = stat.cex,
-              text.col = stat.col)
-    } else if(stat.position == "bottomright"){
-      # table is always written from the specified x,y pos from left to right
-      # therefore tables _right position is outside of the border.
-      # And has to be corrected for tables.
-
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.6, # 0.7
-              y = stat_ypos * 3,
-              tbl,
-              cex = stat.cex,
-              text.col = stat.col)
-    } else if(stat.position == "topright"){
-      # table is always written from the specified x,y pos from left to right
-      # therefore tables _right position is outside of the border.
-      # And has to be corrected for tables.
-
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.6, # 0.7
-              y = stat_ypos * 0.90,
-              tbl,
-              cex = stat.cex,
-              text.col = stat.col)
-    } else {
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos,
-              y = stat_ypos,
-              tbl,
-              cex = stat.cex)
-    }
   }
-
-  if (stat != "none" && stat != "coxmodel"){
+  if (stat != "none"){
     # Annotate the stats in the plot when stat = "coxph, loglik etc.
     text(x = stat_xpos,
          y = stat_ypos,
@@ -1429,6 +1338,7 @@ surv.plot <- function(
          cex = stat.cex,
          font = stat.font)
   }
+
 
   #----------------------------------------------------------------------------#
   # 5. survRisktable ####
