@@ -17,7 +17,8 @@
 #'
 #' @param reference.arm A character string specifying the reference arm for comparison.
 #'
-#' @param time.unit A character string specifying the unit of the of survival time.
+#' @param time.unit A character string specifying the time unit which was used to create the `fit` object.
+#' *Note:* `time.unit` will not convert the time of the `fit` object.
 #'
 #' Option include: `"day"`, `"week"`, `"month"`,`"year"`.
 #'
@@ -154,7 +155,7 @@
 #' @param segment.annotation.col A colour which is used for the segment annotation.
 #' Can accept a single colour value or a vector of colours.
 #'
-#' @param segment.lty A vector of strings specifying line types for each curve.
+#' @param segment.lty A strings specifying line types for each curve.
 #'
 #' Options include: `"blank"`, `"solid"`, `"dashed"`, `"dotted"`, `"dotdash"`,
 #' `"longdash"`, `"twodash"`.
@@ -849,7 +850,7 @@ surv.plot <- function(
   ## 3.1 Segment annotation ####
   #----------------------------------------------------------------------------#
   #----------------------------------------------------------------------------#
-  ### 3.1.1 Define different options ####
+  ### 3.1.1 Define different options for segment text location ####
   #----------------------------------------------------------------------------#
   # Possible options to display the segment text
 
@@ -888,22 +889,22 @@ surv.plot <- function(
     stop(paste0("'",segment.annotation,"'"," is not a valid argument!"))
   }
 
-  #----------------------------------------------------------------------------#
-  ### 3.1.2 Determining the y coordinate for each text ####
-  #----------------------------------------------------------------------------#
-  # ?(11.04.2024)
+  # Determining the y coordinate for the text of each arm
    if (stratum > 1 & (segment.confint == T)){
      text_ypos <- rep(text_ypos, stratum) + (stratum-1):0*segment.annotation.space
    }
 
-  # Prepare the label
+  #----------------------------------------------------------------------------#
+  ### 3.1.2 Preparation of the label ####
+  #----------------------------------------------------------------------------#
+
   if (!is.null(segment.quantile) & is.null(segment.timepoint)){
 
     # Code for segment at a specific quantile
     segment_y <- segment.quantile
     segment_x <- quantile(fit,probs = 1 - segment_y)
 
-    # ? (11.04.2024)
+    # Adjusting label of time.unit with sufix: s
     if(!missing(time.unit)){
       time.unit_temp <- paste0(" ", time.unit, "s")
     } else {
@@ -1174,9 +1175,9 @@ surv.plot <- function(
            col = "black", cex = segment.cex, font = segment.main.font)
     } else if (is.null(segment.main) & !is.null(segment.quantile) & (segment.confint == T | stratum !=2)){
       if (segment.quantile == 0.5){
-        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int*100, "% CI]"), pos = pos,
+        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int * 100, "% CI]"), pos = pos,
              col = "black", cex = segment.cex, font = segment.main.font)
-      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int*100, "% CI]"), pos = pos,
+      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int * 100, "% CI]"), pos = pos,
                    col = "black", cex = segment.cex, font = segment.main.font)
       }
     } else if (is.null(segment.main) & !is.null(segment.timepoint) & (segment.confint == T | stratum !=2)){
@@ -1338,7 +1339,6 @@ surv.plot <- function(
          cex = stat.cex,
          font = stat.font)
   }
-
 
   #----------------------------------------------------------------------------#
   # 5. survRisktable ####

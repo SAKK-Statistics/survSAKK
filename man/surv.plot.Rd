@@ -9,7 +9,8 @@
 
 \item{reference.arm}{A character string specifying the reference arm for comparison.}
 
-\item{time.unit}{A character string specifying the unit of the of survival time.
+\item{time.unit}{A character string specifying the time unit which was used to create the \code{fit} object.
+\emph{Note:} \code{time.unit} will not convert the time of the \code{fit} object.
 
 Option include: \code{"day"}, \code{"week"}, \code{"month"},\code{"year"}.}
 
@@ -167,7 +168,7 @@ Can accept a single colour value or a vector of colours.}
 \item{segment.col}{A colour which is used for the segment.
 Can accept a single colour value.}
 
-\item{segment.lty}{A vector of strings specifying line types for each curve.
+\item{segment.lty}{A strings specifying line types for each curve.
 
 Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"}, \code{"dotdash"},
 \code{"longdash"}, \code{"twodash"}.}
