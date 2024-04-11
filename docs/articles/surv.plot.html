@@ -121,7 +121,6 @@ used.</p>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/baseplot-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="customisation-of-axis-limits-and-label">Customisation of axis limits and label<a class="anchor" aria-label="anchor" href="#customisation-of-axis-limits-and-label"></a>
 </h3>
@@ -135,8 +134,7 @@ used.</p>
 <span>          xlab <span class="op">=</span> <span class="st">"Time (year)"</span>, </span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Veteran's"</span><span class="op">)</span>,</span>
 <span>          <span class="co"># Limits</span></span>
-<span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/label_1-1.png" width="672" style="display: block; margin: auto;"></p>
+<span>          x.ticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="global-adjustment-of-font-size">Global adjustment of font size:<a class="anchor" aria-label="anchor" href="#global-adjustment-of-font-size"></a>
@@ -148,9 +146,8 @@ used.</p>
 <span>          xlab <span class="op">=</span> <span class="st">"Time (year)"</span>, </span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Veteran's"</span><span class="op">)</span>,</span>
 <span>          <span class="co"># Limits</span></span>
-<span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>          x.ticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>          cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/label_2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="custamisation-of-the-x-and-y-axis-label-position">Custamisation of the x and y axis label position<a class="anchor" aria-label="anchor" href="#custamisation-of-the-x-and-y-axis-label-position"></a>
@@ -161,7 +158,6 @@ used.</p>
 <span>          <span class="co"># X and Y label should be drawn</span></span>
 <span>          xlab.pos <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>          ylab.pos <span class="op">=</span> <span class="fl">3.75</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/label3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -173,7 +169,6 @@ used.</p>
 <span>          margin.bottom <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>          <span class="co"># How many left lines should be drawn</span></span>
 <span>          margin.left <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/label4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -191,7 +186,6 @@ quantile.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/median-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="drawing-segment-line-for-a-specific-time-point">Drawing segment line for a specific time point<a class="anchor" aria-label="anchor" href="#drawing-segment-line-for-a-specific-time-point"></a>
@@ -201,7 +195,6 @@ quantile.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          <span class="co"># Segment Options</span></span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/timepoint-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="renaming-segment-title-font-size-and-colour">Renaming segment title, font size, and colour<a class="anchor" aria-label="anchor" href="#renaming-segment-title-font-size-and-colour"></a>
@@ -214,7 +207,6 @@ quantile.</p>
 <span>          segment.annotation <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
 <span>          segment.cex <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>          segment.col <span class="op">=</span> <span class="st">"darkred"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/segmentOption1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="add-several-segment-lines-change-line-type">Add several segment lines, change line type<a class="anchor" aria-label="anchor" href="#add-several-segment-lines-change-line-type"></a>
@@ -225,7 +217,6 @@ quantile.</p>
 <span>          segment.timepoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,</span>
 <span>          segment.type <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>          segment.annotation <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/segmentOption2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-segment-font">Modify segment font<a class="anchor" aria-label="anchor" href="#modify-segment-font"></a>
@@ -238,7 +229,6 @@ quantile.</p>
 <span>          segment.cex <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>          segment.font <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>          segment.main.font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/segmentOption4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-segment-line-type-line-width-and-text-spacing">Modify segment line type, line width and text spacing<a class="anchor" aria-label="anchor" href="#modify-segment-line-type-line-width-and-text-spacing"></a>
@@ -257,7 +247,6 @@ quantile.</p>
 <span>          segment.lwd <span class="op">=</span> <span class="fl">1.5</span>,</span>
 <span>          <span class="co"># spacing between the text in unit of x-coordinates</span></span>
 <span>          segment.annotation.space <span class="op">=</span> <span class="fl">0.16</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/segmentOption5-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -291,7 +280,6 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"logrank"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/stat1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="coxph">
@@ -302,7 +290,6 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <span>          show.legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"bottomright"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/stat2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="coxmodel">
@@ -314,7 +301,6 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <span>          legend.position <span class="op">=</span> <span class="st">"right"</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxmodel"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"topright"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/stat3-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-stat-position-colour-text-size-and-text-font">Modify stat position, colour, text size, and text font<a class="anchor" aria-label="anchor" href="#modify-stat-position-colour-text-size-and-text-font"></a>
@@ -327,7 +313,6 @@ regression using <code>summary(coxph{survival})</code>.</p>
 <span>          stat.col <span class="op">=</span> <span class="st">"darkblue"</span>,</span>
 <span>          stat.cex <span class="op">=</span> <span class="fl">0.85</span>,</span>
 <span>          stat.font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/stat4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -342,7 +327,6 @@ different time points thought the study.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_trt_fit_yr</span>,</span>
 <span>          risktable <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-risktable-position">Modify risktable position<a class="anchor" aria-label="anchor" href="#modify-risktable-position"></a>
@@ -355,7 +339,6 @@ different time points thought the study.</p>
 <span>          margin.left <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>          <span class="co"># Define position of the risk table</span></span>
 <span>          risktable.pos <span class="op">=</span> <span class="fl">8.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable.pos-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-risk-table-title">Modify risk table title<a class="anchor" aria-label="anchor" href="#modify-risk-table-title"></a>
@@ -367,15 +350,16 @@ different time points thought the study.</p>
 <span>          risktable.title.col <span class="op">=</span> <span class="st">"purple"</span>,</span>
 <span>          <span class="co"># specifying the position of the title on the x-axis</span></span>
 <span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable4-1.png" width="672" style="display: block; margin: auto;">
-## Modify risk table label names</p>
+</div>
+<div class="section level3">
+<h3 id="modify-risk-table-label-names">Modify risk table label names<a class="anchor" aria-label="anchor" href="#modify-risk-table-label-names"></a>
+</h3>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          risktable.name.col <span class="op">=</span> <span class="st">"darkgreen"</span>,</span>
 <span>          risktable.name.font <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>          <span class="co"># specifying the position of the title on the x-axis</span></span>
 <span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">0.45</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable5-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-risktable-colour">Modify risktable colour<a class="anchor" aria-label="anchor" href="#modify-risktable-colour"></a>
@@ -383,7 +367,6 @@ different time points thought the study.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">veteran_fit_yr</span>,</span>
 <span>          risktable.col <span class="op">=</span> <span class="st">"darkred"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable6-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="modify-risk-table-font-size">Modify risk table font size<a class="anchor" aria-label="anchor" href="#modify-risk-table-font-size"></a>
@@ -393,7 +376,6 @@ different time points thought the study.</p>
 <span>          risktable.cex <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>          risktable.title.cex <span class="op">=</span> <span class="fl">0.85</span>,</span>
 <span>          risktable.name.cex <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/risktable7-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -408,7 +390,7 @@ different time points thought the study.</p>
 <span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">0.7</span><span class="op">)</span></span>
 <span><span class="co"># Plot 2</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_yr</span>, </span>
-<span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>          x.ticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>          cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>          segment.annotation <span class="op">=</span> <span class="st">"none"</span>,</span>
@@ -416,7 +398,7 @@ different time points thought the study.</p>
 <span><span class="co"># Plot 3</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">veteran_fit_yr</span>, </span>
 <span>          col <span class="op">=</span> <span class="st">"darkred"</span>,</span>
-<span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>          x.ticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>          cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="st">"Veterans"</span>,</span>
 <span>          show.legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -425,7 +407,6 @@ different time points thought the study.</p>
 <span>          segment.cex <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">0.7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/plots1-1.png" width="768" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Plot 1</span></span>
@@ -436,7 +417,7 @@ different time points thought the study.</p>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LT60"</span>,<span class="st">"OV60"</span><span class="op">)</span>,</span>
 <span>          legend.text.font <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkred"</span>, <span class="st">"darkblue"</span><span class="op">)</span>,</span>
-<span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>          x.ticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>          xlab <span class="op">=</span> <span class="op">(</span><span class="st">"Time (month)"</span><span class="op">)</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"logrank"</span>, </span>
@@ -449,13 +430,11 @@ different time points thought the study.</p>
 <span>          cex <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkgreen"</span>,<span class="st">"yellow4"</span><span class="op">)</span>,</span>
 <span>          xlab <span class="op">=</span> <span class="st">"Time (year)"</span>,</span>
-<span>          xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>          x.ticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxmodel"</span>,</span>
-<span>          stat.position <span class="op">=</span> <span class="st">"bottomright"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/plots2-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>          stat.position <span class="op">=</span> <span class="st">"bottomright"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

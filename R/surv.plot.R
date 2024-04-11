@@ -14,174 +14,293 @@
 #' @docType package
 #'
 #' @param fit An object of class [survival::survfit] containing survival data.
-#' @param reference.arm A string that specifies the reference arm for comparison.
-#' @param time.unit The time unit of the survival curve.
-#'    Options:
-#'    - `'day'`
-#'    - `'week'`
-#'    - `'month'`
-#'    - `'year'`
-#' @param y.unit Unit of the y-axis. Options: `'probability'`, `'percent'`
-#' @param censoring.mark A logical parameter indicating whether to mark censoring
-#'    events on the survival curves. Default: \code{TRUE}.
+#'
+#' @param reference.arm A character string specifying the reference arm for comparison.
+#'
+#' @param time.unit A character string specifying the time unit which was used to create the `fit` object.
+#' *Note:* `time.unit` will not convert the time of the `fit` object.
+#'
+#' Option include: `"day"`, `"week"`, `"month"`,`"year"`.
+#'
+#' @param y.unit A character string specifying the unit of the y-axis.
+#'
+#' Option include: `"probability"`, `"percent"`.
+#'
+#' @param censoring.mark A logical parameter indicating whether censoring events
+#' should be marked on the survival curves. Default is \code{TRUE}.
+#'
 #' @param censoring.cex A numeric value specifying the size of the marks for
-#'    censored patients. Default: 1.3.
-#' @param conf.int A numeric value between 0 and 1 controlling the confidence interval on the survival curves.
-#'    The default is 0.95 which corresponds to the 95% confidence interval.
-#'    If set to 0, no confidence intervals are not displayed.
-#'    If a numeric value between 0 and 1 is provided, it represents the desired
-#'    coverage for the confidence interval (e.g. 0.9 for 90%).
+#' censored patients. Default is `1.3`.
+#'
+#' @param conf.int A numeric value controlling the confidence interval on survival curves.
+#' Default is `0.95`, corresponding to a 95% confidence interval.
+#' Values between `0` and `1` represent the desired confidence interval.
+#' If set to `0`, no confidence intervals are displayed.
+#'
 #' @param conf.band A logical parameter indicating whether to display the
-#'    confidence band on the survival curves. Default: \code{TRUE}.
+#' confidence band on the survival curves. Default is \code{TRUE}.
+#'
 #' @param conf.line  A logical parameter indicating whether to draw the confidence
-#'    line on the survival curves. Default: \code{FALSE}.
-#' @param conf.band.col Colour(s) for confidence band. Can accept a single value
-#'    for colour, or a vector of colour values.
-#' @param conf.band.transparent A numeric values from 0 to 1. Controlling the
-#'    transparency of the confidence band. Default: 0.25.
+#' line on the survival curves. Default is \code{FALSE}.
+#'
+#' @param conf.band.col A colour which is used for the confidence band.
+#' Can accept a single colour value or a vector of colours.
+#'
+#' @param conf.band.transparent A numeric value between `0` and `1` controlling the
+#' transparency of the confidence band. Default is `0.25`.
+#'
 #' @param conf.type Transformation type for the confidence interval.
-#' `'log'`, `'log-log'` (default), `'plain'`, `'logit'`, `'arcsin'`.
+#'
+#' Options include: `"log"`, `"log-log"`, `"plain"`, `"logit"`, `"arcsin"`.
+#' Default is `log-log`.
+#'
 #' @param grid A logical parameter specifying whether to draw a grid.
-#'    Default: \code{FALSE}.
-#' @param col Colour(s) for the survival curves. Can accept a single value for
-#'    colour, or a vector of colour values to set colour(s).
+#' Default is \code{FALSE}.
+#'
+#' @param col A colour which is used for the survival curves.
+#' Can accept a single colour value  or a vector of colours.
+#'
 #' @param main Title of the plot.
-#' @param sub Subtitle of the plot. A subtitle only works if no risk table is displayed.
+#'
+#' @param sub Subtitle of the plot.
+#' Note: A subtitle is only displayed if no risk table is shown.
+#'
 #' @param xlab X-axis label.
+#'
 #' @param ylab Y-axis label.
-#' @param xticks A numeric vector specifying the ticks of the x-axis. Can be specified as
-#'    `seq(starting value, end value, number: increment of the sequence)`.
-#' @param yticks A numeric vector specifying the ticks of the y-axis. Can be specified as
-#'    `seq(starting value, end value, number: increment of the sequence)`.
-#'     It should always be specified as probability. For percent the parameter
-#' @param xlab.pos Defines on which margin line the xlab is displayed. Starting at 0 counting outwards.
-#' @param ylab.pos Defines on which margin line the ylab is displayed. Starting at 0 counting outwards.
+#'
+#' @param xticks A numeric vector specifying the ticks of the x-axis.
+#'
+#' Can be specified as `seq(from = , to = , by = )`.
+#' - `from`: starting value
+#' - `to`: end value
+#' - `by`: number; increment of the sequence
+#'
+#' @param yticks A numeric vector specifying the ticks of the y-axis.
+#'
+#' Can be specified as `seq(from = , to = , by = )`.
+#' - `from`: starting value
+#' - `to`: end value
+#' - `by`: number; increment of the sequence
+#'
+#' *Note*: It should always be specified as probability.
+#'
+#' @param xlab.pos Defines the margin line where the x-axis label (xlab) is displayed,
+#' starting at 0 and counting outwards.
+#'
+#' @param ylab.pos Defines the margin line the y-axis label (ylab) is displayed,
+#' starting at 0 counting outwards.
+#'
 #' @param xlab.cex A numeric value specifying the size of the X-axis label.
+#'
 #' @param ylab.cex A numeric value specifying the size of the y-axis label.
-#' @param cex A numeric value specifying all size of the text elements at once
-#'    (labels, annotations, ...).
-#' @param axis.cex A numeric value specifying the size of the `axis` size.
+#'
+#' @param cex A numeric value specifying the size of all all text elements
+#' (labels, annotations, etc.).
+#'
+#' @param axis.cex A numeric value specifying the size of the axis elements.
+#'
 #' @param bty Determines the style of the box drawn around the plot.
-#'    Options: `'n'` (default),`'o'`,`'c'`,`'u'`.
-#' @param lty A vector with three arguments specifying line types for the curve
-#'    and the lower and upper confidence lines
-#'    Options for the three arguments: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
-#'    `'longdash'`, `'twodash'`.
-#'    E.g. `c('solid', 'dashed', 'dashed')`.
+#'
+#' Options include: `"n"` ,`"o"`,`"c"`,`"u"`. Default is: `"n"`.
+#'
+#' @param lty A vector with three arguments specifying line types for the curve,
+#' lower confidence line and upper confidence line.
+#'
+#' Options include: `"blank"`, `"solid"`, `"dashed"`, `"dotted"`, `"dotdash"`,
+#' `"longdash"`, `"twodash"`.
+#'
+#' *Example:* `c("solid", "dashed", "dashed")`.
+#'
 #' @param lwd A numeric value specifying the width of the line.
-#'     `y.unit` can be used.
-#' @param show.legend A logical parameter specifying whether to display legend.
-#'    By default the legend is displayed if there is more than one arm.
+#'
+#' @param legend A logical parameter specifying whether to display legend.
+#' By default, the legend is displayed if there is more than one arm.
+#'
 #' @param legend.position Position of the legend.
-#'    Options: `c(x,y)`, `'bottomright'`, `'bottom'`, `'bottomleft'`, `'left'`,
-#'    '`topleft'`, `'top'`, `'topright'`, `'right'`, `'center'`.
-#' @param legend.name Renaming the name(s) of the arm.
+#'
+#' Options include: "c(x,y)"`, `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`,
+#" "`topleft"`, `"top"`, `"topright"`, `"right"`, `"center"`.
+#'
+#' @param legend.name A vector of character string specifying of the name(s) of the arm(s).
+#'
 #' @param legend.text.font Font style of the legend text.
+#' Possible values:
 #'    - `1` normal
 #'    - `2` bold
 #'    - `3` italic
 #'    - `4` bold and italic
+#'
 #' @param legend.cex A numeric value specifying the size of the legend text.
+#'
 #' @param legend.title Title of the legend.
+#'
 #' @param legend.title.cex A numeric value specifying the size of the legend title.
+#'
 #' @param segment.type A numeric value specifying the layout of the segment.
+#' Possible values:
 #'    - `1` full width
 #'    - `2` half width
 #'    - `3` vertical and horizontal segment (default)
+#'
 #' @param segment.timepoint A single value or a vector of fixed time points
 #'    to be drawn as segment(s).
+#'
 #' @param segment.quantile A single value or a vector of fixed quantile to be
-#'    drawn as segment(s) e.g. 0.5 corresponds to median.
-#' @param segment.col Colour for the segment. Can accept a single value for colour.
-#' @param segment.annotation.col Colour(s) for the segment annotation.
-#'    Can accept a single value for colour, or a vector of colour values to
-#'    set colour(s).
-#' @param segment.lty A vector of string specifying line types for each curve.
-#'    Options: `'blank'`, `'solid'`, `'dashed'`, `'dotted'`, `'dotdash'`,
-#'    `'longdash'`, `'twodash'`.
+#'    drawn as segment(s). Example: 0.5 corresponds to median.
+#'
+#' @param segment.col A colour which is used for the segment.
+#' Can accept a single colour value.
+#'
+#' @param segment.annotation.col A colour which is used for the segment annotation.
+#' Can accept a single colour value or a vector of colours.
+#'
+#' @param segment.lty A strings specifying line types for each curve.
+#'
+#' Options include: `"blank"`, `"solid"`, `"dashed"`, `"dotted"`, `"dotdash"`,
+#' `"longdash"`, `"twodash"`.
+#'
 #' @param segment.lwd A numeric value specifying the width of the segment line.
+#'
 #' @param segment.cex A numeric value specifying the size of the segment text size.
+#'
 #' @param segment.font A numeric value specifying the font face.
+#' Possible values:
 #'    - `1` plain
 #'    - `2` bold
 #'    - `3` italic
 #'    - `4` bold-italic
-#' @param segment.main Title of segment text.
-#' @param segment.main.font A numeric value specifying the font face.
+#'
+#' @param segment.main Title of the segment text.
+#'
+#' @param segment.main.font A numeric value specifying the font face for the segment text.
+#' Possible values:
 #'    - `1` plain
 #'    - `2` bold
 #'    - `3` italic
 #'    - `4` bold-italic
+#'
 #' @param segment.annotation Position of the segment annotation.
-#'    Options: `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`, `'top'`, `'none'`.
-#' @param segment.confint Display the confidence interval.
-#'    `segment.confint` = `FALSE` is only possible if there are two arms.
-#'    Default: \code{TRUE}.
-#' @param segment.annotation.space Spacing between the text in unit of x-coordinates.
-#' @param stat  Statistics which is displayed in the plot.
+#'
+#' Options include: `c(x,y)`,`"bottomleft"`, `"left"`, `"right"`, `"top"`, `"none"`.
+#'
+#' @param segment.confint A logical parameter specifying whether to display
+#' the confidence interval for the segment.
+#'
+#'
+#' *NOTE:* Only possible to set `segment.confint = FALSE` if there are two arms.
+#' Default is \code{TRUE}.
+#'
+#' @param segment.annotation.space Spacing between the text in units of x-coordinates.
+#'
+#' @param stat.fit An object of class [survival::survfit] containing survival data.
+#' Used for calculation of statistics, allowing to add stratification factors.
+#'
+#' *Note:* If not specified the `fit` object will be used for the `stat`.
+#'
+#' @param stat  Statistics displayed in the plot.
+#'
 #'    Options:
-#'    - `'logrank'` gives the p value of the conducted logrank test using `survdiff{survival}`.
+#'
+#'    - `"logrank"` gives the p value of the conducted logrank test using `survdiff{survival}`.
 #'      To tests if there is a difference between two or more survival curves.
 #'
-#'    - `'coxph'`  gives the hazard ratio (HR) and its CI (default: 95% CI) of the conducted
-#'      Cox proportional hazards regression using `coxph{survival}`. This option
+#'    - `"coxph"`  gives the hazard ratio (HR) and its CI (default: 95% CI)of the conducted
+#'      Cox proportional hazards regression using `coxph{survival}`. *Note*: This option
 #'      only works if there are two arms.
 #'
-#'    - `'coxph_logrank'`  combines the hazard ratio (HR), its CI (default: 95% CI) and the
-#'      logrank test. This option only works if there are two arms.
+#'    - `"coxph_logrank"` combines the hazard ratio (HR), its CI (default: 95% CI) and the
+#'      logrank test. *Note:* This option only works if there are two arms.
 #'
-#'    - `'coxmodel'` gives `N` (number of observations), `Events` (Number of events),
-#'      `HR`(hazard ratio), `lwrCI` (lower 95% confidence interval),
-#'      `uprCI` (upper 95% confidence interval) and `Logrank` (p-value corresponding to the Chisquare statistic)
-#'      of the conduct Cox proportional hazards regression using `summary(coxph{survival})`.
 #'    - `'none'` no statistic is displayed (default).
-#' @param stat.position Position where the stat should be displayed.
-#'    Options: specify explicit by `c(x,y)`,`'bottomleft'`, `'left'`, `'right'`,
-#'    `'top'`, `'topright'`,`'bottomright'`, `'none'`.
-#' @param stat.conf.int Controlling the confidence interval on the hazard ratio.
-#'    If a numeric value between 0 and 1 is provided, it represents the desired
-#'    coverage for the confidence interval (e.g. 0.9 for 90%).
-#'    Default: 0.95
-#' @param stat.fit An second object of class `survfit` which is used for
-#'    calculation of statistics. This allows to add stratification factors.
-#'    Optional parameter.
-#' @param stat.col Colour of the `stat` text. Can accept a single value for colour.
-#' @param stat.cex A numeric value specifying the size of the `stat` text size.
-#' @param stat.font The font face.
+#'
+#'    Note: Confidence interval can be adjusted with the argument `stat.conf.int`.
+#'
+#' @param stat.position Position where the `stat` should be displayed.
+#'
+#' Options include: `c(x,y)`,`"bottomleft"`, `"left"`, `"right"`,
+#' `"top"`, `"topright"`,`"bottomright"`, `"none"`.
+#'
+#' @param stat.conf.int A numeric value controlling the confidence interval on
+#' the `stat` (hazard ratio). Default is `0.95`, corresponds to a 95% confidence interval.
+#' Values between `0` and `1` represent the desired confidence interval.
+#'
+#' @param stat.col A colour which is used for the statistics text.
+#' Can accept a single colour value or a vector of colours.
+#'
+#' @param stat.cex A numeric value specifying the size of the `statistics text size.
+#'
+#' @param stat.font The font face of the statistics
+#' Possible values:
+#'
 #'    - `1` plain
 #'    - `2` bold
 #'    - `3` italic
 #'    - `4` bold-italic
-#' @param risktable A logical parameter indicating whether to draw risk table. Default: \code{TRUE}.
-#' @param risktable.pos Defines on which margin line the xlab is displayed. Starting at 0 counting outwards. Default at line 3.
-#' @param margin.bottom Specifies the bottom margin of the plotting area in line units. Default: 5
-#' @param margin.left Specifies the left margin of the plotting area in line units. Default: 6 (with risktable) or 4 (without risktable)
-#' @param margin.top Specifies the top margin of the plotting area in line units. Default: 3
-#' @param margin.right Specifies the right margin of the plotting area in line units. Default: 2
-#' @param risktable.title Title of risk table.
-#' @param risktable.title.font Title font of risk table.
-#'    - `1` normal
-#'    - `2` bold
-#'    - `3` italic
-#'    - `4` bold and italic
-#' @param risktable.title.col Colour for the risk table title. Can accept a single value for colour.
-#' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
-#' @param risktable.name Names of the arms for the risk table only.
+#'
+#' @param risktable A logical parameter indicating whether to draw risk table.
+#' Default is \code{TRUE}.
+#'
+#' @param risktable.pos Defines on which margin line of the xlab is displayed,
+#' starting at 0 counting outwards.
+#' Default is at line `3`.
+#'
+#' @param risktable.name Names of the arms for the risk table.
+#'
 #' @param risktable.cex A numeric value specifying the size of the risk table text size.
-#' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
-#' @param risktable.name.cex A numeric value specifying the size of the risk table legend name size.
-#' @param risktable.col Colour(s) for the risk table. Can accept a single value for colour, or a vector of colour values to set colour(s).
-#'    If it is set to \code{TRUE} then the colors of the curves are used.
-#'    Default: black
-#' @param risktable.name.font legend name(s) font of risk table.
+#'
+#' @param risktable.col A coulour which is used for the risk table.
+#' Can accept a single colour value or a vector of colours.
+#' Default is `black`.
+#'
+#' *Note:* If `risktable.col = TRUE` then the colours of the curves are used.
+#'
+#' @param risktable.title.font Font style of the risk table.
+#' Possible values:
+#'
 #'    - `1` normal
 #'    - `2` bold
 #'    - `3` italic
 #'    - `4` bold and italic
-#' @param risktable.name.col Colour for the risk table name. Can accept a single value for colour.
+#'
+#' @param risktable.title Title of risk table.
+#'
+#' @param risktable.title.col A colour which is used for the risk table title.
+#' Can accept a single colour value.
+#'
+#' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
+#'
+#' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
+#'
+#' @param risktable.name.cex A numeric value specifying the size of the risk table legend name size.
+#'
+#' @param risktable.name.font Font style of the risk table legend name(s).
+#' Possible values:
+#'
+#'    - `1` normal
+#'    - `2` bold
+#'    - `3` italic
+#'    - `4` bold and italic
+#'
+#' @param risktable.name.col A colour which is used for the risk table name.
+#' Can accept a single colour value.
+#'
 #' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
 #'
-#' @return Kaplan-Meier curves t of the input \code{fit}, incorporating various statistics and layout option(s).
+#' @param margin.bottom Specifies the bottom margin of the plotting area in line units.
+#' Default is `5`.
+#'
+#' @param margin.left Specifies the left margin of the plotting area in line units.
+#' Default is `6` (with risktable) or `4` (without risktable).
+#'
+#' @param margin.top Specifies the top margin of the plotting area in line units.
+#' Default is `3`.
+#'
+#' @param margin.right Specifies the right margin of the plotting area in line units.
+#' Default is `2`.
+#'
+#' @return Kaplan-Meier curves of the input \code{fit},
+#' incorporating various statistics and layout option(s).
 #'
 #' @export
 #'
@@ -220,11 +339,6 @@ surv.plot <- function(
     reference.arm,
     time.unit,
     y.unit = "probability",
-    # Margin area
-    margin.bottom = 5,
-    margin.left= NULL,
-    margin.top= 3,
-    margin.right = 2,
     # Censoring
     censoring.mark = TRUE,
     censoring.cex = 1.3,
@@ -254,11 +368,11 @@ surv.plot <- function(
     lty = c("solid","dotted","dotted"),
     lwd = 3,
     # Legend options
-    show.legend,
+    legend,
     legend.position = "topright",
     legend.name = NULL,
-    legend.text.font = 1,
     legend.cex,
+    legend.text.font = 1,
     legend.title = NULL,
     legend.title.cex,
     # Segment options
@@ -266,42 +380,47 @@ surv.plot <- function(
     segment.timepoint = NULL,
     segment.quantile = NULL,
     segment.main = NULL,
+    segment.confint = TRUE,
     segment.annotation = "right",
-    segment.col = "#666666",
     segment.annotation.col = col,
+    segment.annotation.space = 0.06,
+    segment.col = "#666666",
     segment.lty = "dotted",
     segment.lwd = 1.3,
     segment.cex,
-    segment.confint = TRUE,
-    segment.annotation.space = 0.06,
     segment.font = 1,
     segment.main.font = 1,
-    # Stats option s
+    # Stats options
+    stat.fit,
     stat = "none",
     stat.position = "bottomleft",
     stat.conf.int = 0.95,
-    stat.fit,
     stat.col = "black",
     stat.cex,
     stat.font = 1,
     # risk table options
     risktable = TRUE,
     risktable.pos = 2,
+    risktable.name,
+    risktable.cex,
+    risktable.col = "black",
     risktable.title = "# at risk",
     risktable.title.font = 2,
     risktable.title.col = "black",
     risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
-    risktable.name,
-    risktable.cex,
     risktable.title.cex,
     risktable.name.cex,
-    risktable.col = "black",
     risktable.name.font = 1,
     risktable.name.col = "black",
-    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15
+    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    # Margin area
+    margin.bottom = 5,
+    margin.left= NULL,
+    margin.top= 3,
+    margin.right = 2
 ){
   #----------------------------------------------------------------------------#
-  # 1. PREPARTION ####
+  # 1. Preparation ####
   #----------------------------------------------------------------------------#
 
   #----------------------------------------------------------------------------#
@@ -465,7 +584,7 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.9 Define Plotting area with and without risk table. ####
+  ## 1.9 Plotting area with and without risktable ####
   #----------------------------------------------------------------------------#
   # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
 
@@ -496,40 +615,42 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  # 2. survPlot ####
-  #----------------------------------------------------------------------------#
-
-  #----------------------------------------------------------------------------#
-  ## 2.1 Customization of xticks and xlab ####
+  ## 1.10 Customization of xticks ####
   #----------------------------------------------------------------------------#
   # Customize the xticks if not manually specified
 
   if(missing(xticks)){
     if(!missing(time.unit)){
-      if(time.unit == "month"){
-        # month: xticks by 6 unit
-        xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
+      # Check if proper option is provided
+      if (!(time.unit %in% c("day", "week", "month", "year"))) {
+        stop("Undefined parameter provided for argument: `time.unit`")
+      } else {
+        if(time.unit == "month"){
+          # month: xticks by 6 unit
+          xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
+        }
+        if(time.unit == "year"){
+          # year: xticks by 1 unit
+          xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
+        }
+        if(time.unit %in% c("day", "week")){
+          xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
+                        by = ceiling(max(fit$time)/6))
+        }
       }
-      if(time.unit == "year"){
-        # year: xticks by 1 unit
-        xticks <- seq(from = 0, to = ceiling(max(fit$time)), by = 1)
-      }
-      }
-    if(missing(xticks)){
-      xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6), by = ceiling(max(fit$time)/6))
-      }
-  }
-
-  # Customize the x-axis label if it was not specified in the function call
-  if(is.null(xlab)){
-    if(!missing(time.unit)){
-      xlab <- paste0("Time (", time.unit, "s)")
     } else {
-      xlab <- "Time"
+      xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
+                    by = ceiling(max(fit$time)/6))
     }
   }
 
-  ## Main Plotting Function ####
+  #----------------------------------------------------------------------------#
+  # 2. survPlot ####
+  #----------------------------------------------------------------------------#
+
+  #----------------------------------------------------------------------------#
+  ## 2.1 Plotting Function (main) ####
+  #----------------------------------------------------------------------------#
   base::plot(
     # Plot the survival curve
     fit,
@@ -554,19 +675,44 @@ surv.plot <- function(
     ylab = ""                             # Draw y label
   )
 
-  if(is.null(ylab)){
-    if(y.unit == "percent"){
-      ylab <- "Estimated survival (%)"
-      yticks.labels <- yticks*100
+  #----------------------------------------------------------------------------#
+  ## 2.2 Customization of xlab and ylab ####
+  #----------------------------------------------------------------------------#
+
+  # Customize the xlab if not manually specified
+  if(is.null(xlab)){
+    if(!missing(time.unit)){
+      xlab <- paste0("Time (", time.unit, "s)")
     } else {
-      ylab = "Estimated survival probability"
-      yticks.labels <- yticks
+      xlab <- "Time"
     }
   }
 
-  # xlab and ylab closer to axis line
+  if (y.unit %in% c("percent", "probability")){
+    if (y.unit == "percent"){
+      if(is.null(ylab)){
+        ylab <- "Estimated survival (%)"
+      }
+      yticks.labels <- yticks*100
+    }
+    if (y.unit == "probability"){
+      if(is.null(ylab)){
+        ylab <- "Estimated survival prbability"
+      }
+      yticks.labels <- yticks
+    }
+  } else {
+    stop(paste0("'",y.unit,"'"," is not a valid argument for `y.unit`!"))
+  }
+
+  # xlab closer to axis line
   mtext(paste(xlab), side = 1, line = xlab.pos, cex = xlab.cex)
+  # ylab closer to axis line
   mtext(paste(ylab), side = 2, line = ylab.pos, cex = ylab.cex)
+
+  #----------------------------------------------------------------------------#
+  ## 2.3 Customization of coordinates ####
+  #----------------------------------------------------------------------------#
 
   # Customize the x coordinates
   graphics::axis(
@@ -587,8 +733,10 @@ surv.plot <- function(
     labels = yticks.labels,               # Draw labels
     cex.axis = axis.cex                   # Axis size
   )
+  #----------------------------------------------------------------------------#
+  ## 2.4 Draw grid ####
+  #----------------------------------------------------------------------------#
 
-  ## Draw grid ####
   if (is.logical(grid)) {
     if (grid == TRUE) {
       grid(nx = length(xticks)-1, ny = length(yticks)-1)
@@ -597,7 +745,10 @@ surv.plot <- function(
     stop("`gird` expecting TRUE or FALSE as an argument!")
   }
 
-  ## Add confidence band ####
+  #----------------------------------------------------------------------------#
+  ## 2.5 Confidence band ####
+  #----------------------------------------------------------------------------#
+
   if(conf.band == TRUE){
     mapping <- 0
     # Loop for drawing polygons
@@ -658,17 +809,21 @@ surv.plot <- function(
     }
   }
 
-  ## Add legend to plot  ####
-  # By default the legend is displayed if there is more than one stratum
-  if(missing(show.legend)){
+  #----------------------------------------------------------------------------#
+  ## 2.6 Add legend to plot  ####
+  #----------------------------------------------------------------------------#
+  # Note: by default the legend is displayed if there is more than one stratum
+
+  if(missing(legend)){
     if(stratum == 1){
-      show.legend <- FALSE
+      legend <- FALSE
     } else {
-      show.legend <- TRUE
+      legend <- TRUE
     }
   }
-  if (is.logical(show.legend)){
-    if(show.legend == TRUE){
+
+  if (is.logical(legend)){
+    if(legend == TRUE){
       graphics::legend(
         x = legend.position[1],   # the x coordinates to position the legend
         y = legend.position[2],   # the y coordinates to position the legend
@@ -684,12 +839,21 @@ surv.plot <- function(
       )
     }
   } else {
-    stop("`show.legend` expecting TRUE or FAlSE as an argument!")
+    stop("`legend` expecting TRUE or FAlSE as an argument!")
   }
 
-  # 3.SURV.SEGMENT ####
+  #----------------------------------------------------------------------------#
+  # 3. survSegment ####
+  #----------------------------------------------------------------------------#
 
-  ## Define different options to display the segment text  ####
+  #----------------------------------------------------------------------------#
+  ## 3.1 Segment annotation ####
+  #----------------------------------------------------------------------------#
+  #----------------------------------------------------------------------------#
+  ### 3.1.1 Define different options for segment text location ####
+  #----------------------------------------------------------------------------#
+  # Possible options to display the segment text
+
   if (length(segment.annotation) == 2) {
     # Checks if it's a numeric vector (x, y coordinates)
     text_xpos <- segment.annotation[1]
@@ -725,17 +889,22 @@ surv.plot <- function(
     stop(paste0("'",segment.annotation,"'"," is not a valid argument!"))
   }
 
-  ## Determining the y coordinate for each text ####
+  # Determining the y coordinate for the text of each arm
    if (stratum > 1 & (segment.confint == T)){
      text_ypos <- rep(text_ypos, stratum) + (stratum-1):0*segment.annotation.space
    }
 
-  ## Prepare the label
+  #----------------------------------------------------------------------------#
+  ### 3.1.2 Preparation of the label ####
+  #----------------------------------------------------------------------------#
+
   if (!is.null(segment.quantile) & is.null(segment.timepoint)){
+
     # Code for segment at a specific quantile
     segment_y <- segment.quantile
     segment_x <- quantile(fit,probs = 1 - segment_y)
 
+    # Adjusting label of time.unit with sufix: s
     if(!missing(time.unit)){
       time.unit_temp <- paste0(" ", time.unit, "s")
     } else {
@@ -761,7 +930,6 @@ surv.plot <- function(
                                "]")
     }
   }
-
 
   if (is.null(segment.quantile) & !is.null(segment.timepoint)){
     # Code for segment at a specific time point
@@ -825,14 +993,15 @@ surv.plot <- function(
 
     }
   }
+  #----------------------------------------------------------------------------#
+  ## 3.2 Segment Function (main) ####
+  #----------------------------------------------------------------------------#
+  # Drawing segments with different options
 
-
-
-  ## Main Segment Function ####
   if (segment.type == 3){
-    ### Type 3: Drawing vertical and horizontal segments ####
-    if (!is.null(segment.quantile) & is.null(segment.timepoint)){
 
+    ### 3.2.1 Drawing vertical and horizontal segments ####
+    if (!is.null(segment.quantile) & is.null(segment.timepoint)){
       # Draw vertical Line
       segments(x0 = segment_x$quantile,
                y0 = 0,
@@ -894,8 +1063,10 @@ surv.plot <- function(
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
+
   } else if (segment.type == 2){
-    ### Type 2: Draw specified segment ####
+
+    ### 3.2.2 Drawing specified segment (half bandwidth) ####
     if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
 
       # Horizontal Line
@@ -941,8 +1112,10 @@ surv.plot <- function(
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
+
   } else if (segment.type == 1){
-    ### Type 1: Drawing specified segment (full bandwidth) ####
+
+    ### 3.2.3 Drawing specified segment (full bandwidth) ####
     if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
 
       # Draw horizontal Line
@@ -990,16 +1163,21 @@ surv.plot <- function(
     }
   }
 
-  ### Draw title for segment text ####
+  #----------------------------------------------------------------------------#
+  ### 3.3 Segment title ####
+  #----------------------------------------------------------------------------#
+  # Title for the segment text
+  # Hier braucht es sicher ein paar code wo die stabilität der funktion kontrolliert.
+
   if (!("none" %in% segment.annotation)){
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
     } else if (is.null(segment.main) & !is.null(segment.quantile) & (segment.confint == T | stratum !=2)){
       if (segment.quantile == 0.5){
-        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int*100, "% CI]"), pos = pos,
+        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int * 100, "% CI]"), pos = pos,
              col = "black", cex = segment.cex, font = segment.main.font)
-      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int*100, "% CI]"), pos = pos,
+      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int * 100, "% CI]"), pos = pos,
                    col = "black", cex = segment.cex, font = segment.main.font)
       }
     } else if (is.null(segment.main) & !is.null(segment.timepoint) & (segment.confint == T | stratum !=2)){
@@ -1015,21 +1193,28 @@ surv.plot <- function(
     }
   }
 
-  # 4. SURV.STATS ####
+  #----------------------------------------------------------------------------#
+  # 4. survStats ####
+  #----------------------------------------------------------------------------#
 
-  ## Stopp function if stat = coxph or coxph_logrank is chosen but number of arms is unequal 2
+  # Stop function if stat = coxph or coxph_logrank is chosen
+  # but number of arms is unequal 2
   if ((stat == "coxph" | stat == "coxph_logrank") & stratum != 2) {
     stop("It is not possible to set `stat` equal to `coxph` or`coxph_logrank`
-          if number of arms is unequal 2. ")
+          if number of arms is unequal 2.")
   }
 
-  ## Define different options for stat position ####
+  #----------------------------------------------------------------------------#
+  ## 4.1 Stat position ####
+  #----------------------------------------------------------------------------#
+  # Define different options for stat position
+
   if (length(stat.position) == 2){
     # If it's a numeric vector (x, y coordinates)
     stat_xpos <- stat.position[1]
     stat_ypos <- stat.position[2]
     # Position the text to the right of the specified (x,y)
-    pos <- 1 #vorher 1
+    pos <- 1
   } else if (stat.position == "bottomleft"){
     if(stat == "coxph_logrank") {
       stat_ypos <- 0.08
@@ -1042,7 +1227,7 @@ surv.plot <- function(
     stat_ypos <- 0.53
     stat_xpos <- min(xticks)
     pos <- 4
-  }else if (stat.position == "right"){
+  } else if (stat.position == "right"){
     stat_ypos <- 0.53
     stat_xpos <- max(xticks)
     # Position the text to the left of the specified (x,y)
@@ -1065,7 +1250,11 @@ surv.plot <- function(
     pos <- 2
   }
 
-  ## recalculate the stat.fit object based on defined 'reference.arm'
+  #----------------------------------------------------------------------------#
+  ## 4.2 Recalculate Stat ####
+  #----------------------------------------------------------------------------#
+  # Recalculate the stat.fit object based on defined 'reference.arm'
+
   if(!missing(reference.arm) & !missing(stat.fit)){
     data <- as.data.frame(eval(stat.fit$call$data))
     arm.variable <- as.character(fit$call$formula[3])
@@ -1074,7 +1263,9 @@ surv.plot <- function(
     stat.fit <- eval(stat.fit$call)
   }
 
-  ## Log rank test ####
+  #----------------------------------------------------------------------------#
+  ### 4.2.1 Log rank test ####
+  #----------------------------------------------------------------------------#
 
   # To compare the survival curves of two or more groups
   if(missing(stat.fit)){
@@ -1087,6 +1278,7 @@ surv.plot <- function(
   logrank[1] <- call("survdiff")
 
   # Check first if strata > 1
+  # VSO (09.04.2024) Wird schon im 4.) kontrolliert, sollten wir das streichen.
   if(is.null(fit$strata)){
     logrank <- NULL
   } else {
@@ -1096,9 +1288,12 @@ surv.plot <- function(
     logrankpval <- round.pval(logrankpval)
   }
 
-  ## Cox proportional hazard regression ####
-
+  #----------------------------------------------------------------------------#
+  ### 4.2.2 Cox regression ####
+  #----------------------------------------------------------------------------#
   # To describe the effect of variables on survival
+
+  # To compare the survival curves of two or more groups
   if(missing(stat.fit)){
     model <- fit$call
   } else {
@@ -1109,7 +1304,10 @@ surv.plot <- function(
   model[1] <- call("coxph")
   model <- summary(eval(model), conf.int = stat.conf.int)
 
-  ## Display statistics in the plot ####
+  #----------------------------------------------------------------------------#
+  ## 4.3 Stat Function (main) ####
+  #----------------------------------------------------------------------------#
+  # Display statistics in the plot
 
   if(stat == "logrank"){
     stats <- paste0("Logrank test: ", logrankpval)
@@ -1130,82 +1328,8 @@ surv.plot <- function(
                     round(model$conf.int[4], digits = 2),
                     ")", "\n", "logrank test: ",
                     logrankpval)
-  } else if(stat == "coxmodel"){
-    if(stat.position == "right"){
-      # table is always written from the specified x,y pos from left to right
-      # therefore tables _right position is outside of the border.
-      # And has to be corrected for tables.
-
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.6,
-              y = stat_ypos,
-              tbl,
-              cex = stat.cex,
-              text.col = stat.col)
-    } else if(stat.position == "bottomright"){
-      # table is always written from the specified x,y pos from left to right
-      # therefore tables _right position is outside of the border.
-      # And has to be corrected for tables.
-
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.6, # 0.7
-              y = stat_ypos * 3,
-              tbl,
-              cex = stat.cex,
-              text.col = stat.col)
-    } else if(stat.position == "topright"){
-      # table is always written from the specified x,y pos from left to right
-      # therefore tables _right position is outside of the border.
-      # And has to be corrected for tables.
-
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos * 0.6, # 0.7
-              y = stat_ypos * 0.90,
-              tbl,
-              cex = stat.cex,
-              text.col = stat.col)
-    } else {
-      # Extract infos and create data frame from model
-      tbl <- data.frame(N = model$n,
-                        Events = model$nevent,
-                        HR = round(model$conf.int[,"exp(coef)"], digits = 2),
-                        lwrCI = round(model$conf.int[,"lower .95"], digits = 2),
-                        uprCI = round(model$conf.int[,"upper .95"], digits = 2),
-                        Logrank = logrankpval)
-      # Annotation
-      # plottbl() function was written to allow to plot different tables reproducible
-      plottbl(x = stat_xpos,
-              y = stat_ypos,
-              tbl,
-              cex = stat.cex)
-    }
   }
-
-  if (stat != "none" && stat != "coxmodel"){
+  if (stat != "none"){
     # Annotate the stats in the plot when stat = "coxph, loglik etc.
     text(x = stat_xpos,
          y = stat_ypos,
@@ -1216,10 +1340,15 @@ surv.plot <- function(
          font = stat.font)
   }
 
-  # 5. SURV.RISKTABLE ####
+  #----------------------------------------------------------------------------#
+  # 5. survRisktable ####
+  #----------------------------------------------------------------------------#
+
   if(is.logical(risktable)){
     if (risktable == TRUE){
-      ## Extract risktable data ####
+  #----------------------------------------------------------------------------#
+  ### 5.1 Extract data ####
+  #----------------------------------------------------------------------------#
       obsStrata <- if(is.null(fit$strata)){
         obsStrata <- 1
       } else {
@@ -1234,25 +1363,30 @@ surv.plot <- function(
       # Loop over each stratum and each time point defined by 'xticks'
       for (stratum_i in 1:stratum) {
         for (x in 1:length(xticks)) {
-          # Find the indices where the survival time for the current group is greater than the current 'xticks'
+          # Find the indices where the survival time for the current group is
+          # greater than the current 'xticks'
           index <- which(fit$time[grp == stratum_i] > xticks[x])
-          # If there are no such indices, set the corresponding element in 'n.risk.matrix' to 0
+          # If there are no such indices,
+          # set the corresponding element in 'n.risk.matrix' to 0
           if (length(index) == 0)
             n.risk.matrix[x,stratum_i] <- 0
           else
-            # Otherwise, set the element to the minimum number at risk for the specified group and time point
+            # Otherwise, set the element to the minimum number at risk
+            # for the specified group and time point
             n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
         }
       }
-
-      ## Add risktable.title text to the outer margin ####
+  #----------------------------------------------------------------------------#
+  ### 5.1.1 Add risktable.title text to the outer margin ####
+  #----------------------------------------------------------------------------#
       mtext(risktable.title, side = 1, outer = FALSE,
             line = risktable.pos, adj = 0, at = risktable.title.position,
             font = risktable.title.font,
             cex = risktable.title.cex,
             col = risktable.title.col)
-
-      ## Add legend text to the outer margin for each stratum ####
+  #----------------------------------------------------------------------------#
+  ### 5.1.2 Add legend text to the outer margin for each stratum ####
+  #----------------------------------------------------------------------------#
       if (missing(risktable.name)) {
         ristkable.name <- legend.name
       } else {
@@ -1267,8 +1401,9 @@ surv.plot <- function(
                 col = risktable.name.col)
         }
       }
-
-      ## Add vector of risk counts text to the margin ####
+  #----------------------------------------------------------------------------#
+  ### 5.1.3 Add vector of risk counts text to the margin ####
+  #----------------------------------------------------------------------------#
       if(max(risktable.col == TRUE)) { risktable.col <- col}
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
             line = rep((1:stratum) + risktable.pos, each = length(xticks)),
