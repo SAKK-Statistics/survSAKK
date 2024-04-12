@@ -40,14 +40,19 @@
 #' @param conf.band A logical parameter indicating whether to display the
 #' confidence band on the survival curves. Default is \code{TRUE}.
 #'
-#' @param conf.line  A logical parameter indicating whether to draw the confidence
-#' line on the survival curves. Default is \code{FALSE}.
-#'
 #' @param conf.band.col A colour which is used for the confidence band.
 #' Can accept a single colour value or a vector of colours.
 #'
 #' @param conf.band.transparent A numeric value between `0` and `1` controlling the
 #' transparency of the confidence band. Default is `0.25`.
+#'
+#' @param conf.line.lty A strings specifying the line type of the confidence lines.
+#'
+#' Options include: `"blank"`, `"solid"`, `"dashed"`, `"dotted"`, `"dotdash"`,
+#' `"longdash"`, `"twodash"`.
+#' Default is `"blank"`.
+#'
+#' @param conf.line.lwd A numeric value specifying the width of the confidence lines.
 #'
 #' @param conf.type Transformation type for the confidence interval.
 #'
@@ -104,13 +109,10 @@
 #'
 #' Options include: `"n"` ,`"o"`,`"c"`,`"u"`. Default is: `"n"`.
 #'
-#' @param lty A vector with three arguments specifying line types for the curve,
-#' lower confidence line and upper confidence line.
+#' @param lty A string specifying the line type of of the curve(s).
 #'
 #' Options include: `"blank"`, `"solid"`, `"dashed"`, `"dotted"`, `"dotdash"`,
 #' `"longdash"`, `"twodash"`.
-#'
-#' *Example:* `c("solid", "dashed", "dashed")`.
 #'
 #' @param lwd A numeric value specifying the width of the line.
 #'
@@ -155,7 +157,7 @@
 #' @param segment.annotation.col A colour which is used for the segment annotation.
 #' Can accept a single colour value or a vector of colours.
 #'
-#' @param segment.lty A strings specifying line types for each curve.
+#' @param segment.lty A strings specifying the line type of the segment(s).
 #'
 #' Options include: `"blank"`, `"solid"`, `"dashed"`, `"dotted"`, `"dotdash"`,
 #' `"longdash"`, `"twodash"`.
@@ -345,9 +347,10 @@ surv.plot <- function(
     # Confidence Interval options
     conf.int = 0.95,
     conf.band = TRUE,
-    conf.line = FALSE,
     conf.band.col = col,
     conf.band.transparent = 0.25,
+    conf.line.lty = "blank",
+    conf.line.lwd = 1,
     conf.type = "log-log",
     # Layout options
     grid = FALSE,
@@ -365,7 +368,7 @@ surv.plot <- function(
     cex = NULL,
     axis.cex,
     bty = "n",
-    lty = c("solid","dotted","dotted"),
+    lty = "solid",
     lwd = 3,
     # Legend options
     legend,
@@ -458,22 +461,6 @@ surv.plot <- function(
   if(missing(ylab.cex)){ylab.cex <- cex}
 
   #----------------------------------------------------------------------------#
-  ## 1.3 Display confidence Line ####
-  #----------------------------------------------------------------------------#
-
-  if(is.logical(conf.line)){
-    if(conf.line == FALSE){
-      lty[c(2, 3)] <-  c("blank","blank")
-    } else if(conf.line == TRUE){
-      lty <-  lty
-    } else{
-      stop("Error in confidence Line argument")
-    }
-  } else {
-    stop("`conf.line` expecting TRUE or FALSE as an argument!")
-  }
-
-  #----------------------------------------------------------------------------#
   ## 1.4 Function to draw table into plot ####
   #----------------------------------------------------------------------------#
   # plottbl() function allows to plot reproducible different tables in the graphics
@@ -549,9 +536,9 @@ surv.plot <- function(
   fit <- eval(fit$call)
 
   #----------------------------------------------------------------------------#
-  ## 1.6 Extraction level of stratum ####
+  ## 1.6 Extraction number of arms ####
   #----------------------------------------------------------------------------#
-  stratum <- max(1, length(fit$strata))
+  arm_no <- max(1, length(fit$strata))
 
   #----------------------------------------------------------------------------#
   ## 1.7 Define default colour(s) ####
@@ -560,7 +547,7 @@ surv.plot <- function(
     if(is.null(fit$strata)){
       col <- "black"
     } else {
-      for (i in 1:stratum){
+      for (i in 1:arm_no){
         # RColorBrewer::display.brewer.pal(n = 10, name = "Paired")
         col[i] <- c("#1F78B4","#4DAF4A","#A6CEE3","#B2DF8A","#FB9A99","#E31A1C","#FDBF6F","#CAB2D6","#6A3D9A")[i]
       }
@@ -568,7 +555,7 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.8 Extract group (stratum) names ####
+  ## 1.8 Extract group (arm) names ####
   #----------------------------------------------------------------------------#
   # Extract group names if not manually specified for legend
 
@@ -596,7 +583,7 @@ surv.plot <- function(
       }
      # Set up the plot with margin (ora) and outer margins (oma)
       # c(bottom, left, top, right)
-      par(mar = c(stratum + margin.bottom, margin.left, margin.top, margin.right) + 0.1,
+      par(mar = c(arm_no + margin.bottom, margin.left, margin.top, margin.right) + 0.1,
           # distance (lines) of axis elements from plot region
           # c(axis title, axis label, axis ticks)
           mgp = c(3, 1, 0)
@@ -651,6 +638,11 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   ## 2.1 Plotting Function (main) ####
   #----------------------------------------------------------------------------#
+
+  # Combind lty and lwd of main curve and confidence lines
+  lty.main <- c(lty, rep(conf.line.lty, 2))
+  lwd.main <- c(lwd, rep(conf.line.lwd, 2))
+
   base::plot(
     # Plot the survival curve
     fit,
@@ -659,8 +651,8 @@ surv.plot <- function(
     main = main,
     sub = sub,
     col = col,
-    lty = rep(lty, stratum),
-    lwd = lwd,
+    lty = rep(lty.main, arm_no),
+    lwd = rep(lwd.main, arm_no),
     # Add censoring information with ticks
     mark.time = censoring.mark,
     mark = "/",
@@ -752,11 +744,11 @@ surv.plot <- function(
   if(conf.band == TRUE){
     mapping <- 0
     # Loop for drawing polygons
-    for (i in 1:stratum) {
-      if(stratum >1){
+    for (i in 1:arm_no) {
+      if(arm_no >1){
         mapping[length(mapping)+1] <- mapping[i]+fit$strata[i]
       }
-      if(stratum == 1){
+      if(arm_no == 1){
         mapping[length(mapping)+1] <- length(fit$time)
       }
       # Extract x_coordinates from survfit object
@@ -812,10 +804,10 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   ## 2.6 Add legend to plot  ####
   #----------------------------------------------------------------------------#
-  # Note: by default the legend is displayed if there is more than one stratum
+  # Note: by default the legend is displayed if there is more than one arm
 
   if(missing(legend)){
-    if(stratum == 1){
+    if(arm_no == 1){
       legend <- FALSE
     } else {
       legend <- TRUE
@@ -850,9 +842,8 @@ surv.plot <- function(
   ## 3.1 Segment annotation ####
   #----------------------------------------------------------------------------#
   #----------------------------------------------------------------------------#
-  ### 3.1.1 Define different options for segment text location ####
+  ### 3.1.1 Set segment text location by `segment.annotation` ####
   #----------------------------------------------------------------------------#
-  # Possible options to display the segment text
 
   if (length(segment.annotation) == 2) {
     # Checks if it's a numeric vector (x, y coordinates)
@@ -874,7 +865,7 @@ surv.plot <- function(
     # Position the text to the left of the specified (x,y)
     pos <- 2
   } else if (segment.annotation == "top"){
-    if(stratum == 2){
+    if(arm_no == 2){
       text_ypos <- 0.85
     } else {
       text_ypos <- 0.9
@@ -890,15 +881,15 @@ surv.plot <- function(
   }
 
   # Determining the y coordinate for the text of each arm
-   if (stratum > 1 & (segment.confint == T)){
-     text_ypos <- rep(text_ypos, stratum) + (stratum-1):0*segment.annotation.space
+   if (arm_no > 1 & (segment.confint == T)){
+     text_ypos <- rep(text_ypos, arm_no) + (arm_no-1):0*segment.annotation.space
    }
 
   #----------------------------------------------------------------------------#
   ### 3.1.2 Preparation of the label ####
   #----------------------------------------------------------------------------#
 
-  if (!is.null(segment.quantile) & is.null(segment.timepoint)){
+  if(!is.null(segment.quantile) & is.null(segment.timepoint)){
 
     # Code for segment at a specific quantile
     segment_y <- segment.quantile
@@ -911,7 +902,8 @@ surv.plot <- function(
       time.unit_temp <- ""
     }
 
-    if(segment.confint == F & stratum == 2){
+    # Short annotation without confidence interval (only possible if number of arms = 2)
+    if(segment.confint == F & arm_no == 2){
       if(segment.quantile == 0.5) {quantile.temp <- "Median"}
       else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
       quantile_label <- paste0(quantile.temp, ": ",
@@ -920,23 +912,31 @@ surv.plot <- function(
                                round(segment_x$quantile[2],digits = 1),
                                time.unit_temp)
       segment.annotation.col <- "black"
+
+    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
+    } else if(segment.confint == F & arm_no != 2) {
+      stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
+
+    # Long annotation with confidence interval
     } else {
       quantile_label <- paste0(round(segment_x$quantile,digits = 1),
                                time.unit_temp,
-                               " [",
+                               " (",
                                round(segment_x$lower,digits = 1),
-                               ",",
+                               " to ",
                                round(segment_x$upper,digits = 1),
-                               "]")
+                               ")")
     }
   }
 
-  if (is.null(segment.quantile) & !is.null(segment.timepoint)){
+  if(is.null(segment.quantile) & !is.null(segment.timepoint)){
+
     # Code for segment at a specific time point
     segment_x <- segment.timepoint
     segment_y <- summary(fit,time = segment_x)
 
-    if(segment.confint == F & stratum == 2){
+    # Short annotation without confidence interval (only possible if number of arms = 2)
+    if(segment.confint == F & arm_no == 2){
       if(missing(time.unit)){time_temp <- paste0("time ", segment.timepoint)}
       else {time_temp <- paste0(segment.timepoint, " ", time.unit, "s")}
 
@@ -951,31 +951,13 @@ surv.plot <- function(
       }
       segment.annotation.col <- "black"
 
-      # if(y.unit == "percent"){
-      #   timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100, "%")
-      # } else {
-      #   timepoint_label <- paste0(round(segment_y$surv, digits = 2))
-      # }
+    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
+    } else if(segment.confint == F & arm_no != 2) {
+      stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
 
+    # Long annotation with confidence interval
     } else {
-    #   if(y.unit == "percent"){
-    #     timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100,
-    #                               "% [",
-    #                               round(segment_y$lower, digits = 3)*100,
-    #                               "%,",
-    #                               round(segment_y$upper, digits = 3)*100,
-    #                               "%]")
-    #   } else {
-    #     timepoint_label <- paste0(round(segment_y$surv, digits = 2),
-    #                               " [",
-    #                               round(segment_y$lower, digits = 2),
-    #                               ",",
-    #                               round(segment_y$upper, digits = 2),
-    #                               "]")
-    #   }
-
-
-      if(y.unit == "percent"){
+       if(y.unit == "percent"){
         timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100,
                                   "% (95% CI: ",
                                   round(segment_y$lower, digits = 3)*100,
@@ -993,6 +975,11 @@ surv.plot <- function(
 
     }
   }
+
+  if(!is.null(segment.quantile) & !is.null(segment.timepoint)){
+    stop(paste0("The parameters `segment.quantile` and `segment.timepoint` cannot be used simultaneously"))
+  }
+
   #----------------------------------------------------------------------------#
   ## 3.2 Segment Function (main) ####
   #----------------------------------------------------------------------------#
@@ -1020,16 +1007,6 @@ surv.plot <- function(
                lty = segment.lty,
                lwd = segment.lwd)
 
-      # Annotate the segment (Survival time at specific quantile)
-      if (!("none" %in% segment.annotation)){
-        text(x = text_xpos,
-             y = text_ypos,
-             labels = quantile_label,
-             pos = pos,
-             col = segment.annotation.col,
-             cex = segment.cex,
-             font = segment.font)
-      }
     } else if (is.null(segment.quantile) & !is.null(segment.timepoint)){
 
       # Draw vertical Line
@@ -1050,16 +1027,6 @@ surv.plot <- function(
                lty = segment.lty,
                lwd = segment.lwd)
 
-      # Annotate the segment
-      if (!("none" %in% segment.annotation)){
-        text(x = text_xpos,
-             y = text_ypos,
-             labels = timepoint_label,
-             pos = pos,
-             col = segment.annotation.col,
-             cex = segment.cex,
-             font = segment.font)
-      }
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
@@ -1078,16 +1045,6 @@ surv.plot <- function(
                lty = segment.lty,
                lwd = segment.lwd)
 
-      # Annotate the segment
-      if (!("none" %in% segment.annotation)){
-        text(x = text_xpos,
-             y = text_ypos,
-             labels = quantile_label,
-             pos = pos,
-             col = segment.annotation.col,
-             cex = segment.cex,
-             font = segment.font)
-      }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
 
       # Vertical Line
@@ -1099,16 +1056,6 @@ surv.plot <- function(
                lty = segment.lty,
                lwd = segment.lwd)
 
-      # Annotate the segment
-      if (!("none" %in% segment.annotation)){
-        text(x = text_xpos,
-             y = text_ypos,
-             labels = timepoint_label,
-             pos = pos,
-             col = segment.col,
-             cex = segment.cex,
-             font = segment.font)
-      }
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options.")
     }
@@ -1127,16 +1074,6 @@ surv.plot <- function(
                lty = segment.lty,
                lwd = segment.lwd )
 
-      # Annotate the segment
-      if (!("none" %in% segment.annotation)){
-        text(x = text_xpos,
-             y = text_ypos,
-             labels = quantile_label,
-             pos = pos,
-             col = segment.annotation.col,
-             cex = segment.cex,
-             font = segment.font)
-      }
     } else if (is.null(segment.quantile ) & !is.null(segment.timepoint)){
 
       # Draw vertical Line
@@ -1147,47 +1084,75 @@ surv.plot <- function(
                col = segment.col,
                lty = segment.lty,
                lwd = segment.lwd)
-
-      # Annotate the segment
-      if (!("none" %in% segment.annotation)){
-        text(x = text_xpos,
-             y = text_ypos,
-             labels = timepoint_label,
-             pos = pos,
-             col = segment.annotation.col,
-             cex = segment.cex,
-             font = segment.font)
-      }
     } else if (!is.null(segment.quantile) & !is.null(segment.timepoint)) {
       stop("`segment.timepoint` AND `segment.quantile ` not applicable! Choose one of the two options. ")
     }
+  } else {
+    stop(paste0("`segment.type`", " = ", segment.type, " is no valid option."))
+  }
+
+  ### 3.2.4 Add segment annotation ####
+
+  # Segment annotation is displayed if segment.quantile or segment.timepoint was chosen (and not
+  # both of them) and segment.annotation is not "none".
+  if (segment.type %in% c(1,2,3) & !("none" %in% segment.annotation) &
+      (!is.null(segment.quantile ) & is.null(segment.timepoint) |
+       is.null(segment.quantile ) & !is.null(segment.timepoint))) {
+
+    # Long annotation with confidence interval
+    #if(segment.confint == F & arm_no == 2) {
+      if (is.null(segment.timepoint)) {
+        segment_label <- quantile_label
+      } else if (is.null(segment.quantile)){
+        segment_label <- timepoint_label
+      }
+      text(x = text_xpos,
+           y = text_ypos,
+           labels = segment_label,
+           pos = pos,
+           col = segment.annotation.col,
+           cex = segment.cex,
+           font = segment.font)
+
+    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
+    #}} else if(segment.confint == F & arm_no != 2) {
+    #  stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
+
+    # Short annotation without confidence interval
+    #} else {
+    #}
+
+
   }
 
   #----------------------------------------------------------------------------#
   ### 3.3 Segment title ####
   #----------------------------------------------------------------------------#
   # Title for the segment text
-  # Hier braucht es sicher ein paar code wo die stabilität der funktion kontrolliert.
 
   if (!("none" %in% segment.annotation)){
+    # Display `setment.main` as title of segment annotation if it was specified
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
-    } else if (is.null(segment.main) & !is.null(segment.quantile) & (segment.confint == T | stratum !=2)){
+    # Display corresponding title if `segment.quantile` was specified and confidence interval is displayed
+    } else if (!is.null(segment.quantile) & (segment.confint == T | arm_no !=2)){
+      # For median
       if (segment.quantile == 0.5){
-        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median [", conf.int * 100, "% CI]"), pos = pos,
+        text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0("Median (", conf.int * 100, "% CI)"), pos = pos,
              col = "black", cex = segment.cex, font = segment.main.font)
-      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile [", conf.int * 100, "% CI]"), pos = pos,
+      # For other quantiles
+      } else {text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"-Quantile (", conf.int * 100, "% CI)"), pos = pos,
                    col = "black", cex = segment.cex, font = segment.main.font)
       }
-    } else if (is.null(segment.main) & !is.null(segment.timepoint) & (segment.confint == T | stratum !=2)){
+    # Display corresponding title if `segment.timepoint` was specified and confidence interval is displayed
+    } else if (!is.null(segment.timepoint) & (segment.confint == T | arm_no !=2)){
+      # If time unit was specified
       if(!missing(time.unit)){
         time_point_temp <- paste0(" at ", segment.timepoint, " ", time.unit, "s")
       } else {
         time_point_temp <- paste0(" at time ", segment.timepoint)
       }
-      # text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival", time_point_temp, " [", conf.int, "% CI]"), pos = pos,
-      #      col = "black", cex = segment.cex, font = segment.main.font)
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = paste0(segment.quantile,"Survival", time_point_temp), pos = pos,
            col = "black", cex = segment.cex, font = segment.main.font)
     }
@@ -1199,7 +1164,7 @@ surv.plot <- function(
 
   # Stop function if stat = coxph or coxph_logrank is chosen
   # but number of arms is unequal 2
-  if ((stat == "coxph" | stat == "coxph_logrank") & stratum != 2) {
+  if ((stat == "coxph" | stat == "coxph_logrank") & arm_no != 2) {
     stop("It is not possible to set `stat` equal to `coxph` or`coxph_logrank`
           if number of arms is unequal 2.")
   }
@@ -1355,13 +1320,13 @@ surv.plot <- function(
         obsStrata <- fit$strata
       }
 
-      grp <- rep(1:stratum, times=obsStrata)
+      grp <- rep(1:arm_no, times=obsStrata)
 
       # Initialize a matrix 'n.risk.matrix' with zeros
-      n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = stratum)
+      n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
 
-      # Loop over each stratum and each time point defined by 'xticks'
-      for (stratum_i in 1:stratum) {
+      # Loop over each arm and each time point defined by 'xticks'
+      for (stratum_i in 1:arm_no) {
         for (x in 1:length(xticks)) {
           # Find the indices where the survival time for the current group is
           # greater than the current 'xticks'
@@ -1385,15 +1350,15 @@ surv.plot <- function(
             cex = risktable.title.cex,
             col = risktable.title.col)
   #----------------------------------------------------------------------------#
-  ### 5.1.2 Add legend text to the outer margin for each stratum ####
+  ### 5.1.2 Add legend text to the outer margin for each arm ####
   #----------------------------------------------------------------------------#
       if (missing(risktable.name)) {
         ristkable.name <- legend.name
       } else {
         ristkable.name <- risktable.name
       }
-      if(stratum > 1){
-        for (i in 1:stratum){
+      if(arm_no > 1){
+        for (i in 1:arm_no){
           mtext(text = ristkable.name[i], side = 1, outer = FALSE,
                 line = i+risktable.pos, adj = 0, at = risktable.name.position,
                 font = risktable.name.font,
@@ -1406,8 +1371,8 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
       if(max(risktable.col == TRUE)) { risktable.col <- col}
       mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
-            line = rep((1:stratum) + risktable.pos, each = length(xticks)),
-            at = rep(xticks, stratum),
+            line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
+            at = rep(xticks, arm_no),
             cex = risktable.cex,
             col = c(rep(risktable.col, each = length(xticks)))
       )

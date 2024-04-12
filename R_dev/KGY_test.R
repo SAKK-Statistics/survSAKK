@@ -109,6 +109,7 @@ surv.plot(S1, segment.quantile=0.5, segment.annotation = "left")
 surv.plot(S1, segment.quantile=0.5, segment.annotation = "right")
 surv.plot(S1, segment.quantile=0.5, segment.annotation = c(8, 0.75))
 surv.plot(S2, segment.quantile=0.5)
+surv.plot(S2, segment.quantile=0.5, segment.annotation = "none")
 surv.plot(S2, segment.quantile=0.5, segment.annotation = "bottomleft")
 surv.plot(S2, segment.quantile=0.5, segment.annotation = "sddffd")
 surv.plot(S1, segment.quantile=0.5, segment.annotation = "top")
@@ -149,9 +150,11 @@ surv.plot(S2, segment.quantile=0.5, time.unit = "month", segment.confint = F)
 surv.plot(S2, segment.quantile=0.5, segment.confint = F)
 surv.plot(S2, segment.quantile=0.5, segment.confint = F, segment.lty = "blank", segment.annotation = "bottomleft")
 
+surv.plot(S2, segment.quantile=0.5, segment.annotation = "top", segment.type = 4)
 
 # segment.timepoint
 surv.plot(S1, segment.timepoint=8)
+surv.plot(S1, segment.timepoint=8, segment.quantile=0.5)
 surv.plot(S1, segment.timepoint=8, segment.type = 2)
 surv.plot(S1, segment.timepoint=8, segment.annotation = "bottomleft")
 surv.plot(S1, segment.timepoint=8, y.unit = "percent")
@@ -159,16 +162,20 @@ surv.plot(S1, segment.timepoint=8, y.unit = "percent", segment.annotation = "bot
 surv.plot(S2, segment.timepoint=8, y.unit = "percent", segment.annotation = "bottomleft")
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top")
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top")
+surv.plot(S2, segment.timepoint=8, segment.annotation = "none")
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent")
 
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top", time.unit = "month")
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top", time.unit = "month", y.unit = "percent")
 
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top")
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top", segment.main = "Survival test")
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top", segment.confint = F)
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.confint = F)
 surv.plot(S2, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.confint = F, time.unit = "month")
 surv.plot(S1, segment.timepoint=8, segment.annotation = "top", y.unit = "percent", segment.confint = F, time.unit = "month")
+
+surv.plot(S2, segment.timepoint=8, segment.annotation = "top", segment.type = "kk")
 
 
 # test statistics ###############################################
@@ -178,9 +185,6 @@ surv.plot(S2, stat = "coxph")
 surv.plot(S2, stat = "coxph", stat.position = c(8, 0.75))
 surv.plot(S2, stat = "coxph", stat.position = "bottomleft")
 surv.plot(S2, stat = "coxph", stat.position = c(8, 0.75), conf.int = 0.9)
-surv.plot(S2, stat = "coxmodel")
-surv.plot(S2, stat = "coxmodel", stat.position = c(8, 0.75)) # Does not work. Why?
-surv.plot(S2, stat = "coxmodel", stat.position = "left")
 surv.plot(S2, stat = "coxph_logrank")
 surv.plot(S2, stat = "coxph_logrank") # too close tho x-axis
 surv.plot(S2, stat = "coxph_logrank", stat.position = "right")
@@ -217,7 +221,12 @@ surv.plot(S2, time.unit ="month")
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"))
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"), risktable.name = c("aaa", "bbb"))
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A"))
+
+surv.plot(S2, time.unit ="month", legend.name="")
+surv.plot(S1, time.unit ="month", legend.name = c("Arm A"))
 surv.plot(S1, time.unit ="month", legend.name = c("Arm A"), show.legend = T)
+surv.plot(S1, time.unit ="month", legend.name = c("Arm A"), show.legend = T)
+
 surv.plot(S2, time.unit ="month", legend.name = c("Arm A", "Arm B"), legend.title = "Treatment arm", risktable.name.short = c("A", "B"))
 
 
@@ -260,10 +269,17 @@ surv.plot(S3, segment.quantile=0.5, time.unit = "month")
 surv.plot(S2, segment.quantile=0.5, time.unit = "month")
 surv.plot(S4, segment.timepoint=8, time.unit = "month")
 surv.plot(S4, stat = "logrank", time.unit = "month")
+surv.plot(S4, stat = "logrank", time.unit = "month", conf.line.lty = "solid")
 
 surv.plot(S2, stat = "coxph", time.unit = "month")
 surv.plot(S2, stat = "coxph_logrank", time.unit = "month")
 surv.plot(S4, stat = "coxph", time.unit = "month")
+
+# check segment.confint for 3 arms
+surv.plot(S4, segment.timepoint=8, segment.annotation = "top", segment.confint = F)
+surv.plot(S4, segment.quantile=0.5, segment.annotation = "top", segment.confint = F)
+surv.plot(S1, segment.timepoint=8, segment.annotation = "top", segment.confint = F)
+surv.plot(S1, segment.quantile=0.5, segment.annotation = "top", segment.confint = F)
 
 
 # test stat with SAKK 08/15 ###############################################
@@ -423,4 +439,18 @@ surv.plot(S4, segment.quantile = 0.5, segment.annotation.space = 0.05)
 
 
 surv.plot(S2, segment.quantile = 0.5, cex.lab = 3)
+
+
+# test lwd, lty and conf.line.lwd, conf.line.lty ###############################################
+surv.plot(S2)
+surv.plot(S2, lwd = 2)
+surv.plot(S2, lwd = 2, lty = "dotted")
+surv.plot(S2, conf.line.lty = "dotted")
+surv.plot(S2, conf.line.lty = "solid")
+surv.plot(S2, conf.line.lty = "solid", conf.line.lwd = 3)
+surv.plot(S2, lty = "dotted", conf.line.lty = "solid", conf.line.lwd = 3)
+surv.plot(S2, conf.line.lty = "dotted", conf.line.lwd = 2.5)
+surv.plot(S2, conf.line.lty = "solid")
+
+
 
