@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Creating survival plot">
 <meta property="og:description" content="survSAKK">
@@ -94,10 +94,11 @@ statistics in our plot.</p>
 <p>To show some benefit of this function, <em>NCCTG Lung Cancer
 Data</em>, available in the survival package is used.</p>
 <div class="section level2">
-<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+<h2 id="setup-and-loading-data">Setup and Loading Data<a class="anchor" aria-label="anchor" href="#setup-and-loading-data"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load required libraries</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Load required libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sakk-statistics.github.io/survSAKK/">survSAKK</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
 <span></span>
@@ -118,128 +119,152 @@ Data</em>, available in the survival package is used.</p>
 <h2 id="drawing-basic-survival-plot">Drawing basic survival plot<a class="anchor" aria-label="anchor" href="#drawing-basic-survival-plot"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.m</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Single arm</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.m</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot1-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Two arm</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot1-2.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
+<h2 id="customisation-of-the-survival-plot">Customisation of the survival plot<a class="anchor" aria-label="anchor" href="#customisation-of-the-survival-plot"></a>
+</h2>
 <div class="section level3">
-<h3 id="customisation-colours-figure-title-and-axis-names">Customisation colours, figure title and axis names<a class="anchor" aria-label="anchor" href="#customisation-colours-figure-title-and-axis-names"></a>
+<h3 id="colour-title-and-axis-label">Colour, title and axis label<a class="anchor" aria-label="anchor" href="#colour-title-and-axis-label"></a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          <span class="co"># Colour</span></span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cadetblue2"</span>, <span class="st">"cadetblue"</span><span class="op">)</span>,</span>
+<span>          <span class="co"># Title</span></span>
 <span>          main <span class="op">=</span> <span class="st">"Kaplan-Meier plot"</span>,</span>
+<span>          <span class="co"># Axis label</span></span>
 <span>          xlab <span class="op">=</span> <span class="st">"Time since treatment start (months)"</span>,</span>
 <span>          ylab <span class="op">=</span> <span class="st">"Overall survival (probability)"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="customisation-of-legend">Customisation of legend<a class="anchor" aria-label="anchor" href="#customisation-of-legend"></a>
+<h3 id="legend-position-name-and-title">Legend position, name and title<a class="anchor" aria-label="anchor" href="#legend-position-name-and-title"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Chose legend position and names of the arms</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span></span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot3-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Chose legend position manually and add a title</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Chose legend position manually and add a legend title</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">0.9</span><span class="op">)</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          legend.title <span class="op">=</span> <span class="st">"sex"</span></span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          legend.title <span class="op">=</span> <span class="st">"Sex"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot3-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="customisation-of-ticks-and-axis-limits">Customisation of ticks and axis limits<a class="anchor" aria-label="anchor" href="#customisation-of-ticks-and-axis-limits"></a>
+<h3 id="axis-limts-xticks-and-yticks">Axis limts, xticks and yticks<a class="anchor" aria-label="anchor" href="#axis-limts-xticks-and-yticks"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          xticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, by <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, </span>
 <span>          yticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot4-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Cut curve at 24 months</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Cut curve at 24 months</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          xticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">24</span>, by <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot4-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="adjustment-of-font-size">Adjustment of font size:<a class="anchor" aria-label="anchor" href="#adjustment-of-font-size"></a>
+<h3 id="font-size">Font size<a class="anchor" aria-label="anchor" href="#font-size"></a>
 </h3>
 <div class="section level4">
-<h4 id="global-adjustment-of-the-font-size">Global adjustment of the font size<a class="anchor" aria-label="anchor" href="#global-adjustment-of-the-font-size"></a>
+<h4 id="global-adjustment">Global adjustment<a class="anchor" aria-label="anchor" href="#global-adjustment"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          ylab <span class="op">=</span> <span class="st">"Overall survival"</span>,</span>
-<span>          cex <span class="op">=</span> <span class="fl">1.4</span></span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          <span class="co"># Global adjustment</span></span>
+<span>          cex <span class="op">=</span> <span class="fl">1.3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot6-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
-<h4 id="specific-adjustments-of-the-font-size">Specific adjustments of the font size<a class="anchor" aria-label="anchor" href="#specific-adjustments-of-the-font-size"></a>
+<h4 id="specific-adjustment">Specific adjustment<a class="anchor" aria-label="anchor" href="#specific-adjustment"></a>
 </h4>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          main <span class="op">=</span> <span class="st">"Kaplan-Meier plot"</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          legend.title <span class="op">=</span> <span class="st">"sex"</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          legend.title <span class="op">=</span> <span class="st">"Sex"</span>,</span>
+<span>          <span class="co"># Size of x-axis label</span></span>
 <span>          xlab.cex <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>          <span class="co"># Size of y-axis label</span></span>
 <span>          ylab.cex <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>          <span class="co"># Size of axis elements</span></span>
 <span>          axis.cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>          <span class="co"># Size of the censoirng marks</span></span>
 <span>          censoring.cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          <span class="co"># Size of the legend title</span></span>
 <span>          legend.title.cex <span class="op">=</span> <span class="fl">1.2</span>,</span>
-<span>          risktable.cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>          risktable.name.cex <span class="op">=</span> <span class="fl">0.8</span></span>
+<span>          <span class="co"># Size of the risktable</span></span>
+<span>          risktable.cex <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>          <span class="co"># Size of the risktable name</span></span>
+<span>          risktable.name.cex <span class="op">=</span> <span class="fl">0.9</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot7-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="customisation-of-the-x-and-y-axis-label-position">Customisation of the x and y axis label position<a class="anchor" aria-label="anchor" href="#customisation-of-the-x-and-y-axis-label-position"></a>
+<h3 id="label-position-x-and-y-axis">Label position x and y axis<a class="anchor" aria-label="anchor" href="#label-position-x-and-y-axis"></a>
 </h3>
-<p>Shift x and y axis label outwards.</p>
+<div class="section level4">
+<h4 id="shift-x-and-y-axis-label">Shift x and y axis label<a class="anchor" aria-label="anchor" href="#shift-x-and-y-axis-label"></a>
+</h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          xlab.pos <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>          ylab.pos <span class="op">=</span> <span class="fl">4</span></span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          xlab.pos <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>          ylab.pos <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot8-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+</div>
 <div class="section level3">
-<h3 id="customisation-of-the-marging-area">Customisation of the marging area<a class="anchor" aria-label="anchor" href="#customisation-of-the-marging-area"></a>
+<h3 id="marging-area-customisation">Marging area customisation<a class="anchor" aria-label="anchor" href="#marging-area-customisation"></a>
 </h3>
-<p>In this example we change the margins and shift the y axis label
-outwards.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          margin.bottom <span class="op">=</span> <span class="fl">3.5</span>,</span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Change the margins and shift the y axis label</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          <span class="co"># New margin area </span></span>
+<span>          margin.bottom <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>          margin.left <span class="op">=</span> <span class="fl">7</span>,</span>
 <span>          margin.top <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>          margin.right <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>          <span class="co"># Define margin of the y-axis label</span></span>
 <span>          ylab.pos <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot9-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="customisation-of-time-unit-and-y-unit">Customisation of time.unit and y.unit<a class="anchor" aria-label="anchor" href="#customisation-of-time-unit-and-y-unit"></a>
+<h3 id="time-unit-and-y-axis-unit">Time unit and y-axis unit<a class="anchor" aria-label="anchor" href="#time-unit-and-y-axis-unit"></a>
 </h3>
 <p>The parameter <code>time.unit</code> can be set as follows:
 <code>"day"</code>, <code>"week"</code>,
 <code>"month"</code>,<code>"year"</code>.</p>
-<p>Note the following:</p>
+<p><strong>Note the following:</strong></p>
 <ul>
 <li><p>The time unit in <code>time.unit</code> needs to correspond to
 the time unit which was used to calculate the survival object
@@ -250,17 +275,20 @@ chosen by intervals of 6 months. Whereas for
 1.</p></li>
 </ul>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Time unit of month</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
-<span>          y.unit <span class="op">=</span> <span class="st">"percent"</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span></span>
+<span>          y.unit <span class="op">=</span> <span class="st">"probability"</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot10-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.y</span>,</span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Time unit of year</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.y</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"year"</span>,</span>
 <span>          y.unit <span class="op">=</span> <span class="st">"percent"</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span></span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot10-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -276,34 +304,34 @@ different time points.</p>
 </h3>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          risktable <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="modify-risktable-position">Modify risktable position<a class="anchor" aria-label="anchor" href="#modify-risktable-position"></a>
+<h3 id="risktable-position">Risktable position<a class="anchor" aria-label="anchor" href="#risktable-position"></a>
 </h3>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Move risk table names and titles to the left</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">7</span>,</span>
+<span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">6</span>,</span>
 <span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">7</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable.pos1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="modify-risk-table-title-label-names-colour">Modify risk table title, label names, colour<a class="anchor" aria-label="anchor" href="#modify-risk-table-title-label-names-colour"></a>
+<h3 id="risktable-title-colour-and-label-name">Risktable title, colour and label name<a class="anchor" aria-label="anchor" href="#risktable-title-colour-and-label-name"></a>
 </h3>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          risktable.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m"</span>, <span class="st">"f"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          risktable.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>,</span>
 <span>          risktable.col <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          risktable.title <span class="op">=</span> <span class="st">"Number at risk"</span>,</span>
-<span>          risktable.title.font <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>          risktable.title.col <span class="op">=</span> <span class="st">"darkgray"</span></span>
+<span>          risktable.title.font <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>          risktable.title.col <span class="op">=</span> <span class="st">"#E41A1C"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable.pos2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -311,46 +339,51 @@ different time points.</p>
 <div class="section level2">
 <h2 id="drawing-segment">Drawing segment<a class="anchor" aria-label="anchor" href="#drawing-segment"></a>
 </h2>
-<p>This section explains how to highlight a specific quantile or time
-point as a segment in the survival curve and how to adjust segment
-annotation.</p>
+<p>This section explains how to highlight a <strong>specific
+quantile</strong> or <strong>time point</strong> as a segment in the
+survival curve and how to adjust segment annotation.</p>
 <div class="section level3">
-<h3 id="drawing-segment-line-for-a-specific-quantile">Drawing segment line for a specific quantile<a class="anchor" aria-label="anchor" href="#drawing-segment-line-for-a-specific-quantile"></a>
+<h3 id="for-a-specific-quantile">For a specific quantile<a class="anchor" aria-label="anchor" href="#for-a-specific-quantile"></a>
 </h3>
-<p>Drawing a segment line for the median, which corresponds to 0.5
-quantile.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Drawing a segment line for the median, which corresponds to 0.5 quantile</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/median-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>          <span class="co"># Specifying time unit</span></span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/median-2.png" width="672" style="display: block; margin: auto;"></p>
-<p>Drawing a segment line for 0.75 quantile.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="co"># Drawing segment for the 0.75 quantile</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.75</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/quantile0_75-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="drawing-segment-line-for-a-specific-time-point">Drawing segment line for a specific time point<a class="anchor" aria-label="anchor" href="#drawing-segment-line-for-a-specific-time-point"></a>
+<h3 id="for-a-specific-time-point">For a specific time point<a class="anchor" aria-label="anchor" href="#for-a-specific-time-point"></a>
 </h3>
-<p>Drawing a segment line at 12 months.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="co">#  Drawing a segment line at 12 months</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">12</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/timepoint-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="customisation-of-the-segment">Customisation of the segment<a class="anchor" aria-label="anchor" href="#customisation-of-the-segment"></a>
+</h2>
 <div class="section level3">
 <h3 id="change-position-of-segment-annotation">Change position of segment annotation<a class="anchor" aria-label="anchor" href="#change-position-of-segment-annotation"></a>
 </h3>
@@ -360,7 +393,7 @@ values: <code>c(x,y)</code>,<code>"bottomleft"</code>,
 <code>"none"</code></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">18</span>,</span>
 <span>          segment.annotation <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span></span>
@@ -368,16 +401,16 @@ values: <code>c(x,y)</code>,<code>"bottomleft"</code>,
 <p><img src="surv.plot_files/figure-html/segment1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="customisation-of-segment-title-font-size-and-colour">Customisation of segment title, font, size, and colour<a class="anchor" aria-label="anchor" href="#customisation-of-segment-title-font-size-and-colour"></a>
+<h3 id="segment-title-font-size-and-colour">Segment title, font, size, and colour<a class="anchor" aria-label="anchor" href="#segment-title-font-size-and-colour"></a>
 </h3>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cadetblue2"</span>, <span class="st">"cadetblue"</span><span class="op">)</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>          segment.font <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>          segment.main.font <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>          segment.font <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>          segment.main.font <span class="op">=</span> <span class="fl">11</span>,</span>
 <span>          segment.main <span class="op">=</span> <span class="st">"Median PFS in months (95% CI)"</span>,</span>
 <span>          segment.cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>          segment.annotation.col <span class="op">=</span> <span class="st">"darkgray"</span></span>
@@ -385,23 +418,24 @@ values: <code>c(x,y)</code>,<code>"bottomleft"</code>,
 <p><img src="surv.plot_files/figure-html/segment2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="add-several-segment-lines-change-line-type">Add several segment lines, change line type<a class="anchor" aria-label="anchor" href="#add-several-segment-lines-change-line-type"></a>
+<h3 id="segment-lines-for-different-time-points-quantile">Segment lines for different time points / quantile<a class="anchor" aria-label="anchor" href="#segment-lines-for-different-time-points-quantile"></a>
 </h3>
 <p>Note that <code>segment.annotation</code> needs to be set to “none”.
 Otherwise the code does not work.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># several quantiles</span></span>
+<code class="sourceCode R"><span><span class="co"># Several quantiles</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          segment.quantile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          segment.quantile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.25</span><span class="op">)</span>,</span>
 <span>          segment.annotation <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/segment3-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># several time points</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Several time points</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">18</span><span class="op">)</span>,</span>
 <span>          segment.annotation <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span></span>
@@ -409,11 +443,11 @@ Otherwise the code does not work.</p>
 <p><img src="surv.plot_files/figure-html/segment3-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="modify-segment-line-type-line-width-and-text-spacing">Modify segment line type, line width and text spacing<a class="anchor" aria-label="anchor" href="#modify-segment-line-type-line-width-and-text-spacing"></a>
+<h3 id="segment-line-type-line-width-and-text-spacing">Segment line type, line width and text spacing<a class="anchor" aria-label="anchor" href="#segment-line-type-line-width-and-text-spacing"></a>
 </h3>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>          segment.lwd <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -423,40 +457,21 @@ Otherwise the code does not work.</p>
 <p><img src="surv.plot_files/figure-html/segment5-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="modify-confidence-interval">Modify confidence interval<a class="anchor" aria-label="anchor" href="#modify-confidence-interval"></a>
-</h3>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>          conf.int <span class="op">=</span> <span class="fl">0.9</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/segment6-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          segment.timepoint <span class="op">=</span> <span class="fl">18</span>,</span>
-<span>          y.unit <span class="op">=</span> <span class="st">"percent"</span>,</span>
-<span>          conf.int <span class="op">=</span> <span class="fl">0.9</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/segment6-2.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="short-version-of-the-annotation-without-confidence-intervals">Short version of the annotation without confidence intervals<a class="anchor" aria-label="anchor" href="#short-version-of-the-annotation-without-confidence-intervals"></a>
+<h3 id="segment-annotation-short-version">Segment annotation short version<a class="anchor" aria-label="anchor" href="#segment-annotation-short-version"></a>
 </h3>
 <p>Note that the option <code>segment.confint = FALSE</code> only works
 for two arms.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
 <span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>          segment.confint <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/segment7-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">18</span>,</span>
 <span>          segment.confint <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -464,6 +479,26 @@ for two arms.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/segment7-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="modify-confidence-interval">Modify confidence interval<a class="anchor" aria-label="anchor" href="#modify-confidence-interval"></a>
+</h2>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          segment.quantile <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>          conf.int <span class="op">=</span> <span class="fl">0.8</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="surv.plot_files/figure-html/segment6-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          segment.timepoint <span class="op">=</span> <span class="fl">18</span>,</span>
+<span>          y.unit <span class="op">=</span> <span class="st">"percent"</span>,</span>
+<span>          conf.int <span class="op">=</span> <span class="fl">0.9</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="surv.plot_files/figure-html/segment6-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="include-statistics">Include statistics<a class="anchor" aria-label="anchor" href="#include-statistics"></a>
@@ -485,7 +520,7 @@ the conducted Cox proportional hazards regression using
 </h3>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"logrank"</span>,</span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/stat1-1.png" width="672" style="display: block; margin: auto;"></p>
@@ -496,7 +531,7 @@ the conducted Cox proportional hazards regression using
 </h3>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/stat2-1.png" width="672" style="display: block; margin: auto;"></p>
@@ -507,17 +542,21 @@ the conducted Cox proportional hazards regression using
 </h3>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph_logrank"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/stat3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="customisation-of-the-statistics">Customisation of the statistics<a class="anchor" aria-label="anchor" href="#customisation-of-the-statistics"></a>
+</h2>
 <div class="section level3">
-<h3 id="modify-stat-position-colour-text-size-and-text-font">Modify stat position, colour, text size, and text font<a class="anchor" aria-label="anchor" href="#modify-stat-position-colour-text-size-and-text-font"></a>
+<h3 id="stat-position-colour-text-size-and-text-font">Stat position, colour, text size, and text font<a class="anchor" aria-label="anchor" href="#stat-position-colour-text-size-and-text-font"></a>
 </h3>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"logrank"</span>,</span>
 <span>          stat.position <span class="op">=</span> <span class="st">"right"</span>,</span>
 <span>          stat.col <span class="op">=</span> <span class="st">"darkgrey"</span>,</span>
@@ -527,34 +566,26 @@ the conducted Cox proportional hazards regression using
 <p><img src="surv.plot_files/figure-html/stat4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="choose-reference-arm">Choose reference arm<a class="anchor" aria-label="anchor" href="#choose-reference-arm"></a>
+<h3 id="stat-with-redfined-reference-arm-and-confidence-level">Stat with redfined reference arm and confidence level<a class="anchor" aria-label="anchor" href="#stat-with-redfined-reference-arm-and-confidence-level"></a>
 </h3>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>,<span class="st">"male"</span><span class="op">)</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Female"</span>,<span class="st">"Male"</span><span class="op">)</span>,</span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph_logrank"</span>,</span>
-<span>          reference.arm <span class="op">=</span> <span class="fl">2</span></span>
+<span>          reference.arm <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>          stat.conf.int <span class="op">=</span> <span class="fl">0.80</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/stat_ref_arm-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="choose-confidence-level">Choose confidence level<a class="anchor" aria-label="anchor" href="#choose-confidence-level"></a>
-</h3>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
-<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>          stat <span class="op">=</span> <span class="st">"coxph_logrank"</span>,</span>
-<span>          stat.conf.int <span class="op">=</span> <span class="fl">0.9</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="surv.plot_files/figure-html/stat_conf_level-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="use-stratification">Use stratification<a class="anchor" aria-label="anchor" href="#use-stratification"></a>
+<h3 id="stat-with-stratification">Stat with stratification<a class="anchor" aria-label="anchor" href="#stat-with-stratification"></a>
 </h3>
 <p>In the next example the ECOG performance status is used as
 stratification factor for the calculation of the statistics.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_lung_stratified</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time.m</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">strata</a></span><span class="op">(</span><span class="va">ph.ecog</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">lung</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Fit survival object with stratification</span></span>
+<span></span>
+<span><span class="va">fit_lung_stratified</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time.m</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">strata</a></span><span class="op">(</span><span class="va">ph.ecog</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">lung</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          stat.fit <span class="op">=</span> <span class="va">fit_lung_stratified</span>,</span>
@@ -569,8 +600,14 @@ stratification factor for the calculation of the statistics.</p>
 </h2>
 <p>We present to ways how to combine plots: via
 <code>par(mfrow=c())</code> and via <code><a href="https://rdrr.io/r/graphics/screen.html" class="external-link">split.screen()</a></code></p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<div class="section level3">
+<h3 id="multiple-plots-using-parmfrowc">Multiple plots using <code>par(mfrow=c())</code><a class="anchor" aria-label="anchor" href="#multiple-plots-using-parmfrowc"></a>
+</h3>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Creating 4 sub-plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Plot 1</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.d</span><span class="op">)</span></span>
 <span><span class="co"># Plot 2</span></span>
@@ -581,11 +618,29 @@ stratification factor for the calculation of the statistics.</p>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cadetblue2"</span>, <span class="st">"cadetblue"</span><span class="op">)</span>, </span>
 <span>          time.unit <span class="op">=</span> <span class="st">"year"</span>, </span>
 <span>          stat <span class="op">=</span> <span class="st">"coxph"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Plot 4</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          <span class="co"># Cusomization of the survival plot</span></span>
+<span>          main <span class="op">=</span> <span class="st">"Kaplan-Meier plot"</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          legend.title <span class="op">=</span> <span class="st">"Sex"</span>,</span>
+<span>          xlab.cex <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>          ylab.cex <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>          axis.cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>          censoring.cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          legend.title.cex <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>          <span class="co"># Customization of the risktable</span></span>
+<span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">9</span>,</span>
+<span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">9</span>,</span>
+<span>          risktable.cex <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/plots1-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># reset the plotting area</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Plot 1</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>, </span>
 <span>          col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cadetblue2"</span>, <span class="st">"cadetblue"</span><span class="op">)</span>, </span>
@@ -599,6 +654,10 @@ stratification factor for the calculation of the statistics.</p>
 <p><img src="surv.plot_files/figure-html/plots2-1.png" width="768" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="multiple-plots-using-split-screen">Multiple plots using <code>split.screen()</code><a class="anchor" aria-label="anchor" href="#multiple-plots-using-split-screen"></a>
+</h3>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/screen.html" class="external-link">split.screen</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1 2</span></span>
@@ -615,6 +674,7 @@ stratification factor for the calculation of the statistics.</p>
 <p><img src="surv.plot_files/figure-html/plots3-1.png" width="768" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/screen.html" class="external-link">close.screen</a></span><span class="op">(</span>all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
