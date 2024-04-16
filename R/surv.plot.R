@@ -313,13 +313,12 @@
 #'  require(survSAKK)
 #'
 #' # Create survival object
-#'  veteran_trt_fit_mt <- survfit(Surv(time / 365.12 * 12, status) ~ trt, data = veteran)
+#'  fit.lung.arm.m <- survfit(Surv(lung$time/365.25*12, status) ~ sex, data = lung)
 #'
 #' # Generate survival plots
-#'  surv.plot(fit = veteran_trt_fit_mt,
+#'  surv.plot(fit = fit.lung.arm.m,
 #'    time.unit = "month",
-#'    reference.arm = 1,
-#'    legend.name =  c("Standard", "Test"))
+#'    legend.name =  c("male", "female"),)
 #'
 #' @seealso
 #'  - [survival::survfit()] which this function wraps.
