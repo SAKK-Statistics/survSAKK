@@ -90,15 +90,15 @@
 #'
 #' *Note*: It should always be specified as probability.
 #'
-#' @param xlab.pos Defines the margin line where the x-axis label (xlab) is displayed,
-#' starting at 0 and counting outwards.
+#' @param xlab.pos Defines the margin line where the X-axis label (xlab) is displayed,
+#' starting at 0 and counting outwards. Default is 1.5.
 #'
-#' @param ylab.pos Defines the margin line the y-axis label (ylab) is displayed,
-#' starting at 0 counting outwards.
+#' @param ylab.pos Defines the margin line the Y-axis label (ylab) is displayed,
+#' starting at 0 counting outwards. Default is 3.
 #'
 #' @param xlab.cex A numeric value specifying the size of the X-axis label.
 #'
-#' @param ylab.cex A numeric value specifying the size of the y-axis label.
+#' @param ylab.cex A numeric value specifying the size of the Y-axis label.
 #'
 #' @param cex A numeric value specifying the size of all all text elements
 #' (labels, annotations, etc.).
@@ -107,7 +107,7 @@
 #'
 #' @param bty Determines the style of the box drawn around the plot.
 #'
-#' Options include: `"n"` ,`"o"`,`"c"`,`"u"`. Default is: `"n"`.
+#' Options include: `"n"` ,`"o"`,`"c"`,`"u"`. Default is `"n"`.
 #'
 #' @param lty A string specifying the line type of of the curve(s).
 #'
@@ -614,7 +614,7 @@ surv.plot <- function(
       } else {
         if(time.unit == "month"){
           # month: xticks by 6 unit
-          xticks <- seq(from = 0, to = max(fit$time)+max(fit$time)/20, by = 6)
+          xticks <- seq(from = 0, to = max(fit$time)+6, by = 6)
         }
         if(time.unit == "year"){
           # year: xticks by 1 unit
@@ -689,7 +689,7 @@ surv.plot <- function(
     }
     if (y.unit == "probability"){
       if(is.null(ylab)){
-        ylab <- "Estimated survival prbability"
+        ylab <- "Estimated survival probability"
       }
       yticks.labels <- yticks
     }
@@ -959,14 +959,14 @@ surv.plot <- function(
     } else {
        if(y.unit == "percent"){
         timepoint_label <- paste0(round(segment_y$surv, digits = 3)*100,
-                                  "% (95% CI: ",
+                                  "% (", conf.int * 100, "% CI: ",
                                   round(segment_y$lower, digits = 3)*100,
                                   " to ",
                                   round(segment_y$upper, digits = 3)*100,
                                   ")")
       } else {
         timepoint_label <- paste0(round(segment_y$surv, digits = 2),
-                                  " (95% CI: ",
+                                  " (", conf.int * 100, "% CI: ",
                                   round(segment_y$lower, digits = 2),
                                   " to ",
                                   round(segment_y$upper, digits = 2),

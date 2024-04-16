@@ -453,4 +453,16 @@ surv.plot(S2, conf.line.lty = "dotted", conf.line.lwd = 2.5)
 surv.plot(S2, conf.line.lty = "solid")
 
 
+# test x-ticks
+
+fit <- survfit(Surv(time_m, status) ~ sex, data = lung)
+xticks <- seq(from = 0, to = max(fit$time)+6, by = 6)
+xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
+              by = ceiling(max(fit$time)/6))
+
+
+
+
+
+
 
