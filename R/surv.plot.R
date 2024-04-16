@@ -313,12 +313,12 @@
 #'  require(survSAKK)
 #'
 #' # Create survival object
-#'  fit.lung.arm.m <- survfit(Surv(lung$time/365.25*12, status) ~ sex, data = lung)
+#'  fit <- survfit(Surv(lung$time/365.25*12, status) ~ sex, data = lung)
 #'
 #' # Generate survival plots
-#'  surv.plot(fit = fit.lung.arm.m,
+#'  surv.plot(fit = fit,
 #'    time.unit = "month",
-#'    legend.name =  c("male", "female"),)
+#'    legend.name =  c("male", "female"))
 #'
 #' @seealso
 #'  - [survival::survfit()] which this function wraps.
