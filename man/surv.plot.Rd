@@ -15,7 +15,7 @@
 
 Option include: \code{"day"}, \code{"week"}, \code{"month"},\code{"year"}.}
 
-\item{y.unit}{A character string specifying the unit of the y-axis.
+\item{y.unit}{A character string specifying the unit of the Y-axis.
 
 Option include: \code{"probability"}, \code{"percent"}.}
 
@@ -67,7 +67,7 @@ Note: A subtitle is only displayed if no risk table is shown.}
 
 \item{ylab}{Y-axis label.}
 
-\item{xticks}{A numeric vector specifying the ticks of the x-axis.
+\item{xticks}{A numeric vector specifying the ticks of the X-axis.
 
 Can be specified as \code{seq(from = , to = , by = )}.
 \itemize{
@@ -76,7 +76,7 @@ Can be specified as \code{seq(from = , to = , by = )}.
 \item \code{by}: number; increment of the sequence
 }}
 
-\item{yticks}{A numeric vector specifying the ticks of the y-axis.
+\item{yticks}{A numeric vector specifying the ticks of the Y-axis.
 
 Can be specified as \code{seq(from = , to = , by = )}.
 \itemize{
@@ -273,7 +273,7 @@ Possible values:
 \item{risktable.title.col}{A colour which is used for the risk table title.
 Can accept a single colour value.}
 
-\item{risktable.title.position}{A numeric value specifying the position of the title on the x-axis.}
+\item{risktable.title.position}{A numeric value specifying the position of the title on the X-axis.}
 
 \item{risktable.title.cex}{A numeric value specifying the size of the risk table title size.}
 
@@ -291,7 +291,7 @@ Possible values:
 \item{risktable.name.col}{A colour which is used for the risk table name.
 Can accept a single colour value.}
 
-\item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the x-axis.}
+\item{risktable.name.position}{A numeric value specifying the position of the legend name(s) on the X-axis.}
 
 \item{margin.bottom}{Specifies the bottom margin of the plotting area in line units.
 Default is \code{5}.}

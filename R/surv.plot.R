@@ -22,7 +22,7 @@
 #'
 #' Option include: `"day"`, `"week"`, `"month"`,`"year"`.
 #'
-#' @param y.unit A character string specifying the unit of the y-axis.
+#' @param y.unit A character string specifying the unit of the Y-axis.
 #'
 #' Option include: `"probability"`, `"percent"`.
 #'
@@ -74,14 +74,14 @@
 #'
 #' @param ylab Y-axis label.
 #'
-#' @param xticks A numeric vector specifying the ticks of the x-axis.
+#' @param xticks A numeric vector specifying the ticks of the X-axis.
 #'
 #' Can be specified as `seq(from = , to = , by = )`.
 #' - `from`: starting value
 #' - `to`: end value
 #' - `by`: number; increment of the sequence
 #'
-#' @param yticks A numeric vector specifying the ticks of the y-axis.
+#' @param yticks A numeric vector specifying the ticks of the Y-axis.
 #'
 #' Can be specified as `seq(from = , to = , by = )`.
 #' - `from`: starting value
@@ -270,7 +270,7 @@
 #' @param risktable.title.col A colour which is used for the risk table title.
 #' Can accept a single colour value.
 #'
-#' @param risktable.title.position A numeric value specifying the position of the title on the x-axis.
+#' @param risktable.title.position A numeric value specifying the position of the title on the X-axis.
 #'
 #' @param risktable.title.cex A numeric value specifying the size of the risk table title size.
 #'
@@ -287,7 +287,7 @@
 #' @param risktable.name.col A colour which is used for the risk table name.
 #' Can accept a single colour value.
 #'
-#' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the x-axis.
+#' @param risktable.name.position A numeric value specifying the position of the legend name(s) on the X-axis.
 #'
 #' @param margin.bottom Specifies the bottom margin of the plotting area in line units.
 #' Default is `5`.

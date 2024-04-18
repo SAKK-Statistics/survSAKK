@@ -26,7 +26,6 @@ To show some benefit of this function,  *NCCTG Lung Cancer Data*, available in t
 # Setup and Loading Data
 
 ```{r setup, warning=FALSE}
-
 # Load required libraries
 library(survSAKK)
 library(survival)
@@ -43,7 +42,6 @@ fit.lung.d <- survfit(Surv(time, status) ~ 1, data = lung)
 fit.lung.m <- survfit(Surv(time.m, status) ~ 1, data = lung)
 fit.lung.arm.m <- survfit(Surv(time.m, status) ~ sex, data = lung)
 fit.lung.arm.y <- survfit(Surv(time.y, status) ~ sex, data = lung)
-
 ```
 
 # Drawing basic survival plot
@@ -51,8 +49,7 @@ fit.lung.arm.y <- survfit(Surv(time.y, status) ~ sex, data = lung)
 ```{r baseplot1}
 # Single arm
 surv.plot(fit.lung.m)
-
-# Two arm
+# Two arms
 surv.plot(fit.lung.arm.m)
 ```
 
@@ -81,7 +78,6 @@ surv.plot(fit.lung.arm.m,
           legend.position = "bottomleft",
           legend.name = c("Male", "Female")
 )
-
 # Chose legend position manually and add a legend title
 surv.plot(fit.lung.arm.m,
           legend.position = c(18, 0.9),
@@ -98,7 +94,6 @@ surv.plot(fit.lung.arm.m,
           xticks = seq(0, 36, by = 12), 
           yticks = seq(0, 1, by = 0.2)
 )
-
 # Cut curve at 24 months
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
@@ -120,16 +115,16 @@ surv.plot(fit.lung.arm.m,
 ```
 
 
-### Specific adjustment
+### Specific adjustments
 
 ```{r baseplot7}
 surv.plot(fit.lung.arm.m,
           main = "Kaplan-Meier plot",
           legend.name = c("Male", "Female"),
           legend.title = "Sex",
-          # Size of x-axis label
+          # Size of X-axis label
           xlab.cex = 1.2,
-          # Size of y-axis label
+          # Size of Y-axis label
           ylab.cex = 1.2,
           # Size of axis elements
           axis.cex = 0.8,
@@ -145,9 +140,9 @@ surv.plot(fit.lung.arm.m,
 ```
 
 
-## Label position x and y axis
+## Label position X- and Y-axis
 
-### Shift x and y axis label
+### Shift X- and Y-axis label
 
 ```{r baseplot8}
 surv.plot(fit.lung.arm.m,
@@ -161,8 +156,7 @@ surv.plot(fit.lung.arm.m,
 ## Marging area customisation
 
 ```{r baseplot9}
-
-# Change the margins and shift the y axis label
+# Change the margins and shift the Y-axis label
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           # New margin area 
@@ -170,21 +164,21 @@ surv.plot(fit.lung.arm.m,
           margin.left = 7,
           margin.top = 1,
           margin.right = 2,
-          # Define margin of the y-axis label
+          # Define margin of the Y-axis label
           ylab.pos = 4
 )
 ```
 
 
-## Time unit and y-axis unit
+## Time unit and Y-axis unit
 
 The parameter `time.unit` can be set as follows: `"day"`, `"week"`, `"month"`,`"year"`.
  
 **Note the following:** 
 
-- The time unit in `time.unit` needs to correspond to the time unit which was used to calculate the survival object `fit`.
+- The `time.unit` needs to correspond to the time unit which was used to calculate the survival object `fit`.
 
-- If `time.unit = "month"` x ticks are automatically chosen by intervals of 6 months. Whereas for `time.unit = "year"` the x ticks are chosen by intervals of 1. 
+- If `time.unit = "month"` X ticks are automatically chosen by intervals of 6 months. Whereas for `time.unit = "year"` the X ticks are chosen by intervals of 1. 
 
 ```{r baseplot10}
 # Time unit of month
@@ -218,7 +212,7 @@ surv.plot(fit.lung.arm.m,
 ## Risktable position
 
 ```{r risktable.pos1}
-# Move risk table names and titles to the left
+# Move risk table names and title to the left
 surv.plot(fit.lung.arm.m,
           legend.name = c("male", "female"),
           risktable.name.position = -6,
@@ -232,6 +226,7 @@ surv.plot(fit.lung.arm.m,
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           risktable.name = c("M", "F"),
+          # Colors of curves are used for the risktable
           risktable.col = TRUE,
           risktable.title = "Number at risk",
           risktable.title.font = 4,
@@ -253,7 +248,6 @@ surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           segment.quantile = 0.5
 )
-
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           segment.quantile = 0.5,
@@ -279,6 +273,12 @@ surv.plot(fit.lung.arm.m,
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           segment.timepoint = 12
+)
+surv.plot(fit.lung.arm.m,
+          legend.name = c("Male", "Female"),
+          segment.timepoint = 12,
+          # Specifying time unit
+          time.unit = "month"
 )
 ```
 
@@ -327,7 +327,6 @@ surv.plot(fit.lung.arm.m,
           segment.annotation = "none",
           time.unit = "month"
 )
-
 # Several time points
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
@@ -346,6 +345,7 @@ surv.plot(fit.lung.arm.m,
           segment.quantile = 0.5,
           segment.lwd = 2,
           segment.lty = "dashed",
+          # More space between the segment annotation lines
           segment.annotation.space = 0.1
 )
 ```
@@ -378,7 +378,6 @@ surv.plot(fit.lung.arm.m,
           segment.quantile = 0.5,
           conf.int = 0.8
 )
-
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           segment.timepoint = 18,
@@ -445,8 +444,10 @@ surv.plot(fit.lung.arm.m,
 ```
 
 
-## Stat with redfined reference arm and confidence level
+## Stat with redifined reference arm and confidence level
 
+Note that `reference.arm` needs to be set to an existing value of the arm in the `fit` object. 
+In this example the arm corresponds to `sex` which is coded as `{1, 2}` in the `lung` data set. 
 ```{r stat_ref_arm}
 surv.plot(fit.lung.arm.m,
           legend.name = c("Female","Male"),
@@ -462,7 +463,6 @@ In the next example the ECOG performance status is used as stratification factor
 
 ```{r stat_stratified}
 # Fit survival object with stratification
-
 fit_lung_stratified <- survfit(Surv(time.m, status) ~ sex + strata(ph.ecog), data = lung)
 
 surv.plot(fit.lung.arm.m,
@@ -474,12 +474,11 @@ surv.plot(fit.lung.arm.m,
 
 # Multiple survival plots
 
-We present to ways how to combine plots: via `par(mfrow=c())` and via `split.screen()`
+We present two ways how to combine plots: via `par(mfrow=c())` and via `split.screen()`
 
 ## Multiple plots using `par(mfrow=c())` 
 
 ```{r plots1, fig.height = 8, fig.width = 8}
-
 # Creating 4 sub-plot
 par(mfrow=c(2,2))
 
@@ -487,9 +486,11 @@ par(mfrow=c(2,2))
 surv.plot(fit.lung.d)
 # Plot 2
 surv.plot(fit.lung.arm.m, 
+          legend.name = c("Male", "Female"),
           time.unit = "month")
 # Plot 3
 surv.plot(fit.lung.arm.y, 
+          legend.name = c("Male", "Female"),
           col = c("cadetblue2", "cadetblue"), 
           time.unit = "year", 
           stat = "coxph")
@@ -508,7 +509,6 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position = -9,
           risktable.title.position = -9,
           risktable.cex = 0.7)
-
 # reset the plotting area
 par(mfrow=c(1,1))
 ```
@@ -518,11 +518,13 @@ par(mfrow=c(1,1))
 par(mfrow=c(2,1))
 # Plot 1
 surv.plot(fit.lung.arm.m, 
+          legend.name = c("Male", "Female"),
           col = c("cadetblue2", "cadetblue"), 
           time.unit = "month", 
           segment.quantile = 0.5)
 # Plot 2
 surv.plot(fit.lung.arm.m, 
+          legend.name = c("Male", "Female"),
           col = c("cadetblue2", "cadetblue"), 
           time.unit = "month", 
           segment.timepoint = 6)
@@ -535,11 +537,13 @@ par(mfrow=c(1,1))
 split.screen(c(2,1))
 screen(1)
 surv.plot(fit.lung.arm.m, 
+          legend.name = c("Male", "Female"),
           time.unit = "month", 
           segment.quantile = 0.5, 
           segment.confint = FALSE)
 screen(2)
 surv.plot(fit.lung.arm.m, 
+          legend.name = c("Male", "Female"),
           time.unit = "month", 
           segment.quantile = 0.75, 
           segment.confint = FALSE)
