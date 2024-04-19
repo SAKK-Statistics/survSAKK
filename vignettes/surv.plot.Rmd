@@ -98,7 +98,6 @@ surv.plot(fit.lung.arm.m,
           xticks = seq(0, 36, by = 12), 
           yticks = seq(0, 1, by = 0.2)
 )
-
 # Cut curve at 24 months
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
@@ -467,7 +466,7 @@ fit_lung_stratified <- survfit(Surv(time.m, status) ~ sex + strata(ph.ecog), dat
 
 surv.plot(fit.lung.arm.m,
           stat.fit = fit_lung_stratified,
-          legend.name = c("male", "female"),
+          legend.name = c("Male", "Female"),
           stat = "coxph_logrank"
 )
 ```
