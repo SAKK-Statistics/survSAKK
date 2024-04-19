@@ -11,7 +11,6 @@
 #'
 #' For a comprehensive manual visit: \url{https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html}
 #'
-#' @docType package
 #'
 #' @param fit An object of class [survival::survfit] containing survival data.
 #'
