@@ -2,6 +2,7 @@
 % Please edit documentation in R/surv.plot.R
 \docType{package}
 \name{surv.plot}
+\alias{-package}
 \alias{surv.plot}
 \title{Publication Ready Kaplan-Meier Estimator}
 \arguments{
@@ -32,14 +33,19 @@ If set to \code{0}, no confidence intervals are displayed.}
 \item{conf.band}{A logical parameter indicating whether to display the
 confidence band on the survival curves. Default is \code{TRUE}.}
 
-\item{conf.line}{A logical parameter indicating whether to draw the confidence
-line on the survival curves. Default is \code{FALSE}.}
-
 \item{conf.band.col}{A colour which is used for the confidence band.
 Can accept a single colour value or a vector of colours.}
 
 \item{conf.band.transparent}{A numeric value between \code{0} and \code{1} controlling the
 transparency of the confidence band. Default is \code{0.25}.}
+
+\item{conf.line.lty}{A strings specifying the line type of the confidence lines.
+
+Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"}, \code{"dotdash"},
+\code{"longdash"}, \code{"twodash"}.
+Default is \code{"blank"}.}
+
+\item{conf.line.lwd}{A numeric value specifying the width of the confidence lines.}
 
 \item{conf.type}{Transformation type for the confidence interval.
 
@@ -81,15 +87,15 @@ Can be specified as \code{seq(from = , to = , by = )}.
 
 \emph{Note}: It should always be specified as probability.}
 
-\item{xlab.pos}{Defines the margin line where the x-axis label (xlab) is displayed,
-starting at 0 and counting outwards.}
+\item{xlab.pos}{Defines the margin line where the X-axis label (xlab) is displayed,
+starting at 0 and counting outwards. Default is 1.5.}
 
-\item{ylab.pos}{Defines the margin line the y-axis label (ylab) is displayed,
-starting at 0 counting outwards.}
+\item{ylab.pos}{Defines the margin line the Y-axis label (ylab) is displayed,
+starting at 0 counting outwards. Default is 3.}
 
 \item{xlab.cex}{A numeric value specifying the size of the X-axis label.}
 
-\item{ylab.cex}{A numeric value specifying the size of the y-axis label.}
+\item{ylab.cex}{A numeric value specifying the size of the Y-axis label.}
 
 \item{cex}{A numeric value specifying the size of all all text elements
 (labels, annotations, etc.).}
@@ -98,15 +104,12 @@ starting at 0 counting outwards.}
 
 \item{bty}{Determines the style of the box drawn around the plot.
 
-Options include: \code{"n"} ,\code{"o"},\code{"c"},\code{"u"}. Default is: \code{"n"}.}
+Options include: \code{"n"} ,\code{"o"},\code{"c"},\code{"u"}. Default is \code{"n"}.}
 
-\item{lty}{A vector with three arguments specifying line types for the curve,
-lower confidence line and upper confidence line.
+\item{lty}{A string specifying the line type of of the curve(s).
 
 Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"}, \code{"dotdash"},
-\code{"longdash"}, \code{"twodash"}.
-
-\emph{Example:} \code{c("solid", "dashed", "dashed")}.}
+\code{"longdash"}, \code{"twodash"}.}
 
 \item{lwd}{A numeric value specifying the width of the line.}
 
@@ -168,7 +171,7 @@ Can accept a single colour value or a vector of colours.}
 \item{segment.col}{A colour which is used for the segment.
 Can accept a single colour value.}
 
-\item{segment.lty}{A strings specifying line types for each curve.
+\item{segment.lty}{A strings specifying the line type of the segment(s).
 
 Options include: \code{"blank"}, \code{"solid"}, \code{"dashed"}, \code{"dotted"}, \code{"dotdash"},
 \code{"longdash"}, \code{"twodash"}.}
@@ -322,13 +325,12 @@ For a comprehensive manual visit: \url{https://sakk-statistics.github.io/survSAK
  require(survSAKK)
 
 # Create survival object
- veteran_trt_fit_mt <- survfit(Surv(time / 365.12 * 12, status) ~ trt, data = veteran)
+ fit <- survfit(Surv(lung$time/365.25*12, status) ~ sex, data = lung)
 
 # Generate survival plots
- surv.plot(fit = veteran_trt_fit_mt,
+ surv.plot(fit = fit,
    time.unit = "month",
-   reference.arm = 1,
-   legend.name =  c("Standard", "Test"))
+   legend.name =  c("male", "female"))
 
 }
 \references{

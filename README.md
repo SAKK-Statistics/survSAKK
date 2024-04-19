@@ -5,10 +5,11 @@
 
 ## Overview
 
-The goal of `survSAKK` is to create an open source, user-friendly and
-flexible `R` package, which will incorporate various statistics and
-layout customization options to enhance the efficiency and adaptability
-of the Kaplan-Meier plot.
+The `survSAKK` R package provides the `surv.plot()` function,
+facilitating Kaplan-Meier survival analysis. Designed with
+user-friendliness and efficiency in mind. Offering robust tool for
+analysing survival data. It utilises the functionalites of
+`survival::survfit()`.
 
 ## Installation
 
@@ -32,32 +33,40 @@ devtools::install_github("SAKK-Statistics/survSAKK",
 ## Usage
 
 ``` r
+# Load required library
 library(survSAKK)
 library(survival)
 
-lung_fit <- survfit(Surv((time/365.25), status) ~ sex, data = lung)
+# Fit survival object 
+fit <- survfit(Surv(lung$time/365.25*12, status) ~ sex, data = lung)
 
-surv.plot(fit = lung_fit)
+# Generate surival plot
+surv.plot(fit = fit, 
+          time.unit = "month",
+          legend.name =  c("Male", "Female"))
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ## Getting help
 
-The documentation of the function.
-
 ### Documentation
 
-- `help(survSAKK)`
+``` r
+# R Documentation
+## survSAKK: Create publication ready Kaplan-Meier plot
+help("survSAKK-package")
 
-- `help(surv.plot)`
+## Publication Ready Kaplan-Meier Plot
+help("surv.plot")
+```
 
 ### Vignette
 
-Available vignettes
+Link:
+<https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html>
 
-- `browseVignettes("survSAKK")`
-
-`surv.plot` vigniette:
-
-- `vignette("surv.plot", package = "survSAKK")`
+``` r
+# Vignette
+vignette("surv.plot", package = "survSAKK")
+```
