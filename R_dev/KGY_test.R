@@ -96,7 +96,6 @@ surv.plot(S1, segment.timepoint=8, y.unit = "percent")
 ?surv.plot
 
 
-
 # test segment.quantile and segment.timepoint ##################################
 
 # quantile
@@ -459,6 +458,31 @@ fit <- survfit(Surv(time_m, status) ~ sex, data = lung)
 xticks <- seq(from = 0, to = max(fit$time)+6, by = 6)
 xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
               by = ceiling(max(fit$time)/6))
+
+
+
+# test segments: "NR" instead of "NA" ###############################################
+
+surv.plot(S1, segment.quantile=0.5)
+surv.plot(S2, segment.quantile=0.5)
+surv.plot(S2, segment.quantile=0.25)
+surv.plot(S2, segment.quantile=0.25, segment.confint = F)
+
+# set working directory
+setwd("L:/Trials/Terminated_trials/SAKK_08_15_PROMET/_Files_after_termination/Stat/2_primary_analysis/data/derived/20220808")
+getwd()
+
+# data
+ttp <- as.data.frame(read_sas("ttp.sas7bdat"))
+
+# TTP
+S <- survfit(Surv(ttp_m, ttp_event) ~ ra2, data = ttp, conf.type="log-log")
+
+surv.plot(S)
+surv.plot(S, segment.quantile = 0.5)
+surv.plot(S, segment.quantile=0.5, segment.confint = F)
+
+
 
 
 
