@@ -750,53 +750,59 @@ surv.plot <- function(
       if(arm_no == 1){
         mapping[length(mapping)+1] <- length(fit$time)
       }
-      # Extract x_coordinates from survfit object
-      x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
-      # Create empty vector to store x coordinates.
-      x_coordinates <- rep(NA, length(x_values)*2)
-      x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
-      # Put the same 'x_values' in two subsequent element of the vector
-      x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
-      # Insert value in the last element of the vector
-      x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
-      x_coordinates <- c(x_coordinates, rev(x_coordinates))
 
-      # Extract y_coordiantes_lwr from surfvit object(lower)
-      lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
-      # Creates empty vector to store y coordiantes
-      y_coordinates_lwr <- rep(NA, length(lower)*2)
-      # Put the same 'lower' in two subsequent element of the vector
-      y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
-      y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
+      # Check if lower CI is not always NA
+      if(sum(!is.na(fit$lower[(mapping[i]+1):mapping[i+1]]))>1) {
 
-      # Extract y_coordinates_upr from survfit object(upper)
-      upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
-      # Creates empty vector to store y coordinates
-      y_coordinates_upr <- rep(NA, length(upper)*2)
-      # Put the same 'upper' in two subsequent element of the vector
-      y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
-      y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
-      # Combine both y_coordinates
-      y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
-      y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)
+        # Extract x_coordinates from survfit object
+        x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
+        # Create empty vector to store x coordinates.
+        x_coordinates <- rep(NA, length(x_values)*2)
+        x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
+        # Put the same 'x_values' in two subsequent element of the vector
+        x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
+        # Insert value in the last element of the vector
+        x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
+        x_coordinates <- c(x_coordinates, rev(x_coordinates))
 
-      # Draw CI band
-      if(is.null(conf.band.col)){
-        graphics::polygon(
-          x = x_coordinates,
-          y = y_coordinates,
-          col = adjustcolor(col = col[i],
-                            alpha.f =  conf.band.transparent),
-          border = FALSE)
+        # Extract y_coordiantes_lwr from surfvit object(lower)
+        lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
+        # Creates empty vector to store y coordiantes
+        y_coordinates_lwr <- rep(NA, length(lower)*2)
+        # Put the same 'lower' in two subsequent element of the vector
+        y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
+        y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
+
+        # Extract y_coordinates_upr from survfit object(upper)
+        upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
+        # Creates empty vector to store y coordinates
+        y_coordinates_upr <- rep(NA, length(upper)*2)
+        # Put the same 'upper' in two subsequent element of the vector
+        y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
+        y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
+        # Combine both y_coordinates
+        y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
+        y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)        # todo: I'm not sure if this really makes sense. Should it not be "<- 0"?
+
+        # Draw CI band
+        if(is.null(conf.band.col)){
+          graphics::polygon(
+            x = x_coordinates,
+            y = y_coordinates,
+            col = adjustcolor(col = col[i],
+                              alpha.f =  conf.band.transparent),
+            border = FALSE)
+        }
+        else{
+          graphics::polygon(
+            x = x_coordinates,
+            y = y_coordinates,
+            col = adjustcolor(col = conf.band.col[i],
+                              alpha.f =  conf.band.transparent),
+            border = FALSE)
+        }
       }
-      else{
-        graphics::polygon(
-          x = x_coordinates,
-          y = y_coordinates,
-          col = adjustcolor(col = conf.band.col[i],
-                            alpha.f =  conf.band.transparent),
-          border = FALSE)
-      }
+
     }
   }
 
@@ -1168,140 +1174,144 @@ surv.plot <- function(
           if number of arms is unequal 2.")
   }
 
-  #----------------------------------------------------------------------------#
-  ## 4.1 Stat position ####
-  #----------------------------------------------------------------------------#
-  # Define different options for stat position
 
-  if (length(stat.position) == 2){
-    # If it's a numeric vector (x, y coordinates)
-    stat_xpos <- stat.position[1]
-    stat_ypos <- stat.position[2]
-    # Position the text to the right of the specified (x,y)
-    pos <- 1
-  } else if (stat.position == "bottomleft"){
-    if(stat == "coxph_logrank") {
-      stat_ypos <- 0.08
-    } else {
-      stat_ypos <- 0.05
+  if(stat %in% c("logrank", "coxph", "coxph_logrank")) {
+
+    #----------------------------------------------------------------------------#
+    ## 4.1 Stat position ####
+    #----------------------------------------------------------------------------#
+    # Define different options for stat position
+
+    if (length(stat.position) == 2){
+      # If it's a numeric vector (x, y coordinates)
+      stat_xpos <- stat.position[1]
+      stat_ypos <- stat.position[2]
+      # Position the text to the right of the specified (x,y)
+      pos <- 1
+    } else if (stat.position == "bottomleft"){
+      if(stat == "coxph_logrank") {
+        stat_ypos <- 0.08
+      } else {
+        stat_ypos <- 0.05
+      }
+      stat_xpos <- min(xticks)
+      pos <- 4
+    } else if (stat.position == "left"){
+      stat_ypos <- 0.53
+      stat_xpos <- min(xticks)
+      pos <- 4
+    } else if (stat.position == "right"){
+      stat_ypos <- 0.53
+      stat_xpos <- max(xticks)
+      # Position the text to the left of the specified (x,y)
+      pos <- 2
+    } else if (stat.position == "bottomright"){
+      if(stat == "coxph_logrank") {
+        stat_ypos <- 0.08
+      } else {
+        stat_ypos <- 0.05
+      }
+      stat_xpos <- max(xticks)
+      pos <- 2
+    } else if (stat.position == "top"){
+      stat_ypos <- max(yticks) * 0.95
+      stat_xpos <- max(xticks) * 0.5
+      pos <- 1
+    } else if (stat.position == "topright"){
+      stat_ypos <- max(yticks) * 0.95 # marginal smaller than max(x.ticks) to ensure that the text is not cut off.
+      stat_xpos <- max(xticks)
+      pos <- 2
     }
-    stat_xpos <- min(xticks)
-    pos <- 4
-  } else if (stat.position == "left"){
-    stat_ypos <- 0.53
-    stat_xpos <- min(xticks)
-    pos <- 4
-  } else if (stat.position == "right"){
-    stat_ypos <- 0.53
-    stat_xpos <- max(xticks)
-    # Position the text to the left of the specified (x,y)
-    pos <- 2
-  } else if (stat.position == "bottomright"){
-    if(stat == "coxph_logrank") {
-      stat_ypos <- 0.08
-    } else {
-      stat_ypos <- 0.05
+
+    #----------------------------------------------------------------------------#
+    ## 4.2 Recalculate Stat ####
+    #----------------------------------------------------------------------------#
+    # Recalculate the stat.fit object based on defined 'reference.arm'
+
+    if(!missing(reference.arm) & !missing(stat.fit)){
+      data <- as.data.frame(eval(stat.fit$call$data))
+      arm.variable <- as.character(fit$call$formula[3])
+      data[,arm.variable] <- relevel(as.factor(data[,arm.variable]), ref = reference.arm)
+      stat.fit$call$data <- data
+      stat.fit <- eval(stat.fit$call)
     }
-    stat_xpos <- max(xticks)
-    pos <- 2
-  } else if (stat.position == "top"){
-    stat_ypos <- max(yticks) * 0.95
-    stat_xpos <- max(xticks) * 0.5
-    pos <- 1
-  } else if (stat.position == "topright"){
-    stat_ypos <- max(yticks) * 0.95 # marginal smaller than max(x.ticks) to ensure that the text is not cut off.
-    stat_xpos <- max(xticks)
-    pos <- 2
-  }
 
-  #----------------------------------------------------------------------------#
-  ## 4.2 Recalculate Stat ####
-  #----------------------------------------------------------------------------#
-  # Recalculate the stat.fit object based on defined 'reference.arm'
+    #----------------------------------------------------------------------------#
+    ### 4.2.1 Log rank test ####
+    #----------------------------------------------------------------------------#
 
-  if(!missing(reference.arm) & !missing(stat.fit)){
-    data <- as.data.frame(eval(stat.fit$call$data))
-    arm.variable <- as.character(fit$call$formula[3])
-    data[,arm.variable] <- relevel(as.factor(data[,arm.variable]), ref = reference.arm)
-    stat.fit$call$data <- data
-    stat.fit <- eval(stat.fit$call)
-  }
+    # To compare the survival curves of two or more groups
+    if(missing(stat.fit)){
+      logrank <- fit$call
+    } else {
+      logrank <- stat.fit$call
+    }
+    logrank$conf.type <- NULL
+    logrank$conf.int <- NULL
+    logrank[1] <- call("survdiff")
 
-  #----------------------------------------------------------------------------#
-  ### 4.2.1 Log rank test ####
-  #----------------------------------------------------------------------------#
+    # Check first if strata > 1
+    # VSO (09.04.2024) Wird schon im 4.) kontrolliert, sollten wir das streichen.
+    if(is.null(fit$strata)){
+      logrank <- NULL
+    } else {
+      logrank <- eval(logrank)
+      # Recalculating p-Value
+      logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
+      logrankpval <- round.pval(logrankpval)
+    }
 
-  # To compare the survival curves of two or more groups
-  if(missing(stat.fit)){
-    logrank <- fit$call
-  } else {
-    logrank <- stat.fit$call
-  }
-  logrank$conf.type <- NULL
-  logrank$conf.int <- NULL
-  logrank[1] <- call("survdiff")
+    #----------------------------------------------------------------------------#
+    ### 4.2.2 Cox regression ####
+    #----------------------------------------------------------------------------#
+    # To describe the effect of variables on survival
 
-  # Check first if strata > 1
-  # VSO (09.04.2024) Wird schon im 4.) kontrolliert, sollten wir das streichen.
-  if(is.null(fit$strata)){
-    logrank <- NULL
-  } else {
-    logrank <- eval(logrank)
-    # Recalculating p-Value
-    logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
-    logrankpval <- round.pval(logrankpval)
-  }
+    # To compare the survival curves of two or more groups
+    if(missing(stat.fit)){
+      model <- fit$call
+    } else {
+      model <- stat.fit$call
+    }
+    model$conf.type <- NULL
+    model$conf.int <- NULL
+    model[1] <- call("coxph")
+    model <- summary(eval(model), conf.int = stat.conf.int)
 
-  #----------------------------------------------------------------------------#
-  ### 4.2.2 Cox regression ####
-  #----------------------------------------------------------------------------#
-  # To describe the effect of variables on survival
+    #----------------------------------------------------------------------------#
+    ## 4.3 Stat Function (main) ####
+    #----------------------------------------------------------------------------#
+    # Display statistics in the plot
 
-  # To compare the survival curves of two or more groups
-  if(missing(stat.fit)){
-    model <- fit$call
-  } else {
-    model <- stat.fit$call
-  }
-  model$conf.type <- NULL
-  model$conf.int <- NULL
-  model[1] <- call("coxph")
-  model <- summary(eval(model), conf.int = stat.conf.int)
-
-  #----------------------------------------------------------------------------#
-  ## 4.3 Stat Function (main) ####
-  #----------------------------------------------------------------------------#
-  # Display statistics in the plot
-
-  if(stat == "logrank"){
-    stats <- paste0("Logrank test: ", logrankpval)
-  } else if(stat == "coxph"){
-    stats <- paste0("HR ",
-                    round(model$conf.int[,"exp(coef)"], digits = 2),
-                    " (", stat.conf.int*100, "% CI: ",
-                    round(model$conf.int[3], digits = 2),
-                    " to ",
-                    round(model$conf.int[4], digits = 2),
-                    ")")
-  } else if(stat == "coxph_logrank"){
-    stats <- paste0("HR ",
-                    round(model$conf.int[,"exp(coef)"], digits = 2),
-                    " (", stat.conf.int*100, "% CI: ",
-                    round(model$conf.int[3], digits = 2),
-                    " to ",
-                    round(model$conf.int[4], digits = 2),
-                    ")", "\n", "logrank test: ",
-                    logrankpval)
-  }
-  if (stat != "none"){
-    # Annotate the stats in the plot when stat = "coxph, loglik etc.
-    text(x = stat_xpos,
-         y = stat_ypos,
-         labels = stats,
-         pos = pos,
-         col = stat.col,
-         cex = stat.cex,
-         font = stat.font)
+    if(stat == "logrank"){
+      stats <- paste0("Logrank test: ", logrankpval)
+    } else if(stat == "coxph"){
+      stats <- paste0("HR ",
+                      round(model$conf.int[,"exp(coef)"], digits = 2),
+                      " (", stat.conf.int*100, "% CI: ",
+                      round(model$conf.int[3], digits = 2),
+                      " to ",
+                      round(model$conf.int[4], digits = 2),
+                      ")")
+    } else if(stat == "coxph_logrank"){
+      stats <- paste0("HR ",
+                      round(model$conf.int[,"exp(coef)"], digits = 2),
+                      " (", stat.conf.int*100, "% CI: ",
+                      round(model$conf.int[3], digits = 2),
+                      " to ",
+                      round(model$conf.int[4], digits = 2),
+                      ")", "\n", "logrank test: ",
+                      logrankpval)
+    }
+    if (stat != "none"){
+      # Annotate the stats in the plot when stat = "coxph, loglik etc.
+      text(x = stat_xpos,
+           y = stat_ypos,
+           labels = stats,
+           pos = pos,
+           col = stat.col,
+           cex = stat.cex,
+           font = stat.font)
+    }
   }
 
   #----------------------------------------------------------------------------#
