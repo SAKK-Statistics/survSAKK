@@ -462,7 +462,13 @@ xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
 
 
 
+# test special characters <= and >= ############################################
 
+data.subgroup$test <- "<= 1"
+data.subgroup$test[data.subgroup$subgroup_line != "1L"] <- ">= 0.3"
 
+S4 <- survfit(Surv(pfs_time, pfs) ~ test, data = data.subgroup, conf.type = "log-log")
+
+surv.plot(S4)
 
 

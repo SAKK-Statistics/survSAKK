@@ -563,7 +563,9 @@ surv.plot <- function(
       legend.name <- group
     } else {
       group <- names(fit$strata)
-      legend.name <- sub(".*=","",group)
+      legend.name <- substring(group, unlist(gregexpr('=', group))[1]+1, nchar(group))
+      legend.name <- gsub(pattern = ">=" , replacement = "\u2265" , x = legend.name)
+      legend.name <- gsub(pattern = "<=" , replacement = "\u2264" , x = legend.name)
       #legend.name <- group
     }
   }
