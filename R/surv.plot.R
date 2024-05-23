@@ -909,9 +909,9 @@ surv.plot <- function(
       if(segment.quantile == 0.5) {quantile.temp <- "Median"}
       else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
       quantile_label <- paste0(quantile.temp, ": ",
-                               round(segment_x$quantile[1],digits = 1),
+                               ifelse(is.na(segment_x$quantile[1]), "NR", round(segment_x$quantile[1], 1)),
                                " vs ",
-                               round(segment_x$quantile[2],digits = 1),
+                               ifelse(is.na(segment_x$quantile[2]), "NR", round(segment_x$quantile[2], 1)),
                                time.unit_temp)
       segment.annotation.col <- "black"
 
@@ -921,12 +921,12 @@ surv.plot <- function(
 
     # Long annotation with confidence interval
     } else {
-      quantile_label <- paste0(round(segment_x$quantile,digits = 1),
+      quantile_label <- paste0(ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
                                time.unit_temp,
                                " (",
-                               round(segment_x$lower,digits = 1),
+                               ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
                                " to ",
-                               round(segment_x$upper,digits = 1),
+                               ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
                                ")")
     }
   }

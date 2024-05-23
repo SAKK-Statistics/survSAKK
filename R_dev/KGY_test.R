@@ -472,3 +472,37 @@ S4 <- survfit(Surv(pfs_time, pfs) ~ test, data = data.subgroup, conf.type = "log
 surv.plot(S4)
 
 
+
+# test NR instead of NA ############################################
+
+surv.plot(S2, segment.quantile=0.5, time.unit = "month")
+surv.plot(S2, segment.quantile=0.25, time.unit = "month")
+surv.plot(S2, segment.quantile=0.25, time.unit = "month")
+
+surv.plot(S2, segment.quantile=0.25, time.unit = "month", segment.confint = F)
+
+
+setwd("L:/Trials/Terminated_trials/SAKK_08_15_PROMET/_Files_after_termination/Stat/2_primary_analysis/data/derived/20220808")
+getwd()
+
+# data
+ttp <- as.data.frame(read_sas("ttp.sas7bdat"))
+
+# TTP
+S <- survfit(Surv(ttp_m, ttp_event) ~ ra2, data = ttp, conf.type="log-log")
+
+surv.plot(S)
+surv.plot(S, segment.quantile = 0.5)
+surv.plot(S, segment.quantile=0.5, segment.confint = F)
+
+
+
+
+
+
+
+
+
+
+
+
