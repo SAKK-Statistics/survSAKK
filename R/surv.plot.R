@@ -751,52 +751,54 @@ surv.plot <- function(
       if(arm_no == 1){
         mapping[length(mapping)+1] <- length(fit$time)
       }
-      # Extract x_coordinates from survfit object
-      x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
-      # Create empty vector to store x coordinates.
-      x_coordinates <- rep(NA, length(x_values)*2)
-      x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
-      # Put the same 'x_values' in two subsequent element of the vector
-      x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
-      # Insert value in the last element of the vector
-      x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
-      x_coordinates <- c(x_coordinates, rev(x_coordinates))
+      if(sum(!is.na(fit$lower[(mapping[i]+1):mapping[i+1]]))>1) {
+        # Extract x_coordinates from survfit object
+        x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
+        # Create empty vector to store x coordinates.
+        x_coordinates <- rep(NA, length(x_values)*2)
+        x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
+        # Put the same 'x_values' in two subsequent element of the vector
+        x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
+        # Insert value in the last element of the vector
+        x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
+        x_coordinates <- c(x_coordinates, rev(x_coordinates))
 
-      # Extract y_coordiantes_lwr from surfvit object(lower)
-      lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
-      # Creates empty vector to store y coordiantes
-      y_coordinates_lwr <- rep(NA, length(lower)*2)
-      # Put the same 'lower' in two subsequent element of the vector
-      y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
-      y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
+        # Extract y_coordiantes_lwr from surfvit object(lower)
+        lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
+        # Creates empty vector to store y coordiantes
+        y_coordinates_lwr <- rep(NA, length(lower)*2)
+        # Put the same 'lower' in two subsequent element of the vector
+        y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
+        y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
 
-      # Extract y_coordinates_upr from survfit object(upper)
-      upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
-      # Creates empty vector to store y coordinates
-      y_coordinates_upr <- rep(NA, length(upper)*2)
-      # Put the same 'upper' in two subsequent element of the vector
-      y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
-      y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
-      # Combine both y_coordinates
-      y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
-      y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)
+        # Extract y_coordinates_upr from survfit object(upper)
+        upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
+        # Creates empty vector to store y coordinates
+        y_coordinates_upr <- rep(NA, length(upper)*2)
+        # Put the same 'upper' in two subsequent element of the vector
+        y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
+        y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
+        # Combine both y_coordinates
+        y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
+        y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)      # todo: I'm not sure if this line is really correct. Should it not be: y_coordinates[is.na(y_coordinates)] <- 0 ..?
 
-      # Draw CI band
-      if(is.null(conf.band.col)){
-        graphics::polygon(
-          x = x_coordinates,
-          y = y_coordinates,
-          col = adjustcolor(col = col[i],
-                            alpha.f =  conf.band.transparent),
-          border = FALSE)
-      }
-      else{
-        graphics::polygon(
-          x = x_coordinates,
-          y = y_coordinates,
-          col = adjustcolor(col = conf.band.col[i],
-                            alpha.f =  conf.band.transparent),
-          border = FALSE)
+        # Draw CI band
+        if(is.null(conf.band.col)){
+          graphics::polygon(
+            x = x_coordinates,
+            y = y_coordinates,
+            col = adjustcolor(col = col[i],
+                              alpha.f =  conf.band.transparent),
+            border = FALSE)
+        }
+        else{
+          graphics::polygon(
+            x = x_coordinates,
+            y = y_coordinates,
+            col = adjustcolor(col = conf.band.col[i],
+                              alpha.f =  conf.band.transparent),
+            border = FALSE)
+        }
       }
     }
   }
