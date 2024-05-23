@@ -484,7 +484,16 @@ surv.plot(S, segment.quantile=0.5, segment.confint = F)
 
 
 
+# test special char <= etc ###############################################
 
+
+data.subgroup$test <- "<= 1"
+data.subgroup$test[data.subgroup$subgroup_line!= "1L"] <- ">= 1"
+
+# by treatment line
+S4 <- survfit(Surv(pfs_time, pfs) ~ test, data = data.subgroup, conf.type = "log-log")
+
+surv.plot(S4)
 
 
 
