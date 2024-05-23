@@ -477,7 +477,7 @@ surv.plot(S4)
 
 surv.plot(S2, segment.quantile=0.5, time.unit = "month")
 surv.plot(S2, segment.quantile=0.25, time.unit = "month")
-surv.plot(S2, segment.quantile=0.25, time.unit = "month")
+surv.plot(S1, segment.quantile=0.5, time.unit = "month")
 
 surv.plot(S2, segment.quantile=0.25, time.unit = "month", segment.confint = F)
 
@@ -497,12 +497,23 @@ surv.plot(S, segment.quantile=0.5, segment.confint = F)
 
 
 
+# segment: annotate on one line for one arm (by default..?) ###################
 
 
+surv.plot(S1, segment.quantile=0.5, time.unit = "month")
+
+surv.plot(S1, segment.quantile=0.25, time.unit = "month")
+surv.plot(S1, segment.quantile=0.25, time.unit = "month", segment.annotation.two.lines = TRUE)
+surv.plot(S1, segment.quantile=0.5, time.unit = "month", segment.annotation.two.lines = TRUE)
+
+surv.plot(S1, segment.quantile=0.25, time.unit = "month", segment.main = "Test")
+surv.plot(S1, segment.quantile=0.25, time.unit = "month", segment.main = "Test", segment.annotation.two.lines = TRUE)
 
 
+surv.plot(S1, segment.timepoint = 6, time.unit = "month")
+surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.annotation.two.lines = TRUE)
+surv.plot(S1, segment.timepoint = 6, segment.annotation.two.lines = TRUE)
 
-
-
-
+surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.main = "Test")
+surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.main = "Test", segment.annotation.two.lines = TRUE)
 

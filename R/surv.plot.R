@@ -185,6 +185,10 @@
 #'
 #' Options include: `c(x,y)`,`"bottomleft"`, `"left"`, `"right"`, `"top"`, `"none"`.
 #'
+#' @param segment.annotation.two.lines A logical parameter to force that the
+#' annotation is displayed on two lines even if there is only one arm. This
+#' parameter only has an effect if there is only one arm. Default: FALSE
+#'
 #' @param segment.confint A logical parameter specifying whether to display
 #' the confidence interval for the segment.
 #'
@@ -383,6 +387,7 @@ surv.plot <- function(
     segment.main = NULL,
     segment.confint = TRUE,
     segment.annotation = "right",
+    segment.annotation.two.lines = FALSE,
     segment.annotation.col = col,
     segment.annotation.space = 0.06,
     segment.col = "#666666",
@@ -919,6 +924,22 @@ surv.plot <- function(
     } else if(segment.confint == F & arm_no != 2) {
       stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
 
+    # Annotation for one arm on one line
+    } else if(arm_no == 1 & segment.annotation.two.lines == FALSE) {
+      if(!is.null(segment.main)){
+        quantile.temp <- segment.main
+      }
+      else if(segment.quantile == 0.5) {quantile.temp <- paste0("Median (", conf.int * 100, "% CI)")}
+      else {quantile.temp <- paste0(segment.quantile, "-Quantile (", conf.int * 100, "% CI)")}
+      quantile_label <- paste0(quantile.temp, ": ",
+                               ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
+                               time.unit_temp,
+                               " (",
+                               ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
+                               " to ",
+                               ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
+                               ")")
+
     # Long annotation with confidence interval
     } else {
       quantile_label <- paste0(ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
@@ -957,6 +978,32 @@ surv.plot <- function(
     } else if(segment.confint == F & arm_no != 2) {
       stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
 
+    # Annotation for one arm on one line
+    } else if(arm_no == 1 & segment.annotation.two.lines == FALSE) {
+
+      if(!is.null(segment.main)){time_temp <- paste0(segment.main)}
+      else if(missing(time.unit)){time_temp <- paste0("Survival at time ", segment.timepoint)}
+      else {time_temp <- paste0("Survival at ", segment.timepoint, " ", time.unit, "s")}
+
+
+      if(y.unit == "percent"){
+        timepoint_label <- paste0(time_temp, ": ",
+                                  round(segment_y$surv, digits = 3)*100,
+                                  "% (", conf.int * 100, "% CI: ",
+                                  round(segment_y$lower, digits = 3)*100,
+                                  " to ",
+                                  round(segment_y$upper, digits = 3)*100,
+                                  ")")
+      } else {
+        timepoint_label <- paste0(time_temp, ": ",
+                                  round(segment_y$surv, digits = 2),
+                                  " (", conf.int * 100, "% CI: ",
+                                  round(segment_y$lower, digits = 2),
+                                  " to ",
+                                  round(segment_y$upper, digits = 2),
+                                  ")")
+      }
+
     # Long annotation with confidence interval
     } else {
        if(y.unit == "percent"){
@@ -976,6 +1023,7 @@ surv.plot <- function(
       }
 
     }
+
   }
 
   if(!is.null(segment.quantile) & !is.null(segment.timepoint)){
@@ -1132,7 +1180,7 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # Title for the segment text
 
-  if (!("none" %in% segment.annotation)){
+  if (!("none" %in% segment.annotation) & !(arm_no == 1 & segment.annotation.two.lines == FALSE)){
     # Display `setment.main` as title of segment annotation if it was specified
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,
