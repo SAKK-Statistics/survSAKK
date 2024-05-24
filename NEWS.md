@@ -3,6 +3,7 @@
 This update brings significant improvements and a new feature based on your feedback from initial release. 
 
 ✨  **New Feature**
+
 - `segment.annotation.two.lines`:
 
 A logical parameter to force that the annotation is displayed on two lines even if there is only one arm. This
