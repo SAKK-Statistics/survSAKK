@@ -1218,7 +1218,7 @@ surv.plot <- function(
     stop("It is not possible to set `stat` equal to `coxph` or`coxph_logrank`
           if number of arms is unequal 2.")
 
-  # Stop function if an invalide option is chosen for `stat`
+  # Stop function if an invalid option is chosen for `stat`
   } else if(!(stat%in%c("none", "coxph_logrank", "coxph", "logrank"))) {
     stop(paste0("'", stat, "' is not a valid option for parameter `stat`"))
 
@@ -1360,9 +1360,7 @@ surv.plot <- function(
            cex = stat.cex,
            font = stat.font)
     }
-
   }
-
 
   #----------------------------------------------------------------------------#
   # 5. survRisktable ####
