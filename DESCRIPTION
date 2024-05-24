@@ -1,7 +1,7 @@
 Package: survSAKK
 Type: Package
 Title: Create publication ready Kaplan-Meier plot
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     c(
   person(given = "Vithersan", family = "Somasundaram", role = c("aut","cre"), email = "Vithersan.Somasundaram@sakk.ch"),
