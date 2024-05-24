@@ -185,6 +185,10 @@
 #'
 #' Options include: `c(x,y)`,`"bottomleft"`, `"left"`, `"right"`, `"top"`, `"none"`.
 #'
+#' @param segment.annotation.two.lines A logical parameter to force that the
+#' annotation is displayed on two lines even if there is only one arm. This
+#' parameter only has an effect if there is only one arm. Default: FALSE
+#'
 #' @param segment.confint A logical parameter specifying whether to display
 #' the confidence interval for the segment.
 #'
@@ -383,6 +387,7 @@ surv.plot <- function(
     segment.main = NULL,
     segment.confint = TRUE,
     segment.annotation = "right",
+    segment.annotation.two.lines = FALSE,
     segment.annotation.col = col,
     segment.annotation.space = 0.06,
     segment.col = "#666666",
@@ -563,7 +568,9 @@ surv.plot <- function(
       legend.name <- group
     } else {
       group <- names(fit$strata)
-      legend.name <- sub(".*=","",group)
+      legend.name <- substring(group, unlist(gregexpr('=', group))[1]+1, nchar(group))
+      legend.name <- gsub(pattern = ">=" , replacement = "\u2265" , x = legend.name)
+      legend.name <- gsub(pattern = "<=" , replacement = "\u2264" , x = legend.name)
       #legend.name <- group
     }
   }
@@ -749,52 +756,54 @@ surv.plot <- function(
       if(arm_no == 1){
         mapping[length(mapping)+1] <- length(fit$time)
       }
-      # Extract x_coordinates from survfit object
-      x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
-      # Create empty vector to store x coordinates.
-      x_coordinates <- rep(NA, length(x_values)*2)
-      x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
-      # Put the same 'x_values' in two subsequent element of the vector
-      x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
-      # Insert value in the last element of the vector
-      x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
-      x_coordinates <- c(x_coordinates, rev(x_coordinates))
+      if(sum(!is.na(fit$lower[(mapping[i]+1):mapping[i+1]]))>1) {
+        # Extract x_coordinates from survfit object
+        x_values <- fit$time[(mapping[i]+1):mapping[i+1]]
+        # Create empty vector to store x coordinates.
+        x_coordinates <- rep(NA, length(x_values)*2)
+        x_coordinates[seq(from = 1, to = length(x_values) * 2, by = 2)] <- x_values
+        # Put the same 'x_values' in two subsequent element of the vector
+        x_coordinates[seq(from = 2, to = length(x_values) * 2 - 1, by = 2)] <- x_values[2:length(x_values)]
+        # Insert value in the last element of the vector
+        x_coordinates[length(x_coordinates)] <- x_values[length(x_values)]
+        x_coordinates <- c(x_coordinates, rev(x_coordinates))
 
-      # Extract y_coordiantes_lwr from surfvit object(lower)
-      lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
-      # Creates empty vector to store y coordiantes
-      y_coordinates_lwr <- rep(NA, length(lower)*2)
-      # Put the same 'lower' in two subsequent element of the vector
-      y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
-      y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
+        # Extract y_coordiantes_lwr from surfvit object(lower)
+        lower <- fit$lower[(mapping[i]+1):mapping[i+1]]
+        # Creates empty vector to store y coordiantes
+        y_coordinates_lwr <- rep(NA, length(lower)*2)
+        # Put the same 'lower' in two subsequent element of the vector
+        y_coordinates_lwr[seq(1, length(lower)*2, 2)] <- lower
+        y_coordinates_lwr[seq(2, length(lower)*2, 2)] <- lower
 
-      # Extract y_coordinates_upr from survfit object(upper)
-      upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
-      # Creates empty vector to store y coordinates
-      y_coordinates_upr <- rep(NA, length(upper)*2)
-      # Put the same 'upper' in two subsequent element of the vector
-      y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
-      y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
-      # Combine both y_coordinates
-      y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
-      y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)
+        # Extract y_coordinates_upr from survfit object(upper)
+        upper <- fit$upper[(mapping[i]+1):mapping[i+1]]
+        # Creates empty vector to store y coordinates
+        y_coordinates_upr <- rep(NA, length(upper)*2)
+        # Put the same 'upper' in two subsequent element of the vector
+        y_coordinates_upr[seq(1, length(upper)*2, 2)] <- upper
+        y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
+        # Combine both y_coordinates
+        y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
+        y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)      # todo: I'm not sure if this line is really correct. Should it not be: y_coordinates[is.na(y_coordinates)] <- 0 ..?
 
-      # Draw CI band
-      if(is.null(conf.band.col)){
-        graphics::polygon(
-          x = x_coordinates,
-          y = y_coordinates,
-          col = adjustcolor(col = col[i],
-                            alpha.f =  conf.band.transparent),
-          border = FALSE)
-      }
-      else{
-        graphics::polygon(
-          x = x_coordinates,
-          y = y_coordinates,
-          col = adjustcolor(col = conf.band.col[i],
-                            alpha.f =  conf.band.transparent),
-          border = FALSE)
+        # Draw CI band
+        if(is.null(conf.band.col)){
+          graphics::polygon(
+            x = x_coordinates,
+            y = y_coordinates,
+            col = adjustcolor(col = col[i],
+                              alpha.f =  conf.band.transparent),
+            border = FALSE)
+        }
+        else{
+          graphics::polygon(
+            x = x_coordinates,
+            y = y_coordinates,
+            col = adjustcolor(col = conf.band.col[i],
+                              alpha.f =  conf.band.transparent),
+            border = FALSE)
+        }
       }
     }
   }
@@ -905,9 +914,9 @@ surv.plot <- function(
       if(segment.quantile == 0.5) {quantile.temp <- "Median"}
       else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
       quantile_label <- paste0(quantile.temp, ": ",
-                               round(segment_x$quantile[1],digits = 1),
+                               ifelse(is.na(segment_x$quantile[1]), "NR", round(segment_x$quantile[1], 1)),
                                " vs ",
-                               round(segment_x$quantile[2],digits = 1),
+                               ifelse(is.na(segment_x$quantile[2]), "NR", round(segment_x$quantile[2], 1)),
                                time.unit_temp)
       segment.annotation.col <- "black"
 
@@ -915,14 +924,30 @@ surv.plot <- function(
     } else if(segment.confint == F & arm_no != 2) {
       stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
 
-    # Long annotation with confidence interval
-    } else {
-      quantile_label <- paste0(round(segment_x$quantile,digits = 1),
+    # Annotation for one arm on one line
+    } else if(arm_no == 1 & segment.annotation.two.lines == FALSE) {
+      if(!is.null(segment.main)){
+        quantile.temp <- segment.main
+      }
+      else if(segment.quantile == 0.5) {quantile.temp <- paste0("Median (", conf.int * 100, "% CI)")}
+      else {quantile.temp <- paste0(segment.quantile, "-Quantile (", conf.int * 100, "% CI)")}
+      quantile_label <- paste0(quantile.temp, ": ",
+                               ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
                                time.unit_temp,
                                " (",
-                               round(segment_x$lower,digits = 1),
+                               ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
                                " to ",
-                               round(segment_x$upper,digits = 1),
+                               ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
+                               ")")
+
+    # Long annotation with confidence interval
+    } else {
+      quantile_label <- paste0(ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
+                               time.unit_temp,
+                               " (",
+                               ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
+                               " to ",
+                               ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
                                ")")
     }
   }
@@ -953,6 +978,32 @@ surv.plot <- function(
     } else if(segment.confint == F & arm_no != 2) {
       stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
 
+    # Annotation for one arm on one line
+    } else if(arm_no == 1 & segment.annotation.two.lines == FALSE) {
+
+      if(!is.null(segment.main)){time_temp <- paste0(segment.main)}
+      else if(missing(time.unit)){time_temp <- paste0("Survival at time ", segment.timepoint)}
+      else {time_temp <- paste0("Survival at ", segment.timepoint, " ", time.unit, "s")}
+
+
+      if(y.unit == "percent"){
+        timepoint_label <- paste0(time_temp, ": ",
+                                  round(segment_y$surv, digits = 3)*100,
+                                  "% (", conf.int * 100, "% CI: ",
+                                  round(segment_y$lower, digits = 3)*100,
+                                  " to ",
+                                  round(segment_y$upper, digits = 3)*100,
+                                  ")")
+      } else {
+        timepoint_label <- paste0(time_temp, ": ",
+                                  round(segment_y$surv, digits = 2),
+                                  " (", conf.int * 100, "% CI: ",
+                                  round(segment_y$lower, digits = 2),
+                                  " to ",
+                                  round(segment_y$upper, digits = 2),
+                                  ")")
+      }
+
     # Long annotation with confidence interval
     } else {
        if(y.unit == "percent"){
@@ -972,6 +1023,7 @@ surv.plot <- function(
       }
 
     }
+
   }
 
   if(!is.null(segment.quantile) & !is.null(segment.timepoint)){
@@ -1128,7 +1180,7 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # Title for the segment text
 
-  if (!("none" %in% segment.annotation)){
+  if (!("none" %in% segment.annotation) & !(arm_no == 1 & segment.annotation.two.lines == FALSE)){
     # Display `setment.main` as title of segment annotation if it was specified
     if (!is.null(segment.main)){
       text(text_xpos, max(text_ypos) + segment.annotation.space, label = segment.main, pos = pos,

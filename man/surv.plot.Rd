@@ -161,6 +161,10 @@ Default is \code{TRUE}.}
 
 Options include: \code{c(x,y)},\code{"bottomleft"}, \code{"left"}, \code{"right"}, \code{"top"}, \code{"none"}.}
 
+\item{segment.annotation.two.lines}{A logical parameter to force that the
+annotation is displayed on two lines even if there is only one arm. This
+parameter only has an effect if there is only one arm. Default: FALSE}
+
 \item{segment.annotation.col}{A colour which is used for the segment annotation.
 Can accept a single colour value or a vector of colours.}
 

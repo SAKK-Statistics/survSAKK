@@ -462,7 +462,58 @@ xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
 
 
 
+# test special characters <= and >= ############################################
+
+data.subgroup$test <- "<= 1"
+data.subgroup$test[data.subgroup$subgroup_line != "1L"] <- ">= 0.3"
+
+S4 <- survfit(Surv(pfs_time, pfs) ~ test, data = data.subgroup, conf.type = "log-log")
+
+surv.plot(S4)
 
 
 
+# test NR instead of NA ############################################
+
+surv.plot(S2, segment.quantile=0.5, time.unit = "month")
+surv.plot(S2, segment.quantile=0.25, time.unit = "month")
+surv.plot(S1, segment.quantile=0.5, time.unit = "month")
+
+surv.plot(S2, segment.quantile=0.25, time.unit = "month", segment.confint = F)
+
+
+setwd("L:/Trials/Terminated_trials/SAKK_08_15_PROMET/_Files_after_termination/Stat/2_primary_analysis/data/derived/20220808")
+getwd()
+
+# data
+ttp <- as.data.frame(read_sas("ttp.sas7bdat"))
+
+# TTP
+S <- survfit(Surv(ttp_m, ttp_event) ~ ra2, data = ttp, conf.type="log-log")
+
+surv.plot(S)
+surv.plot(S, segment.quantile = 0.5)
+surv.plot(S, segment.quantile=0.5, segment.confint = F)
+
+
+
+# segment: annotate on one line for one arm (by default..?) ###################
+
+
+surv.plot(S1, segment.quantile=0.5, time.unit = "month")
+
+surv.plot(S1, segment.quantile=0.25, time.unit = "month")
+surv.plot(S1, segment.quantile=0.25, time.unit = "month", segment.annotation.two.lines = TRUE)
+surv.plot(S1, segment.quantile=0.5, time.unit = "month", segment.annotation.two.lines = TRUE)
+
+surv.plot(S1, segment.quantile=0.25, time.unit = "month", segment.main = "Test")
+surv.plot(S1, segment.quantile=0.25, time.unit = "month", segment.main = "Test", segment.annotation.two.lines = TRUE)
+
+
+surv.plot(S1, segment.timepoint = 6, time.unit = "month")
+surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.annotation.two.lines = TRUE)
+surv.plot(S1, segment.timepoint = 6, segment.annotation.two.lines = TRUE)
+
+surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.main = "Test")
+surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.main = "Test", segment.annotation.two.lines = TRUE)
 
