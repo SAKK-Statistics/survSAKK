@@ -1292,14 +1292,14 @@ surv.plot <- function(
   logrank$conf.int <- NULL
   logrank[1] <- call("survdiff")
 
-  # Check first if strata > 1
-  # VSO (09.04.2024) Wird schon im 4.) kontrolliert, sollten wir das streichen.
+  # Check if strata is present
   if(is.null(fit$strata)){
     logrank <- NULL
   } else {
     logrank <- eval(logrank)
-    # Recalculating p-Value
-    logrankpval <- as.numeric(format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001))
+    # Recalculate p-Value
+    # logrankpval <- format.pval(1 - pchisq(logrank$chisq, df = length(logrank$n) - 1), esp = 0.001) # old version remove it after testing
+    logrankpval <-1 - pchisq(logrank$chisq, df = length(logrank$n) - 1)
     logrankpval <- round.pval(logrankpval)
   }
 
@@ -1431,3 +1431,7 @@ surv.plot <- function(
     stop("`risktable` expecting TRUE or FALSE as an argument!")
   }
 } # final closer of the function
+
+  #----------------------------------------------------------------------------#
+  # End of the programm  ####
+  #----------------------------------------------------------------------------#
