@@ -183,6 +183,7 @@ surv.plot(S2, segment.timepoint=8, segment.annotation = "top", segment.type = "k
 surv.plot(S2, stat = "logrank")
 surv.plot(S2, stat = "coxph")
 surv.plot(S2, stat = "coxph", stat.position = c(8, 0.75))
+surv.plot(S2, stat = "dsdf", stat.position = c(8, 0.75))
 surv.plot(S2, stat = "coxph", stat.position = "bottomleft")
 surv.plot(S2, stat = "coxph", stat.position = c(8, 0.75), conf.int = 0.9)
 surv.plot(S2, stat = "coxph_logrank")
