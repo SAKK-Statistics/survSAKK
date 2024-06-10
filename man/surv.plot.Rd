@@ -247,6 +247,9 @@ Possible values:
 \item{risktable}{A logical parameter indicating whether to draw risk table.
 Default is \code{TRUE}.}
 
+\item{risktable.censoring}{A logical parameter indicating whether to display number of censored patients.
+Default is \code{FALSE}.}
+
 \item{risktable.pos}{Defines on which margin line of the xlab is displayed,
 starting at 0 counting outwards.
 Default is at line \code{3}.}
@@ -306,6 +309,9 @@ Default is \code{3}.}
 
 \item{margin.right}{Specifies the right margin of the plotting area in line units.
 Default is \code{2}.}
+
+\item{theme}{Built-in layout options.
+Options include: ("none", "SAKK", "Lancet", "JCO")}
 }
 \value{
 Kaplan-Meier curves of the input \code{fit},

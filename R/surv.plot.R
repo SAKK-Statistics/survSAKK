@@ -246,6 +246,9 @@
 #' @param risktable A logical parameter indicating whether to draw risk table.
 #' Default is \code{TRUE}.
 #'
+#' @param risktable.censoring A logical parameter indicating whether to display number of censored patients.
+#' Default is \code{FALSE}.
+#'
 #' @param risktable.pos Defines on which margin line of the xlab is displayed,
 #' starting at 0 counting outwards.
 #' Default is at line `3`.
@@ -303,6 +306,9 @@
 #'
 #' @param margin.right Specifies the right margin of the plotting area in line units.
 #' Default is `2`.
+#'
+#' @param theme Built-in layout options.
+#' Options include: ("none", "SAKK", "Lancet", "JCO")
 #'
 #' @return Kaplan-Meier curves of the input \code{fit},
 #' incorporating various statistics and layout option(s).
@@ -406,6 +412,7 @@ surv.plot <- function(
     stat.font = 1,
     # risk table options
     risktable = TRUE,
+    risktable.censoring = FALSE,
     risktable.pos = 2,
     risktable.name,
     risktable.cex,
@@ -423,7 +430,9 @@ surv.plot <- function(
     margin.bottom = 5,
     margin.left= NULL,
     margin.top= 3,
-    margin.right = 2
+    margin.right = 2,
+    # Themes
+    theme = "none"
 ){
   #----------------------------------------------------------------------------#
   # 1. Preparation ####
@@ -637,6 +646,43 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
+  ## 1.11 Pre-defined Themes ####
+  #----------------------------------------------------------------------------#
+
+  # Check if provided theme is defined
+  if(theme %in% c("none","SAKK", "Lancet", "JCO")){
+
+    ### 1.11.1 Theme: SAKK ####
+    if(theme == "SAKK"){
+      # Color assignment
+        if(is.null(fit$strata)){
+          col <- "black"
+        } else {
+            for (i in 1:arm_no){
+              col[i] <- c("red","blue","gold3", "#6A3D9A")[i]
+            }
+        }
+    }
+
+    if(theme == "Lancet"){
+      # Requirement:
+      #   When reporting Kaplan-Meier survival data, at each timepoint,
+      #   authors must include numbers at risk, and are encouraged to
+      #   include the number of censored patients.
+      risktable.censoring <- TRUE
+    }
+
+    if(theme == "JCO"){
+      # Requirement:
+      #   All Kaplan-Meier plots must include risk tables.
+      risktable <- TRUE
+    }
+
+  } else {
+    stop("Provided theme argument does not exist!")
+  }
+
+    #----------------------------------------------------------------------------#
   # 2. survPlot ####
   #----------------------------------------------------------------------------#
 
@@ -1369,46 +1415,97 @@ surv.plot <- function(
   if(is.logical(risktable)){
     if (risktable == TRUE){
   #----------------------------------------------------------------------------#
-  ### 5.1 Extract data ####
+  ## 5.1 Extract data ####
   #----------------------------------------------------------------------------#
-      obsStrata <- if(is.null(fit$strata)){
-        obsStrata <- 1
+
+  # Preparation
+  obsStrata <- if(is.null(fit$strata)){
+    obsStrata <- 1
+  } else {
+    obsStrata <- fit$strata
+  }
+
+  grp <- rep(1:arm_no, times=obsStrata)
+
+  #----------------------------------------------------------------------------#
+  ### 5.1.1 Number at risk ####
+  #----------------------------------------------------------------------------#
+  # Initialize a matrix 'n.risk.matrix' with zeros
+  n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
+
+  # Loop over each arm and each time point defined by 'xticks'
+  for (stratum_i in 1:arm_no) {
+    for (x in 1:length(xticks)) {
+      # Find the indices where the survival time for the current group is
+      # greater than the current 'xticks'
+      index <- which(fit$time[grp == stratum_i] > xticks[x])
+      # If there are no such indices,
+      # set the corresponding element in 'n.risk.matrix' to 0
+      if (length(index) == 0)
+        n.risk.matrix[x,stratum_i] <- 0
+      else
+        # Otherwise, set the element to the minimum number at risk
+        # for the specified group and time point
+        n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
+    }
+  }
+
+#----------------------------------------------------------------------------#
+### 5.1.2 Censored at risk  ####
+#----------------------------------------------------------------------------#
+  # Initialize a matrix 'n.cenor.matrix' with zeros
+  n.censor.matrix <- matrix(0, nrow = length(xticks), ncol = arm_no)
+
+  # Loop over each arm and each time point defined by 'xticks'
+  for (stratum_i in 1:arm_no){
+    for (x in 1:length(xticks)){
+      if(x == 1){
+        n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
+        #if(risktable.censoring.baseline == 0) n.censor.matrix[1,stratum_i] <- 0
+        ## Note: TODO:
+        ##       risktable.censoring.baseline = 0 number censored at t=0 se to 0
+        ##       risktable.censoring.baseine = 1 number censored at t=0
+        ## This was implemented in the layout Lancet (do we need this?)
       } else {
-        obsStrata <- fit$strata
+        # Find the indices where the survival time for the current group is
+        # greater than the current 'xticks'
+        index <- which(fit$time[grp == stratum_i] > xticks[x - 1] & fit$time[grp == stratum_i] <= xticks[x])
+        # If there are no such indices,
+        # set the corresponding element in 'n.censore.matrix' to 0
+        if (length(index) == 0) n.censor.matrix[x,stratum_i] <- 0
+        # Otherwise, set the element to the censored number at risk
+        # for the specified group and time point
+        else n.censor.matrix[x,stratum_i] <- sum(fit$n.censor[grp == stratum_i][index])
       }
+    }
+  }
+#----------------------------------------------------------------------------#
+## 5.2 Add risktable.title text to the outer margin ####
+#----------------------------------------------------------------------------#
 
-      grp <- rep(1:arm_no, times=obsStrata)
+if(is.logical(risktable.censoring)){
+  if (risktable.censoring == FALSE){
+    # without censoring indication (Default)
+    mtext(risktable.title, side = 1, outer = FALSE,
+          line = risktable.pos, adj = 0, at = risktable.title.position,
+          font = risktable.title.font,
+          cex = risktable.title.cex,
+          col = risktable.title.col)
+  } else if (risktable.censoring == TRUE) {
+    # with censoring indication
+    mtext(text = paste(risktable.title,"(censored)"), side = 1 , outer = FALSE,
+          line = risktable.pos, adj = 0, at = risktable.title.position,
+          font = risktable.title.font,
+          cex = risktable.title.cex,
+          col = risktable.title.col)
+  }
+} else {
+  stop("`risktable.censoring` expecting TRUE or FALSE as an argument!")
+}
 
-      # Initialize a matrix 'n.risk.matrix' with zeros
-      n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
-
-      # Loop over each arm and each time point defined by 'xticks'
-      for (stratum_i in 1:arm_no) {
-        for (x in 1:length(xticks)) {
-          # Find the indices where the survival time for the current group is
-          # greater than the current 'xticks'
-          index <- which(fit$time[grp == stratum_i] > xticks[x])
-          # If there are no such indices,
-          # set the corresponding element in 'n.risk.matrix' to 0
-          if (length(index) == 0)
-            n.risk.matrix[x,stratum_i] <- 0
-          else
-            # Otherwise, set the element to the minimum number at risk
-            # for the specified group and time point
-            n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
-        }
-      }
-  #----------------------------------------------------------------------------#
-  ### 5.1.1 Add risktable.title text to the outer margin ####
-  #----------------------------------------------------------------------------#
-      mtext(risktable.title, side = 1, outer = FALSE,
-            line = risktable.pos, adj = 0, at = risktable.title.position,
-            font = risktable.title.font,
-            cex = risktable.title.cex,
-            col = risktable.title.col)
-  #----------------------------------------------------------------------------#
-  ### 5.1.2 Add legend text to the outer margin for each arm ####
-  #----------------------------------------------------------------------------#
+#----------------------------------------------------------------------------#
+# 5.3 Add legend text to the outer margin for each arm ####
+#----------------------------------------------------------------------------#
       if (missing(risktable.name)) {
         ristkable.name <- legend.name
       } else {
@@ -1423,22 +1520,35 @@ surv.plot <- function(
                 col = risktable.name.col)
         }
       }
-  #----------------------------------------------------------------------------#
-  ### 5.1.3 Add vector of risk counts text to the margin ####
-  #----------------------------------------------------------------------------#
-      if(max(risktable.col == TRUE)) { risktable.col <- col}
-      mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
-            line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
-            at = rep(xticks, arm_no),
-            cex = risktable.cex,
-            col = c(rep(risktable.col, each = length(xticks)))
-      )
+#----------------------------------------------------------------------------#
+# 5.4. Add vector of risk counts text to the margin ####
+#----------------------------------------------------------------------------#
+      if(max(risktable.col == TRUE)) {risktable.col <- col}
+
+      if (risktable.censoring == FALSE){
+        # without censoring indication (Default)
+        mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
+              line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
+              at = rep(xticks, arm_no),
+              cex = risktable.cex,
+              col = c(rep(risktable.col, each = length(xticks)))
+        )
+      } else if (risktable.censoring == TRUE){
+        # With censoring indication
+        mtext(text = paste(as.vector(n.risk.matrix), gsub(" ", "", paste("(", as.vector(n.censor.matrix),")"))),
+              side = 1, outer = FALSE,
+              at = rep(xticks, arm_no),
+              line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
+              cex = risktable.cex,
+              col = c(rep(risktable.col, each = length(xticks))))
+      }
+
     }
   } else {
     stop("`risktable` expecting TRUE or FALSE as an argument!")
   }
-} # final closer of the function
 
+} # final closer of the function
   #----------------------------------------------------------------------------#
   # End of the programm  ####
   #----------------------------------------------------------------------------#
