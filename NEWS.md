@@ -1,3 +1,18 @@
+# survSAKK 1.2.0
+
+This update brings new features
+
+✨  **New Feature**
+
+- `risktable.censoring`:
+
+A logical parameter indicating whether to display number of censored patients (Default: `FALSE`)
+
+- `theme`: 
+
+Built-in layout options for various journals.
+
+
 # survSAKK 1.1.0
 
 This update brings significant improvements and a new feature based on your feedback from initial release. 
