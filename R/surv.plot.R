@@ -663,7 +663,7 @@ surv.plot <- function(
             }
         }
     }
-
+    ### 1.11.2 Theme: Lancet ####
     if(theme == "Lancet"){
       # Requirement:
       #   When reporting Kaplan-Meier survival data, at each timepoint,
@@ -671,7 +671,7 @@ surv.plot <- function(
       #   include the number of censored patients.
       risktable.censoring <- TRUE
     }
-
+    ### 1.11.1 Theme: JCO ####
     if(theme == "JCO"){
       # Requirement:
       #   All Kaplan-Meier plots must include risk tables.
@@ -1086,9 +1086,12 @@ surv.plot <- function(
     ### 3.2.1 Drawing vertical and horizontal segments ####
     if (!is.null(segment.quantile) & is.null(segment.timepoint)){
       # Draw vertical Line
-      segments(x0 = segment_x$quantile,
+      print(segment_x$quantile)
+      print(segment_y)
+
+      segments(x0 = t(segment_x$quantile),
                y0 = 0,
-               x1 = segment_x$quantile,
+               x1 = t(segment_x$quantile),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -1097,7 +1100,7 @@ surv.plot <- function(
       # Draw horizontal Line
       segments(x0 = 0,
                y0 = segment_y,
-               x1 = segment_x$quantile,
+               x1 = t(segment_x$quantile),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -1189,19 +1192,20 @@ surv.plot <- function(
 
   ### 3.2.4 Add segment annotation ####
 
-  # Segment annotation is displayed if segment.quantile or segment.timepoint was chosen (and not
-  # both of them) and segment.annotation is not "none".
+  # Segment annotation is displayed if segment.quantile or segment.timepoint was chosen
+  # and segment.annotation is not "none".
   if (segment.type %in% c(1,2,3) & !("none" %in% segment.annotation) &
       (!is.null(segment.quantile ) & is.null(segment.timepoint) |
        is.null(segment.quantile ) & !is.null(segment.timepoint))) {
 
-    # Long annotation with confidence interval
-    #if(segment.confint == F & arm_no == 2) {
       if (is.null(segment.timepoint)) {
         segment_label <- quantile_label
       } else if (is.null(segment.quantile)){
         segment_label <- timepoint_label
       }
+
+      # If segment.timepoint or segment quantile has only one entry:
+    if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
       text(x = text_xpos,
            y = text_ypos,
            labels = segment_label,
@@ -1209,23 +1213,45 @@ surv.plot <- function(
            col = segment.annotation.col,
            cex = segment.cex,
            font = segment.font)
-
-    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
-    #}} else if(segment.confint == F & arm_no != 2) {
-    #  stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
-
-    # Short annotation without confidence interval
-    #} else {
-    #}
-
-
+    } else if (length(segment.timepoint) > 1){
+      print("Note:` segment.main` for more than one timepoint is not supported")
+        if(y.unit == "percent"){
+          text(x = segment_x,
+               y = segment_y$surv,
+               labels = paste0(round(segment_y$surv,2) * 100,"%"),
+               pos = pos,
+               col = rep(segment.annotation.col, each = length(segment_x)),
+               cex = segment.cex,
+               font = segment.font)
+        } else {
+          text(x = segment_x,
+               y = segment_y$surv,
+               labels = round(segment_y$surv,2),
+               pos = pos,
+               col = rep(segment.annotation.col, each = length(segment_x)),
+               cex = segment.cex,
+               font = segment.font)
+          }
+    } else if (length(segment.quantile) > 1){
+      print("Note: `segment.main` for more than one quantile is not supported")
+      text(x = t(segment_x$quantile),
+           y = segment.quantile,
+           labels = round(segment_x$quantile,0),
+           pos = pos,
+           col = rep(segment.annotation.col, each = length(segment.quantile)),
+           cex = segment.cex,
+           font = segment.font)
+    }
   }
 
   #----------------------------------------------------------------------------#
   ### 3.3 Segment title ####
   #----------------------------------------------------------------------------#
-  # Title for the segment text
 
+# If segment.timepoint or segment.quantil has only one entry:
+if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
+
+  #Title for the segment text
   if (!("none" %in% segment.annotation) & !(arm_no == 1 & segment.annotation.two.lines == FALSE)){
     # Display `setment.main` as title of segment annotation if it was specified
     if (!is.null(segment.main)){
@@ -1253,6 +1279,7 @@ surv.plot <- function(
            col = "black", cex = segment.cex, font = segment.main.font)
     }
   }
+}
 
   #----------------------------------------------------------------------------#
   # 4. survStats ####
@@ -1462,10 +1489,10 @@ surv.plot <- function(
       if(x == 1){
         n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
         #if(risktable.censoring.baseline == 0) n.censor.matrix[1,stratum_i] <- 0
-        ## Note: TODO:
+        ## Note from VSO: Wird das hier benoetigt wenn ja uncomment wenn nicht entfernen.
         ##       risktable.censoring.baseline = 0 number censored at t=0 se to 0
         ##       risktable.censoring.baseine = 1 number censored at t=0
-        ## This was implemented in the layout Lancet (do we need this?)
+        ## This was implemented in the old macro as an option(do we need this?)
       } else {
         # Find the indices where the survival time for the current group is
         # greater than the current 'xticks'
