@@ -4,14 +4,20 @@ This update brings new features
 
 ✨  **New Feature**
 
-- `risktable.censoring`:
+- `risktable.censoring()` A logical parameter indicating whether to display number of censored patients. Default is set to `FALSE`.
 
-A logical parameter indicating whether to display number of censored patients (Default: `FALSE`)
+- `theme()` Built-in layout options for various congress.
 
-- `theme`: 
 
-Built-in layout options for various journals.
+🛠️ **Improvement of the segment***
 
+Function can handle annotation of  multiple time points and quantiles. Note: segment.main` is not supported if more than one time point quantiles are given.
+
+🎨 **Adjustments**
+
+`stat="logrank"` will write just write ‘p=...’ and not ‘Logrank test: p=...’
+
+--------------------------------------------------------------------------------
 
 # survSAKK 1.1.0
 
@@ -19,10 +25,7 @@ This update brings significant improvements and a new feature based on your feed
 
 ✨  **New Feature**
 
-- `segment.annotation.two.lines`:
-
-A logical parameter to force that the annotation is displayed on two lines even if there is only one arm. This
-parameter only has an effect if there is only one arm (Default: `FALSE`).
+- `segment.annotation.two.lines()` A logical parameter to force that the annotation is displayed on two lines even if there is only one arm. This parameter only has an effect if there is only one arm (Default: `FALSE`).
 
 🐛  **Bug Fixes**
 
@@ -35,10 +38,14 @@ parameter only has an effect if there is only one arm (Default: `FALSE`).
 - Rounding
 
   Improved handling and rounding, espcially when dealing with special characters.
-  
+
+--------------------------------------------------------------------------------
+
 # survSAKK 1.0.0
 
 🎉 First Release!
+
+--------------------------------------------------------------------------------
 
 # survSAKK 0.0.0.900
 
