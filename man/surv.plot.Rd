@@ -311,7 +311,7 @@ Default is \code{3}.}
 Default is \code{2}.}
 
 \item{theme}{Built-in layout options.
-Options include: ("none", "SAKK", "Lancet", "JCO")}
+Options include: ("none", "SAKK", "Lancet", "JCO", "WCLC", "ESMO")}
 }
 \value{
 Kaplan-Meier curves of the input \code{fit},
