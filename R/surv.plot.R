@@ -308,7 +308,7 @@
 #' Default is `2`.
 #'
 #' @param theme Built-in layout options.
-#' Options include: ("none", "SAKK", "Lancet", "JCO")
+#' Options include: ("none", "SAKK", "Lancet", "JCO", "WCLC", "ESMO")
 #'
 #' @return Kaplan-Meier curves of the input \code{fit},
 #' incorporating various statistics and layout option(s).
@@ -650,16 +650,17 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
 
   # Check if provided theme is defined
-  if(theme %in% c("none","SAKK", "Lancet", "JCO")){
+  if(theme %in% c("none","SAKK", "Lancet", "JCO", "WCLC", "ESMO")){
 
     ### 1.11.1 Theme: SAKK ####
     if(theme == "SAKK"){
-      # Color assignment
+      # Colour assignment
         if(is.null(fit$strata)){
-          col <- "black"
+          col <- "#BC0022"
         } else {
             for (i in 1:arm_no){
-              col[i] <- c("red","blue","gold3", "#6A3D9A")[i]
+              col[i] <- c("#BC0022","#9C9C9C","#4F0009",
+                          "#07364A", "#9C2F3B", "#E67864")[i]
             }
         }
     }
@@ -670,12 +671,57 @@ surv.plot <- function(
       #   authors must include numbers at risk, and are encouraged to
       #   include the number of censored patients.
       risktable.censoring <- TRUE
+
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#00468BFF"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#00468BFF","#ED0000FF","#42B540FF",
+                      "#0099B4FF","#925E9FFF", "#FDAF91FF")[i]
+        }
+      }
     }
-    ### 1.11.1 Theme: JCO ####
+
+    ### 1.11.3 Theme: JCO ####
     if(theme == "JCO"){
       # Requirement:
       #   All Kaplan-Meier plots must include risk tables.
       risktable <- TRUE
+
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#0073C2FF"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#0073C2FF","#EFC000FF","#868686FF", "#CD534CFF","#7AA6DCFF",
+                      "#003C67FF", "#8F7700FF","#3B2B2BFF","#A73030FF","#4A6990FF")[i]
+        }
+      }
+    }
+
+    ### 1.11.4 Theme: WCLC ####
+    if(theme == "WCLC"){
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#273987"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#273987","#8C2332","#C6A444","#002F87")[i]
+        }
+      }
+    }
+
+    ### 1.11.5 Theme: ESMO ####
+    if(theme == "ESMO"){
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#1B4F26"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#1B4F26","#81134E","#78821D","#002F5D")[i]
+        }
+      }
     }
 
   } else {
@@ -955,10 +1001,18 @@ surv.plot <- function(
       time.unit_temp <- ""
     }
 
-    # Short annotation without confidence interval (only possible if number of arms = 2)
-    if(segment.confint == F & arm_no == 2){
-      if(segment.quantile == 0.5) {quantile.temp <- "Median"}
-      else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
+    # Annotation without CI for Comparing arm == 2:
+    ## `segment.annotation()` -> Annotation as Median: xx vs xx
+    ## Note: Only possible if exactly two arms are compared and
+    ##       Only one segment.quantile value is given.
+
+    if(segment.confint == FALSE & arm_no == 2 & length(segment.quantile) == 1){
+        if (segment.quantile == 0.5) {
+        quantile.temp <- "Median"
+      } else {
+        quantile.temp <- paste0(segment.quantile, "-Quantile")
+      }
+
       quantile_label <- paste0(quantile.temp, ": ",
                                ifelse(is.na(segment_x$quantile[1]), "NR", round(segment_x$quantile[1], 1)),
                                " vs ",
@@ -966,28 +1020,29 @@ surv.plot <- function(
                                time.unit_temp)
       segment.annotation.col <- "black"
 
-    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
-    } else if(segment.confint == F & arm_no != 2) {
-      stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
+    } else if (segment.confint == FALSE & arm_no != 2) {
+      stop("The parameter `segment.confint()` cannot be set to FALSE when number of arms is unequal 2.")
 
-    # Annotation for one arm on one line
-    } else if(arm_no == 1 & segment.annotation.two.lines == FALSE) {
+      # Annotation if arm == 1:
+    } else if (arm_no == 1 & segment.annotation.two.lines == FALSE & length(segment.quantile) == 1) {
       if(!is.null(segment.main)){
         quantile.temp <- segment.main
+      } else if(segment.quantile == 0.5) {
+        quantile.temp <- paste0("Median (", conf.int * 100, "% CI)")
+      } else {
+        quantile.temp <- paste0(segment.quantile, "-Quantile (", conf.int * 100, "% CI)")
       }
-      else if(segment.quantile == 0.5) {quantile.temp <- paste0("Median (", conf.int * 100, "% CI)")}
-      else {quantile.temp <- paste0(segment.quantile, "-Quantile (", conf.int * 100, "% CI)")}
-      quantile_label <- paste0(quantile.temp, ": ",
-                               ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
-                               time.unit_temp,
-                               " (",
-                               ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
-                               " to ",
-                               ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
-                               ")")
 
-    # Long annotation with confidence interval
+    quantile_label <- paste0(quantile.temp, ": ",
+                             ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
+                             time.unit_temp,
+                             " (",
+                             ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
+                             " to ",
+                             ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
+                             ")")
     } else {
+      # Annotation with CI for Comparing arm == 2:
       quantile_label <- paste0(ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
                                time.unit_temp,
                                " (",
@@ -1086,9 +1141,6 @@ surv.plot <- function(
     ### 3.2.1 Drawing vertical and horizontal segments ####
     if (!is.null(segment.quantile) & is.null(segment.timepoint)){
       # Draw vertical Line
-      print(segment_x$quantile)
-      print(segment_y)
-
       segments(x0 = t(segment_x$quantile),
                y0 = 0,
                x1 = t(segment_x$quantile),
@@ -1133,12 +1185,12 @@ surv.plot <- function(
   } else if (segment.type == 2){
 
     ### 3.2.2 Drawing specified segment (half bandwidth) ####
-    if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
+    if (!is.null(segment.quantile) & is.null(segment.timepoint)){
 
       # Horizontal Line
       segments(x0 = 0,
                y0 = segment_y,
-               x1 = segment_x$quantile,
+               x1 = t(segment_x$quantile),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -1194,17 +1246,15 @@ surv.plot <- function(
 
   # Segment annotation is displayed if segment.quantile or segment.timepoint was chosen
   # and segment.annotation is not "none".
-  if (segment.type %in% c(1,2,3) & !("none" %in% segment.annotation) &
-      (!is.null(segment.quantile ) & is.null(segment.timepoint) |
-       is.null(segment.quantile ) & !is.null(segment.timepoint))) {
-
+  if(segment.type %in% c(1,2,3) & !("none" %in% segment.annotation) &
+      (!is.null(segment.quantile) & is.null(segment.timepoint) | is.null(segment.quantile) & !is.null(segment.timepoint))) {
       if (is.null(segment.timepoint)) {
         segment_label <- quantile_label
       } else if (is.null(segment.quantile)){
         segment_label <- timepoint_label
       }
 
-      # If segment.timepoint or segment quantile has only one entry:
+      ## Check how many inputs was given for segment.timepoint() or segment.quantile():
     if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
       text(x = text_xpos,
            y = text_ypos,
@@ -1213,13 +1263,14 @@ surv.plot <- function(
            col = segment.annotation.col,
            cex = segment.cex,
            font = segment.font)
+      ## Input >1 for segment.timepoint()
     } else if (length(segment.timepoint) > 1){
       print("Note:` segment.main` for more than one timepoint is not supported")
         if(y.unit == "percent"){
           text(x = segment_x,
                y = segment_y$surv,
                labels = paste0(round(segment_y$surv,2) * 100,"%"),
-               pos = pos,
+               pos = pos, # anpassen/ hardcoden?
                col = rep(segment.annotation.col, each = length(segment_x)),
                cex = segment.cex,
                font = segment.font)
@@ -1231,7 +1282,8 @@ surv.plot <- function(
                col = rep(segment.annotation.col, each = length(segment_x)),
                cex = segment.cex,
                font = segment.font)
-          }
+        }
+      ## Input >1 for segment.quantile()
     } else if (length(segment.quantile) > 1){
       print("Note: `segment.main` for more than one quantile is not supported")
       text(x = t(segment_x$quantile),
@@ -1404,7 +1456,8 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
     # Display statistics in the plot
 
     if(stat == "logrank"){
-      stats <- paste0("Logrank test: ", logrankpval)
+      #stats <- paste0("Logrank test: ", logrankpval)
+      stats <- paste0(logrankpval)
     } else if(stat == "coxph"){
       stats <- paste0("HR ",
                       round(model$conf.int[,"exp(coef)"], digits = 2),
