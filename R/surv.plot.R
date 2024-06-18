@@ -420,12 +420,12 @@ surv.plot <- function(
     risktable.title = "# at risk",
     risktable.title.font = 2,
     risktable.title.col = "black",
-    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    risktable.title.position = NULL,
     risktable.title.cex,
     risktable.name.cex,
     risktable.name.font = 1,
     risktable.name.col = "black",
-    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    risktable.name.position = NULL,
     # Margin area
     margin.bottom = 5,
     margin.left= NULL,
@@ -437,7 +437,15 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # 1. Preparation ####
   #----------------------------------------------------------------------------#
-
+  # max(1, length(fit$strata))
+  # risktable.title.position <-
+  #   ifelse(is.null(risktable.title.position),
+  #          ifelse(length(fit$strata) == 1,
+  #                 (par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.05),  # 1 strata
+  #                 (par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15)), # >1 strata
+  #          risktable.title.position)
+  # print(risktable.title.position)
+  # print(fit$strata)
   #----------------------------------------------------------------------------#
   ## 1.1 Function for rounding p-value ####
   #----------------------------------------------------------------------------#
@@ -1492,10 +1500,40 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
   # 5. survRisktable ####
   #----------------------------------------------------------------------------#
 
+  #----------------------------------------------------------------------------#
+  ## 5.1 Define position factor ####
+  #----------------------------------------------------------------------------#
+
+  # Risk table title
+
+  # Default title position values based on the number of strata
+  factor_one <- 0.05 # arm == 1
+  factor_two <- 0.10 # arm >= 2
+
+  pos_factor <- ifelse(arm_no == 1, factor_one, factor_two)
+
+  # Get the user coordinate system limits
+  usr_limits <- par("usr")
+
+  # Calculate the title position if it is not provided
+  if (is.null(risktable.title.position)) {
+    plot_width <- usr_limits[2] - usr_limits[1]
+    risktable.title.position <- usr_limits[1] - plot_width * pos_factor
+  }
+
+  # Risk table name
+  if (is.null(risktable.name.position)) {
+    risktable.name.position <- par("usr")[1] - (par("usr")[2]- par("usr")[1]) * pos_factor
+  }
+
+  #----------------------------------------------------------------------------#
+  ## 5.2 Draw Risk Table ####
+  #----------------------------------------------------------------------------#
   if(is.logical(risktable)){
     if (risktable == TRUE){
+
   #----------------------------------------------------------------------------#
-  ## 5.1 Extract data ####
+  ### 5.1.1 Extract data ####
   #----------------------------------------------------------------------------#
 
   # Preparation
@@ -1508,7 +1546,7 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
   grp <- rep(1:arm_no, times=obsStrata)
 
   #----------------------------------------------------------------------------#
-  ### 5.1.1 Number at risk ####
+  ### 5.1.2 Number at risk ####
   #----------------------------------------------------------------------------#
   # Initialize a matrix 'n.risk.matrix' with zeros
   n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
@@ -1531,7 +1569,7 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
   }
 
 #----------------------------------------------------------------------------#
-### 5.1.2 Censored at risk  ####
+### 5.1.3 Censored at risk  ####
 #----------------------------------------------------------------------------#
   # Initialize a matrix 'n.cenor.matrix' with zeros
   n.censor.matrix <- matrix(0, nrow = length(xticks), ncol = arm_no)
