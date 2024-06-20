@@ -437,15 +437,7 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # 1. Preparation ####
   #----------------------------------------------------------------------------#
-  # max(1, length(fit$strata))
-  # risktable.title.position <-
-  #   ifelse(is.null(risktable.title.position),
-  #          ifelse(length(fit$strata) == 1,
-  #                 (par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.05),  # 1 strata
-  #                 (par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15)), # >1 strata
-  #          risktable.title.position)
-  # print(risktable.title.position)
-  # print(fit$strata)
+
   #----------------------------------------------------------------------------#
   ## 1.1 Function for rounding p-value ####
   #----------------------------------------------------------------------------#
