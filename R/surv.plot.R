@@ -1579,11 +1579,6 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
     for (x in 1:length(xticks)){
       if(x == 1){
         n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
-        #if(risktable.censoring.baseline == 0) n.censor.matrix[1,stratum_i] <- 0
-        ## Note from VSO: Wird das hier benoetigt wenn ja uncomment wenn nicht entfernen.
-        ##       risktable.censoring.baseline = 0 number censored at t=0 se to 0
-        ##       risktable.censoring.baseine = 1 number censored at t=0
-        ## This was implemented in the old macro as an option(do we need this?)
       } else {
         # Find the indices where the survival time for the current group is
         # greater than the current 'xticks'
