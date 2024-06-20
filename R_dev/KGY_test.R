@@ -33,6 +33,21 @@ S2 <- survfit(Surv(pfs_time, pfs) ~ subgroup_line, data = data.subgroup, conf.ty
 S3 <- survfit(Surv(pfs_time, pfs) ~ fuss, data = data.subgroup, conf.type = "log-log")
 
 
+surv.plot(S1)
+surv.plot(S1, xticks = seq(0, 24, by = 1))
+surv.plot(S1, xticks = seq(0, 20, by = 1))
+surv.plot(S1, xticks = seq(0, 16, by = 1))
+surv.plot(S1, xticks = seq(0, 14, by = 1))
+surv.plot(S1, xticks = seq(0, 14, by = 1), risktable.title = "Number at risk")
+surv.plot(S1, xticks = seq(0, 14, by = 1), risktable.censoring = TRUE)
+surv.plot(S1, xticks = seq(0, 14, by = 1), risktable.censoring = TRUE, risktable.title = "Number at risk")
+
+
+
+surv.plot(S1, xticks = seq(0, 24, by = 2))
+surv.plot(S1, xticks = seq(0, 24, by = 3))
+surv.plot(S1, xticks = seq(0, 24, by = 4))
+surv.plot(S1, xticks = seq(0, 24, by = 5))
 
 
 surv.plot(S1)
@@ -43,6 +58,30 @@ surv.plot(S1, censoring.mark = T, censoring.cex = 2)
 surv.plot(S1, censoring.mark = T)
 surv.plot(S1, yticks = seq(0,1,0.2))
 surv.plot(S1, yticks = seq(0,1,0.2), y.unit = "percent")
+
+# Testing segment annotation for one arm: ####
+# Start Vither
+surv.plot(S1,risktable.censoring = TRUE)
+surv.plot(S1,risktable.censoring = FALSE, theme = "Lancet")
+surv.plot(S1,risktable.censoring = TRUE, theme = "ESMO")
+surv.plot(S1,risktable.censoring = FALSE, theme = "ESMO")
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.timepoint = c(4,8,12))
+surv.plot(S1,risktable.censoring = TRUE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation.col = c("black"))
+surv.plot(S1,risktable.censoring = TRUE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation.col = c("black"), segment.annotation = "top")
+surv.plot(S1,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation.col = c("blue"))
+surv.plot(S1,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.type = 3, segment.annotation = "top")
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.5))
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.5), segment.confint = F) # Expecting Error message: Check passed
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.5), segment.confint = T)
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.5), segment.annotation.two.lines = TRUE)
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.5), segment.main = "ABC", segment.annotation.two.lines = TRUE)
+
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.25))
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.25,0.5))
+surv.plot(S1,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.25,0.5, 0.10))
+surv.plot(S1, segment.quantile = c(0.25,0.5, 0.10), segment.annotation.col = "black")
+surv.plot(S1, segment.quantile = c(0.25,0.5, 0.10), segment.annotation.col = "black", segment.type = 2)
+# end Vither;
 
 surv.plot(S2, legend.title.cex = 3, legend.title = "title")
 surv.plot(S2, segment.cex = 3, segment.timepoint = 8)
@@ -55,7 +94,32 @@ surv.plot(S2)
 surv.plot(S2, time.unit ="month")
 surv.plot(S2, time.unit ="month", risktable.title.position = -4, risktable.name.position = -4)
 
-surv.plot(S3, conf.band = F) # not working!!
+# VSO Testing segment annotation for two arms:
+surv.plot(S2,risktable.censoring = TRUE)
+surv.plot(S2,risktable.censoring = FALSE, theme = "Lancet")
+surv.plot(S2,risktable.censoring = TRUE, theme = "ESMO")
+surv.plot(S2,risktable.censoring = FALSE, theme = "ESMO")
+surv.plot(S2,risktable.censoring = TRUE, theme = "SAKK", segment.timepoint = c(4,8,12))
+surv.plot(S2,risktable.censoring = TRUE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation.col = c("black"))
+surv.plot(S2,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation.col = c("blue"))
+surv.plot(S2,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation = "left")
+surv.plot(S2,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation = "right")
+surv.plot(S2,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation = "top")
+surv.plot(S2,risktable.censoring = FALSE, theme = "JCO", segment.timepoint = c(4,8,12), segment.annotation = "right",segment.type = 1)
+surv.plot(S2,risktable.censoring = TRUE, theme = "SAKK", segment.quantile = c(0.25))
+surv.plot(S2, segment.quantile = c(0.5), segment.confint = FALSE,  segment.annotation.two.lines = FALSE)
+surv.plot(S2, segment.quantile = c(0.5),  segment.annotation.two.lines = TRUE)
+surv.plot(S2, segment.quantile = c(0.5),  segment.annotation.two.lines = FALSE)
+surv.plot(S2, segment.quantile = c(0.5), segment.confint = TRUE)
+surv.plot(S2, segment.quantile = c(0.25), segment.confint = FALSE)
+surv.plot(S2, segment.quantile = c(0.25), segment.confint = TRUE)
+surv.plot(S2, segment.quantile = c(0.5,0.25), segment.confint = TRUE)
+surv.plot(S2, segment.quantile = c(0.5,0.25), segment.confint = TRUE, segment.annotation.col = "black")
+surv.plot(S2, segment.quantile = c(0.10, 0.25, 0.5), segment.type = 2, segment.confint = TRUE)
+surv.plot(S2, segment.quantile = c(0.10, 0.25, 0.5), segment.confint = TRUE) # Expect:  Option of segment.confint has no effect: Passed
+surv.plot(S2, segment.quantile = c(0.10, 0.25, 0.5), segment.confint = FALSE) # Passed
+surv.plot(S2, segment.quantile = c(0.10, 0.25, 0.5), segment.type = 3) # Passed
+# end VSO;
 
 ?surv.plot
 
@@ -214,7 +278,7 @@ surv.plot(S2, time.unit ="month", risktable.col = c("red", "blue", "green"))
 
 surv.plot(S1, time.unit ="month")
 surv.plot(S2, time.unit ="month")
-surv.plot(S1, time.unit ="month", show.legend = TRUE)
+surv.plot(S1, time.unit ="month", legend = TRUE)
 
 
 # test stratum name ###############################################

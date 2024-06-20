@@ -238,6 +238,14 @@ surv.plot(fit.lung.arm.m,
 )
 ```
 
+## Risktable with censoring indication 
+
+```{r risktable_censoring}
+surv.plot(fit.lung.arm.m,
+          risktable.censoring = TRUE)
+```
+
+
 # Drawing segment
 
 This section explains how to highlight a **specific quantile** or
@@ -470,6 +478,27 @@ surv.plot(fit.lung.arm.m,
           stat = "coxph_logrank"
 )
 ```
+
+
+# Predefined theme options
+
+```{r Design1}
+
+surv.plot(fit.lung.arm.m,
+          theme = "ESMO")
+
+```
+
+```{r Design2}
+
+surv.plot(fit.lung.arm.m,
+          theme = "Lancet")
+
+```
+
+
+
+
 
 # Multiple survival plots
 

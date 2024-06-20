@@ -246,6 +246,9 @@
 #' @param risktable A logical parameter indicating whether to draw risk table.
 #' Default is \code{TRUE}.
 #'
+#' @param risktable.censoring A logical parameter indicating whether to display number of censored patients.
+#' Default is \code{FALSE}.
+#'
 #' @param risktable.pos Defines on which margin line of the xlab is displayed,
 #' starting at 0 counting outwards.
 #' Default is at line `3`.
@@ -303,6 +306,9 @@
 #'
 #' @param margin.right Specifies the right margin of the plotting area in line units.
 #' Default is `2`.
+#'
+#' @param theme Built-in layout options.
+#' Options include: ("none", "SAKK", "Lancet", "JCO", "WCLC", "ESMO")
 #'
 #' @return Kaplan-Meier curves of the input \code{fit},
 #' incorporating various statistics and layout option(s).
@@ -406,6 +412,7 @@ surv.plot <- function(
     stat.font = 1,
     # risk table options
     risktable = TRUE,
+    risktable.censoring = FALSE,
     risktable.pos = 2,
     risktable.name,
     risktable.cex,
@@ -413,22 +420,32 @@ surv.plot <- function(
     risktable.title = "# at risk",
     risktable.title.font = 2,
     risktable.title.col = "black",
-    risktable.title.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    risktable.title.position = NULL,
     risktable.title.cex,
     risktable.name.cex,
     risktable.name.font = 1,
     risktable.name.col = "black",
-    risktable.name.position = par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15,
+    risktable.name.position = NULL,
     # Margin area
     margin.bottom = 5,
     margin.left= NULL,
     margin.top= 3,
-    margin.right = 2
+    margin.right = 2,
+    # Themes
+    theme = "none"
 ){
   #----------------------------------------------------------------------------#
   # 1. Preparation ####
   #----------------------------------------------------------------------------#
-
+  # max(1, length(fit$strata))
+  # risktable.title.position <-
+  #   ifelse(is.null(risktable.title.position),
+  #          ifelse(length(fit$strata) == 1,
+  #                 (par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.05),  # 1 strata
+  #                 (par("usr")[1] - (par("usr")[2]- par("usr")[1])*0.15)), # >1 strata
+  #          risktable.title.position)
+  # print(risktable.title.position)
+  # print(fit$strata)
   #----------------------------------------------------------------------------#
   ## 1.1 Function for rounding p-value ####
   #----------------------------------------------------------------------------#
@@ -637,6 +654,89 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
+  ## 1.11 Pre-defined Themes ####
+  #----------------------------------------------------------------------------#
+
+  # Check if provided theme is defined
+  if(theme %in% c("none","SAKK", "Lancet", "JCO", "WCLC", "ESMO")){
+
+    ### 1.11.1 Theme: SAKK ####
+    if(theme == "SAKK"){
+      # Colour assignment
+        if(is.null(fit$strata)){
+          col <- "#BC0022"
+        } else {
+            for (i in 1:arm_no){
+              col[i] <- c("#BC0022","#9C9C9C","#4F0009",
+                          "#07364A", "#9C2F3B", "#E67864")[i]
+            }
+        }
+    }
+    ### 1.11.2 Theme: Lancet ####
+    if(theme == "Lancet"){
+      # Requirement:
+      #   When reporting Kaplan-Meier survival data, at each timepoint,
+      #   authors must include numbers at risk, and are encouraged to
+      #   include the number of censored patients.
+      risktable.censoring <- TRUE
+
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#00468BFF"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#00468BFF","#ED0000FF","#42B540FF",
+                      "#0099B4FF","#925E9FFF", "#FDAF91FF")[i]
+        }
+      }
+    }
+
+    ### 1.11.3 Theme: JCO ####
+    if(theme == "JCO"){
+      # Requirement:
+      #   All Kaplan-Meier plots must include risk tables.
+      risktable <- TRUE
+
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#0073C2FF"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#0073C2FF","#EFC000FF","#868686FF", "#CD534CFF","#7AA6DCFF",
+                      "#003C67FF", "#8F7700FF","#3B2B2BFF","#A73030FF","#4A6990FF")[i]
+        }
+      }
+    }
+
+    ### 1.11.4 Theme: WCLC ####
+    if(theme == "WCLC"){
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#273987"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#273987","#8C2332","#C6A444","#002F87")[i]
+        }
+      }
+    }
+
+    ### 1.11.5 Theme: ESMO ####
+    if(theme == "ESMO"){
+      # Colour assignment
+      if(is.null(fit$strata)){
+        col <- "#1B4F26"
+      } else {
+        for (i in 1:arm_no){
+          col[i] <- c("#1B4F26","#81134E","#78821D","#002F5D")[i]
+        }
+      }
+    }
+
+  } else {
+    stop("Provided theme argument does not exist!")
+  }
+
+    #----------------------------------------------------------------------------#
   # 2. survPlot ####
   #----------------------------------------------------------------------------#
 
@@ -909,10 +1009,18 @@ surv.plot <- function(
       time.unit_temp <- ""
     }
 
-    # Short annotation without confidence interval (only possible if number of arms = 2)
-    if(segment.confint == F & arm_no == 2){
-      if(segment.quantile == 0.5) {quantile.temp <- "Median"}
-      else {quantile.temp <- paste0(segment.quantile, "-Quantile")}
+    # Annotation without CI for Comparing arm == 2:
+    ## `segment.annotation()` -> Annotation as Median: xx vs xx
+    ## Note: Only possible if exactly two arms are compared and
+    ##       Only one segment.quantile value is given.
+
+    if(segment.confint == FALSE & arm_no == 2 & length(segment.quantile) == 1){
+        if (segment.quantile == 0.5) {
+        quantile.temp <- "Median"
+      } else {
+        quantile.temp <- paste0(segment.quantile, "-Quantile")
+      }
+
       quantile_label <- paste0(quantile.temp, ": ",
                                ifelse(is.na(segment_x$quantile[1]), "NR", round(segment_x$quantile[1], 1)),
                                " vs ",
@@ -920,28 +1028,29 @@ surv.plot <- function(
                                time.unit_temp)
       segment.annotation.col <- "black"
 
-    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
-    } else if(segment.confint == F & arm_no != 2) {
-      stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
+    } else if (segment.confint == FALSE & arm_no != 2) {
+      stop("The parameter `segment.confint()` cannot be set to FALSE when number of arms is unequal 2.")
 
-    # Annotation for one arm on one line
-    } else if(arm_no == 1 & segment.annotation.two.lines == FALSE) {
+      # Annotation if arm == 1:
+    } else if (arm_no == 1 & segment.annotation.two.lines == FALSE & length(segment.quantile) == 1) {
       if(!is.null(segment.main)){
         quantile.temp <- segment.main
+      } else if(segment.quantile == 0.5) {
+        quantile.temp <- paste0("Median (", conf.int * 100, "% CI)")
+      } else {
+        quantile.temp <- paste0(segment.quantile, "-Quantile (", conf.int * 100, "% CI)")
       }
-      else if(segment.quantile == 0.5) {quantile.temp <- paste0("Median (", conf.int * 100, "% CI)")}
-      else {quantile.temp <- paste0(segment.quantile, "-Quantile (", conf.int * 100, "% CI)")}
-      quantile_label <- paste0(quantile.temp, ": ",
-                               ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
-                               time.unit_temp,
-                               " (",
-                               ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
-                               " to ",
-                               ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
-                               ")")
 
-    # Long annotation with confidence interval
+    quantile_label <- paste0(quantile.temp, ": ",
+                             ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
+                             time.unit_temp,
+                             " (",
+                             ifelse(is.na(segment_x$lower), "NR", round(segment_x$lower, 1)),
+                             " to ",
+                             ifelse(is.na(segment_x$upper), "NR", round(segment_x$upper, 1)),
+                             ")")
     } else {
+      # Annotation with CI for Comparing arm == 2:
       quantile_label <- paste0(ifelse(is.na(segment_x$quantile), "NR", round(segment_x$quantile, 1)),
                                time.unit_temp,
                                " (",
@@ -1040,9 +1149,9 @@ surv.plot <- function(
     ### 3.2.1 Drawing vertical and horizontal segments ####
     if (!is.null(segment.quantile) & is.null(segment.timepoint)){
       # Draw vertical Line
-      segments(x0 = segment_x$quantile,
+      segments(x0 = t(segment_x$quantile),
                y0 = 0,
-               x1 = segment_x$quantile,
+               x1 = t(segment_x$quantile),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -1051,7 +1160,7 @@ surv.plot <- function(
       # Draw horizontal Line
       segments(x0 = 0,
                y0 = segment_y,
-               x1 = segment_x$quantile,
+               x1 = t(segment_x$quantile),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -1084,12 +1193,12 @@ surv.plot <- function(
   } else if (segment.type == 2){
 
     ### 3.2.2 Drawing specified segment (half bandwidth) ####
-    if (!is.null(segment.quantile ) & is.null(segment.timepoint)){
+    if (!is.null(segment.quantile) & is.null(segment.timepoint)){
 
       # Horizontal Line
       segments(x0 = 0,
                y0 = segment_y,
-               x1 = segment_x$quantile,
+               x1 = t(segment_x$quantile),
                y1 = segment_y,
                col = segment.col,
                lty = segment.lty,
@@ -1143,19 +1252,18 @@ surv.plot <- function(
 
   ### 3.2.4 Add segment annotation ####
 
-  # Segment annotation is displayed if segment.quantile or segment.timepoint was chosen (and not
-  # both of them) and segment.annotation is not "none".
-  if (segment.type %in% c(1,2,3) & !("none" %in% segment.annotation) &
-      (!is.null(segment.quantile ) & is.null(segment.timepoint) |
-       is.null(segment.quantile ) & !is.null(segment.timepoint))) {
-
-    # Long annotation with confidence interval
-    #if(segment.confint == F & arm_no == 2) {
+  # Segment annotation is displayed if segment.quantile or segment.timepoint was chosen
+  # and segment.annotation is not "none".
+  if(segment.type %in% c(1,2,3) & !("none" %in% segment.annotation) &
+      (!is.null(segment.quantile) & is.null(segment.timepoint) | is.null(segment.quantile) & !is.null(segment.timepoint))) {
       if (is.null(segment.timepoint)) {
         segment_label <- quantile_label
       } else if (is.null(segment.quantile)){
         segment_label <- timepoint_label
       }
+
+      ## Check how many inputs was given for segment.timepoint() or segment.quantile():
+    if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
       text(x = text_xpos,
            y = text_ypos,
            labels = segment_label,
@@ -1163,23 +1271,47 @@ surv.plot <- function(
            col = segment.annotation.col,
            cex = segment.cex,
            font = segment.font)
-
-    # Error message if no confidence interval should be displayed but number of arms is not equal to 2
-    #}} else if(segment.confint == F & arm_no != 2) {
-    #  stop("The parameter `segment.confint` cannot be set to FALSE when number of arms is unequal 2.")
-
-    # Short annotation without confidence interval
-    #} else {
-    #}
-
-
+      ## Input >1 for segment.timepoint()
+    } else if (length(segment.timepoint) > 1){
+      print("Note:` segment.main` for more than one timepoint is not supported")
+        if(y.unit == "percent"){
+          text(x = segment_x,
+               y = segment_y$surv,
+               labels = paste0(round(segment_y$surv,2) * 100,"%"),
+               pos = pos, # anpassen/ hardcoden?
+               col = rep(segment.annotation.col, each = length(segment_x)),
+               cex = segment.cex,
+               font = segment.font)
+        } else {
+          text(x = segment_x,
+               y = segment_y$surv,
+               labels = round(segment_y$surv,2),
+               pos = pos,
+               col = rep(segment.annotation.col, each = length(segment_x)),
+               cex = segment.cex,
+               font = segment.font)
+        }
+      ## Input >1 for segment.quantile()
+    } else if (length(segment.quantile) > 1){
+      print("Note: `segment.main` for more than one quantile is not supported")
+      text(x = t(segment_x$quantile),
+           y = segment.quantile,
+           labels = round(segment_x$quantile,0),
+           pos = pos,
+           col = rep(segment.annotation.col, each = length(segment.quantile)),
+           cex = segment.cex,
+           font = segment.font)
+    }
   }
 
   #----------------------------------------------------------------------------#
   ### 3.3 Segment title ####
   #----------------------------------------------------------------------------#
-  # Title for the segment text
 
+# If segment.timepoint or segment.quantil has only one entry:
+if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
+
+  #Title for the segment text
   if (!("none" %in% segment.annotation) & !(arm_no == 1 & segment.annotation.two.lines == FALSE)){
     # Display `setment.main` as title of segment annotation if it was specified
     if (!is.null(segment.main)){
@@ -1207,6 +1339,7 @@ surv.plot <- function(
            col = "black", cex = segment.cex, font = segment.main.font)
     }
   }
+}
 
   #----------------------------------------------------------------------------#
   # 4. survStats ####
@@ -1331,7 +1464,8 @@ surv.plot <- function(
     # Display statistics in the plot
 
     if(stat == "logrank"){
-      stats <- paste0("Logrank test: ", logrankpval)
+      #stats <- paste0("Logrank test: ", logrankpval)
+      stats <- paste0(logrankpval)
     } else if(stat == "coxph"){
       stats <- paste0("HR ",
                       round(model$conf.int[,"exp(coef)"], digits = 2),
@@ -1366,49 +1500,130 @@ surv.plot <- function(
   # 5. survRisktable ####
   #----------------------------------------------------------------------------#
 
+  #----------------------------------------------------------------------------#
+  ## 5.1 Define position factor ####
+  #----------------------------------------------------------------------------#
+
+  # Risk table title
+
+  # Default title position values based on the number of strata
+  factor_one <- 0.05 # arm == 1
+  factor_two <- 0.10 # arm >= 2
+
+  pos_factor <- ifelse(arm_no == 1, factor_one, factor_two)
+
+  # Get the user coordinate system limits
+  usr_limits <- par("usr")
+
+  # Calculate the title position if it is not provided
+  if (is.null(risktable.title.position)) {
+    plot_width <- usr_limits[2] - usr_limits[1]
+    risktable.title.position <- usr_limits[1] - plot_width * pos_factor
+  }
+
+  # Risk table name
+  if (is.null(risktable.name.position)) {
+    risktable.name.position <- par("usr")[1] - (par("usr")[2]- par("usr")[1]) * pos_factor
+  }
+
+  #----------------------------------------------------------------------------#
+  ## 5.2 Draw Risk Table ####
+  #----------------------------------------------------------------------------#
   if(is.logical(risktable)){
     if (risktable == TRUE){
+
   #----------------------------------------------------------------------------#
-  ### 5.1 Extract data ####
+  ### 5.1.1 Extract data ####
   #----------------------------------------------------------------------------#
-      obsStrata <- if(is.null(fit$strata)){
-        obsStrata <- 1
+
+  # Preparation
+  obsStrata <- if(is.null(fit$strata)){
+    obsStrata <- 1
+  } else {
+    obsStrata <- fit$strata
+  }
+
+  grp <- rep(1:arm_no, times=obsStrata)
+
+  #----------------------------------------------------------------------------#
+  ### 5.1.2 Number at risk ####
+  #----------------------------------------------------------------------------#
+  # Initialize a matrix 'n.risk.matrix' with zeros
+  n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
+
+  # Loop over each arm and each time point defined by 'xticks'
+  for (stratum_i in 1:arm_no) {
+    for (x in 1:length(xticks)) {
+      # Find the indices where the survival time for the current group is
+      # greater than the current 'xticks'
+      index <- which(fit$time[grp == stratum_i] > xticks[x])
+      # If there are no such indices,
+      # set the corresponding element in 'n.risk.matrix' to 0
+      if (length(index) == 0)
+        n.risk.matrix[x,stratum_i] <- 0
+      else
+        # Otherwise, set the element to the minimum number at risk
+        # for the specified group and time point
+        n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
+    }
+  }
+
+#----------------------------------------------------------------------------#
+### 5.1.3 Censored at risk  ####
+#----------------------------------------------------------------------------#
+  # Initialize a matrix 'n.cenor.matrix' with zeros
+  n.censor.matrix <- matrix(0, nrow = length(xticks), ncol = arm_no)
+
+  # Loop over each arm and each time point defined by 'xticks'
+  for (stratum_i in 1:arm_no){
+    for (x in 1:length(xticks)){
+      if(x == 1){
+        n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
+        #if(risktable.censoring.baseline == 0) n.censor.matrix[1,stratum_i] <- 0
+        ## Note from VSO: Wird das hier benoetigt wenn ja uncomment wenn nicht entfernen.
+        ##       risktable.censoring.baseline = 0 number censored at t=0 se to 0
+        ##       risktable.censoring.baseine = 1 number censored at t=0
+        ## This was implemented in the old macro as an option(do we need this?)
       } else {
-        obsStrata <- fit$strata
+        # Find the indices where the survival time for the current group is
+        # greater than the current 'xticks'
+        index <- which(fit$time[grp == stratum_i] > xticks[x - 1] & fit$time[grp == stratum_i] <= xticks[x])
+        # If there are no such indices,
+        # set the corresponding element in 'n.censore.matrix' to 0
+        if (length(index) == 0) n.censor.matrix[x,stratum_i] <- 0
+        # Otherwise, set the element to the censored number at risk
+        # for the specified group and time point
+        else n.censor.matrix[x,stratum_i] <- sum(fit$n.censor[grp == stratum_i][index])
       }
+    }
+  }
+#----------------------------------------------------------------------------#
+## 5.2 Add risktable.title text to the outer margin ####
+#----------------------------------------------------------------------------#
 
-      grp <- rep(1:arm_no, times=obsStrata)
+if(is.logical(risktable.censoring)){
+  if (risktable.censoring == FALSE){
+    # without censoring indication (Default)
+    mtext(risktable.title, side = 1, outer = FALSE,
+          line = risktable.pos, adj = 0, at = risktable.title.position,
+          font = risktable.title.font,
+          cex = risktable.title.cex,
+          col = risktable.title.col)
+  } else if (risktable.censoring == TRUE) {
+    # with censoring indication
+    mtext(text = paste(risktable.title,"(censored)"), side = 1 , outer = FALSE,
+          line = risktable.pos, adj = 0, at = risktable.title.position,
+          font = risktable.title.font,
+          cex = risktable.title.cex,
+          col = risktable.title.col)
+  }
+} else {
+  stop("`risktable.censoring` expecting TRUE or FALSE as an argument!")
+}
 
-      # Initialize a matrix 'n.risk.matrix' with zeros
-      n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
-
-      # Loop over each arm and each time point defined by 'xticks'
-      for (stratum_i in 1:arm_no) {
-        for (x in 1:length(xticks)) {
-          # Find the indices where the survival time for the current group is
-          # greater than the current 'xticks'
-          index <- which(fit$time[grp == stratum_i] > xticks[x])
-          # If there are no such indices,
-          # set the corresponding element in 'n.risk.matrix' to 0
-          if (length(index) == 0)
-            n.risk.matrix[x,stratum_i] <- 0
-          else
-            # Otherwise, set the element to the minimum number at risk
-            # for the specified group and time point
-            n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
-        }
-      }
-  #----------------------------------------------------------------------------#
-  ### 5.1.1 Add risktable.title text to the outer margin ####
-  #----------------------------------------------------------------------------#
-      mtext(risktable.title, side = 1, outer = FALSE,
-            line = risktable.pos, adj = 0, at = risktable.title.position,
-            font = risktable.title.font,
-            cex = risktable.title.cex,
-            col = risktable.title.col)
-  #----------------------------------------------------------------------------#
-  ### 5.1.2 Add legend text to the outer margin for each arm ####
-  #----------------------------------------------------------------------------#
+#----------------------------------------------------------------------------#
+# 5.3 Add legend text to the outer margin for each arm ####
+#----------------------------------------------------------------------------#
       if (missing(risktable.name)) {
         ristkable.name <- legend.name
       } else {
@@ -1423,22 +1638,35 @@ surv.plot <- function(
                 col = risktable.name.col)
         }
       }
-  #----------------------------------------------------------------------------#
-  ### 5.1.3 Add vector of risk counts text to the margin ####
-  #----------------------------------------------------------------------------#
-      if(max(risktable.col == TRUE)) { risktable.col <- col}
-      mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
-            line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
-            at = rep(xticks, arm_no),
-            cex = risktable.cex,
-            col = c(rep(risktable.col, each = length(xticks)))
-      )
+#----------------------------------------------------------------------------#
+# 5.4. Add vector of risk counts text to the margin ####
+#----------------------------------------------------------------------------#
+      if(max(risktable.col == TRUE)) {risktable.col <- col}
+
+      if (risktable.censoring == FALSE){
+        # without censoring indication (Default)
+        mtext(text = as.vector(n.risk.matrix), side = 1, outer = FALSE,
+              line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
+              at = rep(xticks, arm_no),
+              cex = risktable.cex,
+              col = c(rep(risktable.col, each = length(xticks)))
+        )
+      } else if (risktable.censoring == TRUE){
+        # With censoring indication
+        mtext(text = paste(as.vector(n.risk.matrix), gsub(" ", "", paste("(", as.vector(n.censor.matrix),")"))),
+              side = 1, outer = FALSE,
+              at = rep(xticks, arm_no),
+              line = rep((1:arm_no) + risktable.pos, each = length(xticks)),
+              cex = risktable.cex,
+              col = c(rep(risktable.col, each = length(xticks))))
+      }
+
     }
   } else {
     stop("`risktable` expecting TRUE or FALSE as an argument!")
   }
-} # final closer of the function
 
+} # final closer of the function
   #----------------------------------------------------------------------------#
   # End of the programm  ####
   #----------------------------------------------------------------------------#

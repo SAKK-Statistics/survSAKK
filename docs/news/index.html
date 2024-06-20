@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">survSAKK</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,13 +51,23 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.0" id="survsakk-120">survSAKK 1.2.0<a class="anchor" aria-label="anchor" href="#survsakk-120"></a></h2>
+<p>This update brings new features</p>
+<p>✨ <strong>New Feature</strong></p>
+<ul><li><p><code>risktable.censoring()</code> A logical parameter indicating whether to display number of censored patients. Default is set to <code>FALSE</code>.</p></li>
+<li><p><code>theme()</code> Built-in layout options for various congress.</p></li>
+</ul><p>🛠️ <strong>Improvement of the segment</strong>*</p>
+<p>Function can handle annotation of multiple time points and quantiles. Note: segment.main` is not supported if more than one time point quantiles are given.</p>
+<p>🎨 <strong>Adjustments</strong></p>
+<p><code>stat="logrank"</code> will write just write ‘p=…’ and not ‘Logrank test: p=…’</p>
+<hr></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="survsakk-110">survSAKK 1.1.0<a class="anchor" aria-label="anchor" href="#survsakk-110"></a></h2>
 <p>This update brings significant improvements and a new feature based on your feedback from initial release.</p>
 <p>✨ <strong>New Feature</strong></p>
 <ul><li>
-<code>segment.annotation.two.lines</code>:</li>
-</ul><p>A logical parameter to force that the annotation is displayed on two lines even if there is only one arm. This parameter only has an effect if there is only one arm (Default: <code>FALSE</code>).</p>
-<p>🐛 <strong>Bug Fixes</strong></p>
+<code>segment.annotation.two.lines()</code> A logical parameter to force that the annotation is displayed on two lines even if there is only one arm. This parameter only has an effect if there is only one arm (Default: <code>FALSE</code>).</li>
+</ul><p>🐛 <strong>Bug Fixes</strong></p>
 <ul><li><p>NA to NR Replacement</p></li>
 <li>
 <p>Special Character Support</p>
@@ -67,11 +77,11 @@
 <p>Rounding</p>
 <p>Improved handling and rounding, espcially when dealing with special characters.</p>
 </li>
-</ul></div>
+</ul><hr></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="survsakk-100">survSAKK 1.0.0<a class="anchor" aria-label="anchor" href="#survsakk-100"></a></h2>
 <p>🎉 First Release!</p>
-</div>
+<hr></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.900" id="survsakk-000900">survSAKK 0.0.0.900<a class="anchor" aria-label="anchor" href="#survsakk-000900"></a></h2>
 <p>🚩 Initial GitHub Submission.</p>
