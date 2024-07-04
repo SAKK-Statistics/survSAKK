@@ -79,3 +79,6 @@ vignette("surv.plot", package = "survSAKK")
 ```
 
 [![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
+
+<img src="r_dev/coverage_survSAKK.png" align="right" height="138"/></a>
+
