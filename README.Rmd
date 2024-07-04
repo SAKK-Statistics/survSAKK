@@ -18,8 +18,6 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-[![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
-
 The `survSAKK` R package provides the `surv.plot()` function, facilitating Kaplan-Meier survival analysis. Designed with user-friendliness and efficiency in mind. Offering robust tool for analysing survival data. It utilises the functionalites of `survival::survfit()`.
 
 ## Installation
@@ -79,3 +77,5 @@ Link: https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html
 # Vignette
 vignette("surv.plot", package = "survSAKK")
 ```
+
+[![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
