@@ -1473,7 +1473,7 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
                       round(model$conf.int[3], digits = 2),
                       " to ",
                       round(model$conf.int[4], digits = 2),
-                      ")", "\n", "logrank test: ",
+                      ")", "\n", "log-rank test: ",
                       logrankpval)
     }
     if (stat != "none"){
