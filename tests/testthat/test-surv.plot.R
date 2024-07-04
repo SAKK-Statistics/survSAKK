@@ -38,7 +38,7 @@ test_that("surv.plot throws error for invalid risktable parameter", {
                "`risktable` expecting TRUE or FALSE as an argument!")
 })
 
-## Test 5: Custom color assignment should not raise errors
+## Test 5: Custom colour assignment should not raise errors
 test_that("surv.plot handles default color assignment", {
   expect_silent(surv.plot(fit = survObject,
                           reference.arm = "1",
@@ -57,3 +57,105 @@ test_that("Setting an incorrect reference arm should raise an error.", {
 })
 
 
+# Test 8: Verify that statistics is given in %
+test_that("Convert y unit into percent.",{
+          expect_silent(surv.plot(fit = survObject, y.unit = "percent"))
+})
+
+test_that("Convert y unit into percent and check label",{
+  expect_silent(surv.plot(fit = survObject, y.unit = "percent"))
+})
+
+# Test 9: Ensure survival plot can handle quantiles and timepoints
+test_that("Ensure `segment.quanitle` is handles without error.",{
+  expect_silent(surv.plot(fit = survObject, segment.quantile = 0.5, segment.type = 1))
+})
+
+test_that("Ensure `segment.quanitle` is handles without error.",{
+  expect_silent(surv.plot(fit = survObject, segment.quantile = 0.5, segment.type = 2))
+})
+
+test_that("Ensure `segment.quanitle` is handles without error.",{
+  expect_silent(surv.plot(fit = survObject, segment.quantile = 0.5, segment.type = 3))
+})
+
+test_that("Ensure `segment.quanitle` is handles without error.",{
+  expect_output(surv.plot(fit = survObject, segment.quantile = c(0.25,0.5,0.75)),
+                "Note: `segment.main` for more than one quantile is not supported")
+})
+
+test_that("Ensure `segment.timpoint` is handles without error.",{
+  expect_silent(surv.plot(fit = survObject, segment.timepoint = 360, segment.type = 1))
+})
+
+test_that("Ensure `segment.timpoint` is handles without error.",{
+  expect_silent(surv.plot(fit = survObject, segment.timepoint = 360, segment.type = 2))
+})
+
+test_that("Ensure `segment.timpoint` is handles without error.",{
+  expect_silent(surv.plot(fit = survObject, segment.timepoint = 360, segment.type = 3))
+})
+
+test_that("Ensure `segment.timpoint` is handles without error.",{
+  expect_output(surv.plot(fit = survObject, segment.timepoint = c(180, 360)),
+                "Note:` segment.main` for more than one timepoint is not supported")
+})
+
+# Test 10: Invalid `segment.annotation` parameter should throw error
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_error(surv.plot(fit =survObject, segment.annotation = "invalid"))
+})
+
+# Test 11: Test risktable
+test_that("Check if risktable colour can be modified", {
+  expect_silent(surv.plot(fit =survObject,
+                         risktable.col = c("red", "yellow")))
+})
+
+# Test 11: Test legend label
+test_that("Ensure that legend can be modified manually", {
+  expect_silent(surv.plot(fit =survObject, legend.name = "legend"))
+})
+
+# Test 12: Test Statistics
+test_that("Check logrank statistics", {
+  expect_silent(surv.plot(fit =survObject, stat = "logrank"))
+})
+
+test_that("Check coxph statistics", {
+  expect_silent(surv.plot(fit =survObject, stat = "coxph", stat.position = "bottomleft"))
+})
+
+test_that("Check coxph_logrank statistics", {
+  expect_silent(surv.plot(fit =survObject, stat = "coxph_logrank", stat.position = "topright"))
+})
+
+
+# Test 13: Test pre defined themes
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit =survObject, theme = "ESMO"))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit =survObject, theme = "ESMO", risktable = FALSE))
+})
+
+# Test 14: Test grid
+test_that("Setting an invalid grid argument.", {
+  expect_error(surv.plot(fit = survObject, grid = "invalid"))
+})
+
+# Test 15: Test statistics for one arm
+test_that("Setting an invalid stats argument.", {
+  expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung), stat = "coxph"))
+})
+
+
+# Test 16: Check risktable.title
+test_that("Check if risktable.title gives a valid output.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung), risktable.censoring = TRUE))
+})
+
+test_that("Check if risktable.title gives a valid output.", {
+  expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung), risktable.censoring = "invalid"))
+})
