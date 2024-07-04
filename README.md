@@ -18,16 +18,9 @@ Pages](file:///C:/Users/vithersans/Desktop/survSAKK/docs/index.html):
 
 ``` r
 # install.packages("devtools")
-
-# At the moment, while repository is private:
 devtools::install_github("SAKK-Statistics/survSAKK",
-                         auth_token = "ask_for_the_password",
                          build_vignettes = TRUE,
                          force = TRUE)
-
-# Later, when the repository is public:
-devtools::install_github("SAKK-Statistics/survSAKK",
-                         build_vignettes = TRUE)
 ```
 
 ## Usage
