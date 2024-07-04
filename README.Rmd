@@ -80,6 +80,4 @@ vignette("surv.plot", package = "survSAKK")
 
 [![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
 
-![Coverage Survival SAKK](man/figures/coverage_survSAKK.png)
-
 
