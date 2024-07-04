@@ -473,61 +473,7 @@ surv.plot <- function(
   if(missing(ylab.cex)){ylab.cex <- cex}
 
   #----------------------------------------------------------------------------#
-  ## 1.4 Function to draw table into plot ####
-  #----------------------------------------------------------------------------#
-  # plottbl() function allows to plot reproducible different tables in the graphics
-
-  plottbl <- function (x, y,
-                       table, # A data frame, matrix or similar object that will be displayed
-                       cex = stat.cex,
-                       # Positioning for the table relative to ‘⁠x,y⁠’.
-                       xjust = 0,
-                       yjust = 0,
-                       # The amount of padding around text in the cells as a proportion
-                       # of the maximum width and height of the strings in each column
-                       xpad = 0.2,
-                       ypad = 0.25,
-                       text.col = stat.col,
-                       text.font = stat.font,
-                       text.pos = NULL)
-  {
-    tabdim <- dim(table)
-    column.names <- colnames(table)
-    cellwidth <- rep(0, tabdim[2])
-
-    # Calculate cell widths for each column
-    for(column in 1:tabdim[2]){
-      cellwidth[column] <- max(strwidth(c(column.names[column], format(table[, column])),
-                                        cex = cex)) * (1 + xpad)
-    }
-
-    nvcells <- tabdim[1] + 1
-    cellheight <- max(strheight(c(column.names, as.vector(unlist(table))),
-                                cex = cex)) * (1 + ypad)
-    ytop <- y + yjust * nvcells * cellheight
-
-    # Draw column names
-    xleft <- x - xjust * (sum(cellwidth))
-    for (column in 1:tabdim[2]) {
-      text(xleft + cellwidth[column] * 0.5, ytop - 0.5 * cellheight, column.names[column],
-           cex = cex, col = text.col, font = text.font, adj = 0.5, pos = text.pos)
-      xleft <- xleft + cellwidth[column]
-    }
-
-    # Draw tables cells
-    for (row in 1:tabdim[1]) {
-      xleft <- x - xjust * (sum(cellwidth))
-      for (column in 1:tabdim[2]) {
-        text(xleft + 0.5 * cellwidth[column],
-             ytop - (row + 0.5) * cellheight, table[row, column],
-             cex = cex, col = text.col, font = text.font, adj = 0.5, pos = text.pos)
-        xleft <- xleft + cellwidth[column]
-      }
-    }
-  }
-
-  #----------------------------------------------------------------------------#
-  ## 1.5 Recalculating survival object ####
+  ## 1.3 Recalculating survival object ####
   #----------------------------------------------------------------------------#
   # Note: Recalculation is done to be sure that the survival object is correct,
   # and for plotting with the desired CI, transformation and reference arm.
@@ -548,12 +494,12 @@ surv.plot <- function(
   fit <- eval(fit$call)
 
   #----------------------------------------------------------------------------#
-  ## 1.6 Extraction number of arms ####
+  ## 1.4 Extraction number of arms ####
   #----------------------------------------------------------------------------#
   arm_no <- max(1, length(fit$strata))
 
   #----------------------------------------------------------------------------#
-  ## 1.7 Define default colour(s) ####
+  ## 1.5 Define default colour(s) ####
   #----------------------------------------------------------------------------#
   if (is.null(col)){
     if(is.null(fit$strata)){
@@ -567,7 +513,7 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.8 Extract group (arm) names ####
+  ## 1.6 Extract group (arm) names ####
   #----------------------------------------------------------------------------#
   # Extract group names if not manually specified for legend
 
@@ -585,7 +531,7 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.9 Plotting area with and without risktable ####
+  ## 1.7 Plotting area with and without risktable ####
   #----------------------------------------------------------------------------#
   # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
 
@@ -616,7 +562,7 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.10 Customization of xticks ####
+  ## 1.8 Customization of xticks ####
   #----------------------------------------------------------------------------#
   # Customize the xticks if not manually specified
 
@@ -646,13 +592,13 @@ surv.plot <- function(
   }
 
   #----------------------------------------------------------------------------#
-  ## 1.11 Pre-defined Themes ####
+  ## 1.9 Pre-defined Themes ####
   #----------------------------------------------------------------------------#
 
   # Check if provided theme is defined
   if(theme %in% c("none","SAKK", "Lancet", "JCO", "WCLC", "ESMO")){
 
-    ### 1.11.1 Theme: SAKK ####
+    ### 1.9.1 Theme: SAKK ####
     if(theme == "SAKK"){
       # Colour assignment
         if(is.null(fit$strata)){
@@ -664,7 +610,7 @@ surv.plot <- function(
             }
         }
     }
-    ### 1.11.2 Theme: Lancet ####
+    ### 1.9.2 Theme: Lancet ####
     if(theme == "Lancet"){
       # Requirement:
       #   When reporting Kaplan-Meier survival data, at each timepoint,
@@ -683,7 +629,7 @@ surv.plot <- function(
       }
     }
 
-    ### 1.11.3 Theme: JCO ####
+    ### 1.9.3 Theme: JCO ####
     if(theme == "JCO"){
       # Requirement:
       #   All Kaplan-Meier plots must include risk tables.
@@ -700,7 +646,7 @@ surv.plot <- function(
       }
     }
 
-    ### 1.11.4 Theme: WCLC ####
+    ### 1.9.4 Theme: WCLC ####
     if(theme == "WCLC"){
       # Colour assignment
       if(is.null(fit$strata)){
@@ -712,7 +658,7 @@ surv.plot <- function(
       }
     }
 
-    ### 1.11.5 Theme: ESMO ####
+    ### 1.9.5 Theme: ESMO ####
     if(theme == "ESMO"){
       # Colour assignment
       if(is.null(fit$strata)){
