@@ -101,9 +101,45 @@ test_that("Ensure `segment.timpoint` is handles without error.",{
                 "Note:` segment.main` for more than one timepoint is not supported")
 })
 
-# Test 10: Invalid `segment.annotation` parameter should throw error
+# Test 10: Check `segment.annotation` parameters
 test_that("surv.plot throws error for invalid risktable parameter", {
   expect_error(surv.plot(fit =survObject, segment.annotation = "invalid"))
+})
+
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_silent(surv.plot(fit =survObject,
+                          segment.timepoint = 0.5 ,
+                          segment.annotation = c(300, 0.125)))
+})
+
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_silent(surv.plot(fit =survObject,
+                          segment.timepoint = 0.5 ,
+                          segment.annotation = "left"))
+})
+
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_silent(surv.plot(fit =survfit(Surv(time, status) ~ 1, data = lung),
+                          segment.timepoint = 0.5 ,
+                          segment.annotation = "top"))
+})
+
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_silent(surv.plot(fit =survfit(Surv(time, status) ~ sex, data = lung),
+                          segment.timepoint = 0.5 ,
+                          segment.annotation = "top"))
+})
+
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_silent(surv.plot(fit =survfit(Surv(time, status) ~ sex, data = lung),
+                          segment.timepoint = 0.5 ,
+                          segment.annotation = "bottomleft"))
+})
+
+test_that("surv.plot throws error for invalid risktable parameter", {
+  expect_silent(surv.plot(fit =survfit(Surv(time, status) ~ 1, data = lung),
+                          segment.timepoint = 0.5 ,
+                          segment.annotation = "none"))
 })
 
 # Test 11: Test risktable
@@ -112,10 +148,15 @@ test_that("Check if risktable colour can be modified", {
                          risktable.col = c("red", "yellow")))
 })
 
-# Test 11: Test legend label
+test_that("Ensure that legend can handle invalid argument", {
+  expect_error(surv.plot(fit =survObject, legend = "invalid"))
+})
+
 test_that("Ensure that legend can be modified manually", {
   expect_silent(surv.plot(fit =survObject, legend.name = "legend"))
 })
+
+
 
 # Test 12: Test Statistics
 test_that("Check logrank statistics", {
@@ -133,17 +174,74 @@ test_that("Check coxph_logrank statistics", {
 
 # Test 13: Test pre defined themes
 test_that("Check if defined theme is executed", {
-  expect_silent(surv.plot(fit =survObject, theme = "ESMO"))
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          theme = "ESMO"))
 })
 
 test_that("Check if defined theme is executed", {
-  expect_silent(surv.plot(fit =survObject, theme = "ESMO", risktable = FALSE))
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          theme = "ESMO"))
 })
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          theme = "ESMO",
+                          risktable = FALSE))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          theme = "SAKK",
+                          risktable = FALSE))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          theme = "SAKK",
+                          risktable = FALSE))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          theme = "Lancet"))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          theme = "Lancet"))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          theme = "JCO"))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          theme = "JCO"))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          theme = "WCLC"))
+})
+
+test_that("Check if defined theme is executed", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          theme = "WCLC"))
+})
+
+
 
 # Test 14: Test grid
 test_that("Setting an invalid grid argument.", {
   expect_error(surv.plot(fit = survObject, grid = "invalid"))
 })
+
+test_that("Setting an invalid grid argument.", {
+  expect_silent(surv.plot(fit = survObject, grid = TRUE))
+})
+
 
 # Test 15: Test statistics for one arm
 test_that("Setting an invalid stats argument.", {
@@ -159,3 +257,44 @@ test_that("Check if risktable.title gives a valid output.", {
 test_that("Check if risktable.title gives a valid output.", {
   expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung), risktable.censoring = "invalid"))
 })
+
+# Test 17: Check confidence band colour
+test_that("Check if conf.band.col gives a valid output.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung), conf.band.col = NULL))
+})
+
+# Test 18: Invalid `time.unit` parameter should throw error rest not
+test_that("Ensure `time.unit` is handles without error.", {
+  expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung), time.unit = "invalid"))
+})
+
+
+test_that("Check if conf.band.col gives a valid output.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung), time.unit = "day"))
+})
+
+test_that("Check if conf.band.col gives a valid output.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung), time.unit = "year"))
+})
+
+
+# Test 19: Check for short annotation:
+test_that("Check if short annotation works without an error.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          segment.quantile = 0.5,
+                          segment.confint = FALSE))
+})
+
+test_that("Check if short annotation works without an error.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          segment.quantile = 0.25,
+                          segment.confint = FALSE))
+})
+
+test_that("Check if short annotation can handle error.", {
+  expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          segment.quantile = 0.25,
+                          segment.confint = FALSE))
+})
+
+
