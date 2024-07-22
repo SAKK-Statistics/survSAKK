@@ -101,6 +101,12 @@ test_that("Ensure `segment.timpoint` is handles without error.",{
                 "Note:` segment.main` for more than one timepoint is not supported")
 })
 
+test_that("Ensure `segment.timpoint` is handles without error.",{
+  expect_output(surv.plot(fit = survObject,
+                          segment.timepoint = c(180, 360),
+                          y.unit = "percent"))
+})
+
 # Test 10: Check `segment.annotation` parameters
 test_that("surv.plot throws error for invalid risktable parameter", {
   expect_error(surv.plot(fit =survObject, segment.annotation = "invalid"))
@@ -278,7 +284,7 @@ test_that("Check if conf.band.col gives a valid output.", {
 })
 
 
-# Test 19: Check for short annotation:
+# Test 19: Check for short annotation
 test_that("Check if short annotation works without an error.", {
   expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
                           segment.quantile = 0.5,
@@ -295,6 +301,32 @@ test_that("Check if short annotation can handle error.", {
   expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
                           segment.quantile = 0.25,
                           segment.confint = FALSE))
+})
+
+test_that("Check for annotation with only one arm.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          segment.annotation.two.lines = FALSE,
+                          segment.quantile = 0.50))
+})
+
+test_that("Check for annotation with only one arm.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
+                          segment.annotation.two.lines = FALSE,
+                          segment.quantile = 0.25,
+                          segment.main = "Quantile"))
+})
+
+test_that("Check for annotation with only one arm.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          segment.timepoint = 360,
+                          segment.confint = FALSE))
+})
+
+test_that("Check for annotation with only one arm.", {
+  expect_silent(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                          segment.timepoint = 360,
+                          segment.confint = FALSE,
+                          y.unit = "percent"))
 })
 
 
