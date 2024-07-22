@@ -18,16 +18,9 @@ Pages](file:///C:/Users/vithersans/Desktop/survSAKK/docs/index.html):
 
 ``` r
 # install.packages("devtools")
-
-# At the moment, while repository is private:
 devtools::install_github("SAKK-Statistics/survSAKK",
-                         auth_token = "ask_for_the_password",
                          build_vignettes = TRUE,
                          force = TRUE)
-
-# Later, when the repository is public:
-devtools::install_github("SAKK-Statistics/survSAKK",
-                         build_vignettes = TRUE)
 ```
 
 ## Usage
@@ -72,5 +65,3 @@ vignette("surv.plot", package = "survSAKK")
 ```
 
 [![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
-
-<img src="r_dev/coverage_survSAKK.png" align="right" height="138"/></a>
