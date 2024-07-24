@@ -21,7 +21,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        install.packages(c('covr', 'devtools'))
+        install.packages(c('covr', 'devtools'), dependencies = TRUE)
         devtools::install_deps()
 
     - name: Run tests and check coverage
