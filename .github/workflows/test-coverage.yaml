@@ -8,8 +8,6 @@ on:
 
 name: test-coverage
 
-on: [push, pull_request]
-
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
