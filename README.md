@@ -64,4 +64,4 @@ Link:
 vignette("surv.plot", package = "survSAKK")
 ```
 
-[![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
+[![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment) [![codecov](https://codecov.io/gh/SAKK-Statistics/survSAKK/branch/main/graph/badge.svg?token=7Q8ASW3OVM)](https://codecov.io/gh/SAKK-Statistics/survSAKK)
