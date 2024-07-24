@@ -56,12 +56,13 @@ help("surv.plot")
 
 ### Vignette
 
-Link:
-<https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html>
+Webpage of the vignette:
+[survSAKK](https://sakk-statistics.github.io/survSAKK/articles/surv.plot.html)
 
 ``` r
 # Vignette
 vignette("surv.plot", package = "survSAKK")
 ```
 
-[![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment) [![codecov](https://codecov.io/gh/SAKK-Statistics/survSAKK/branch/main/graph/badge.svg?token=7Q8ASW3OVM)](https://codecov.io/gh/SAKK-Statistics/survSAKK)
+[![pages-build-deployment](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/SAKK-Statistics/survSAKK/actions/workflows/pages/pages-build-deployment)
+[![codecov](https://codecov.io/gh/SAKK-Statistics/survSAKK/branch/main/graph/badge.svg?token=7Q8ASW3OVM)](https://codecov.io/gh/SAKK-Statistics/survSAKK)
