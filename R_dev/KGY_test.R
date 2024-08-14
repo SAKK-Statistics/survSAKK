@@ -651,5 +651,41 @@ surv.plot(S, risktable.censoring = TRUE, y.unit = "percent")
 
 
 
+# bigger font size ###################
+
+surv.plot(S1)
+surv.plot(S2)
+
+
+
+surv.plot(S1, cex = 1.3)
+surv.plot(S2, cex = 1.3)
+
+
+png(file = file.path("C:", "Users", "katring", "Desktop", "test_KM_plot", "test_KM_plot_2_arms_normal.png"),
+    width = 20,
+    height = 14,
+    units = "cm",
+    res = 300)
+surv.plot(S2,
+          risktable.name.position=-4,
+          risktable.title.position=-4)
+dev.off()
+
+
+png(file = file.path("C:", "Users", "katring", "Desktop", "test_KM_plot", "test_KM_plot_2_arms_grosse_Schrift.png"),
+    width = 20*0.7,
+    height = 14*0.7,
+    units = "cm",
+    res = 300)
+surv.plot(S2,
+          ylab = "Estimated survival \n (probability)",
+          risktable.name.position=-6.5,
+          risktable.title.position=-6.5)
+dev.off()
+
+
+surv.plot(S2)
+surv.plot(S2, risktable.space = 0.5, cex = 1.5)
 
 
