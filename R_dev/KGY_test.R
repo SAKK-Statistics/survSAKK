@@ -582,3 +582,74 @@ surv.plot(S1, segment.timepoint = 6, segment.annotation.two.lines = TRUE)
 surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.main = "Test")
 surv.plot(S1, segment.timepoint = 6, time.unit = "month", segment.main = "Test", segment.annotation.two.lines = TRUE)
 
+
+
+
+
+# censoring: have a look at problem which Daniel encountered ###################
+
+View(data.subgroup)
+
+# overall
+S1 <- survfit(Surv(pfs_time, pfs) ~ 1, data = data.subgroup, conf.type = "log-log")
+
+# by treatment line
+S2 <- survfit(Surv(pfs_time, pfs) ~ subgroup_line, data = data.subgroup, conf.type = "log-log")
+
+surv.plot(S2)
+surv.plot(S2, risktable.censoring = TRUE)
+
+
+surv.plot(S1)
+surv.plot(S1, risktable.censoring = TRUE)
+
+
+# have a detailed look at code in function
+fit <- S1
+arm_no <- max(1, length(fit$strata))
+xticks <- seq(from = 0, to = max(fit$time)+ceiling(max(fit$time)/6),
+              by = ceiling(max(fit$time)/6))
+
+n.censor.matrix <- matrix(0, nrow = length(xticks), ncol = arm_no)
+
+
+stratum_i <- 1
+fit$n.censor[grp == stratum_i][1]
+
+
+for (stratum_i in 1:arm_no){
+  for (x in 1:length(xticks)){
+    if(x == 1){
+      if(fit$time[1]==0){
+        n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
+      }
+    } else {
+      # Find the indices where the survival time for the current group is
+      # greater than the current 'xticks'
+      index <- which(fit$time[grp == stratum_i] > xticks[x - 1] & fit$time[grp == stratum_i] <= xticks[x])
+      # If there are no such indices,
+      # set the corresponding element in 'n.censore.matrix' to 0
+      if (length(index) == 0) n.censor.matrix[x,stratum_i] <- 0
+      # Otherwise, set the element to the censored number at risk
+      # for the specified group and time point
+      else n.censor.matrix[x,stratum_i] <- sum(fit$n.censor[grp == stratum_i][index])
+    }
+  }
+}
+
+
+
+times <- 0:9
+events <- c(1, rep(0, 5), 1, 0, 0, 1 )
+events <- c(rep(0, 5), 1, 0, 0, 1, 1)
+ds <- data.frame(times, events)
+
+S <- survfit(Surv(times, events) ~ 1, data = ds, conf.type = "log-log")
+surv.plot(S, risktable.censoring = TRUE, y.unit = "percent")
+
+
+
+
+
+
+

@@ -704,11 +704,13 @@ surv.plot <- function(
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
     bty = bty,                            # Remove borders
-    ylim = c(0,1),                        # Set y-axis limits
+    ylim = c(0,1.03),                        # Set y-axis limits
     xlim = range(xticks),                 # Set x-axis limits
     xlab = "",                            # Draw x label
     ylab = ""                             # Draw y label
   )
+
+
 
   #----------------------------------------------------------------------------#
   ## 2.2 Customization of xlab and ylab ####
@@ -1516,7 +1518,9 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
   for (stratum_i in 1:arm_no){
     for (x in 1:length(xticks)){
       if(x == 1){
-        n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
+        if(fit$time[1]==0){
+          n.censor.matrix[x, stratum_i] <- fit$n.censor[grp == stratum_i][1]
+        }
       } else {
         # Find the indices where the survival time for the current group is
         # greater than the current 'xticks'
