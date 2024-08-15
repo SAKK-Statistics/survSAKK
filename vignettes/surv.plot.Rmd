@@ -13,11 +13,13 @@ knitr::opts_chunk$set(
   comment = "#>",
   echo = TRUE,
   eval = TRUE,
-  fig.height = 5,
-  fig.width = 7,
+  fig.height = 6,
+  fig.width = 9,
   fig.align='center'
 )
 ```
+
+Tests-3
 
 After inserting the `survfit{survival}` object into `surv.plot{survSAKK}`, we can create simple survival curves, allowing to visualize survival patterns and incorporate various statistics in our plot.
 
@@ -76,13 +78,13 @@ surv.plot(fit.lung.arm.m,
 ## Legend position, name and title
 
 ```{r baseplot3}
-# Chose legend position and names of the arms
+# Choose legend position and names of the arms
 surv.plot(fit.lung.arm.m,
           legend.position = "bottomleft",
           legend.name = c("Male", "Female")
 )
 
-# Chose legend position manually and add a legend title
+# Choose legend position manually and add a legend title
 surv.plot(fit.lung.arm.m,
           legend.position = c(18, 0.9),
           legend.name = c("Male", "Female"),
@@ -90,7 +92,7 @@ surv.plot(fit.lung.arm.m,
 )
 ```
 
-## Axis limts, xticks and yticks
+## Axis limits, xticks and yticks
 
 ```{r baseplot4}
 surv.plot(fit.lung.arm.m,
@@ -114,7 +116,9 @@ surv.plot(fit.lung.arm.m,
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           # Global adjustment
-          cex = 1.3
+          cex = 1.3,
+          risktable.name.position = -6,
+          risktable.title.position = -6
 )
 ```
 
@@ -157,7 +161,7 @@ surv.plot(fit.lung.arm.m,
 ```
 
 
-## Marging area customisation
+## Margin area customisation
 
 ```{r baseplot9}
 
@@ -221,7 +225,7 @@ surv.plot(fit.lung.arm.m,
 surv.plot(fit.lung.arm.m,
           legend.name = c("male", "female"),
           risktable.name.position = -6,
-          risktable.title.position = -7
+          risktable.title.position = -6
 )
 ```
 
@@ -285,6 +289,7 @@ surv.plot(fit.lung.arm.m,
 #  Drawing a segment line at 12 months
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
+          time.unit = "month",
           segment.timepoint = 12
 )
 ```
@@ -388,6 +393,7 @@ surv.plot(fit.lung.arm.m,
 
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
+          time.unit = "month",
           segment.timepoint = 18,
           y.unit = "percent",
           conf.int = 0.9
@@ -482,6 +488,8 @@ surv.plot(fit.lung.arm.m,
 
 # Predefined theme options
 
+The following themes are implemented: `SAKK`, `Lancet`, `JCO`, `WCLC`, `ESMO`
+
 ```{r Design1}
 
 surv.plot(fit.lung.arm.m,
@@ -495,9 +503,6 @@ surv.plot(fit.lung.arm.m,
           theme = "Lancet")
 
 ```
-
-
-
 
 
 # Multiple survival plots
@@ -573,4 +578,53 @@ surv.plot(fit.lung.arm.m,
           segment.confint = FALSE)
 close.screen(all = TRUE)
 ```
+
+
+# Export plots as png file
+
+## Figure output for a report
+
+The following examples show how a figure can be exported as png file for a report. 
+
+```{r export1, eval = FALSE}
+
+png(file = file.path("kaplan_meier_plot.png"),
+    width = 20,
+    height = 14,
+    units = "cm",
+    res = 300)
+surv.plot(fit.lung.arm.m,
+          risktable.name.position=-4,
+          risktable.title.position=-4)
+dev.off()
+
+
+```
+
+## Figure output for a poster
+
+If a bigger font size is needed then this can be done efficiently by choosing a different size of the output file. 
+
+```{r export2, eval = FALSE}
+
+png(file = file.path("kaplan_meier_plot_big_font.png"),
+    width = 20*0.7,
+    height = 14*0.7,
+    units = "cm",
+    res = 300)
+surv.plot(fit.lung.arm.m,
+          ylab = "Estimated survival \n (probability)",
+          risktable.name.position=-6.5,
+          risktable.title.position=-6.5)
+dev.off()
+
+
+```
+
+
+
+
+
+
+
 

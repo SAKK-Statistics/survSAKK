@@ -1,3 +1,14 @@
+# survSAKK 1.2.1
+
+Bug fix in risk table censoring
+
+Adjustment of github page 
+
+- Vignette: How to save figures for reports and poster
+- Adaption citation
+
+--------------------------------------------------------------------------------
+
 # survSAKK 1.2.0
 
 This update brings new features
