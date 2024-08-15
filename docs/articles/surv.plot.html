@@ -709,8 +709,11 @@ stratification factor for the calculation of the statistics.</p>
 <div class="section level2">
 <h2 id="export-plots-as-png-file">Export plots as png file<a class="anchor" aria-label="anchor" href="#export-plots-as-png-file"></a>
 </h2>
-<p>The following examples show how a figure can be exported as png
-file.</p>
+<div class="section level3">
+<h3 id="figure-ourput-for-a-report">Figure ourput for a report<a class="anchor" aria-label="anchor" href="#figure-ourput-for-a-report"></a>
+</h3>
+<p>The following examples show how a figure can be exported as png file
+for a report.</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"kaplan_meier_plot.png"</span><span class="op">)</span>,</span>
@@ -722,6 +725,10 @@ file.</p>
 <span>          risktable.name.position<span class="op">=</span><span class="op">-</span><span class="fl">4</span>,</span>
 <span>          risktable.title.position<span class="op">=</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="figure-output-for-a-poster">Figure output for a poster<a class="anchor" aria-label="anchor" href="#figure-output-for-a-poster"></a>
+</h3>
 <p>If a bigger font size is needed then this can be done efficiently by
 choosing a different size of the output file.</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
@@ -736,6 +743,7 @@ choosing a different size of the output file.</p>
 <span>          risktable.name.position<span class="op">=</span><span class="op">-</span><span class="fl">6.5</span>,</span>
 <span>          risktable.title.position<span class="op">=</span><span class="op">-</span><span class="fl">6.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
