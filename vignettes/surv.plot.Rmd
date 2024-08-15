@@ -582,7 +582,7 @@ close.screen(all = TRUE)
 
 # Export plots as png file
 
-## Figure ourput for a report
+## Figure output for a report
 
 The following examples show how a figure can be exported as png file for a report. 
 
