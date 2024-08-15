@@ -19,8 +19,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-Tests-3
-
 After inserting the `survfit{survival}` object into `surv.plot{survSAKK}`, we can create simple survival curves, allowing to visualize survival patterns and incorporate various statistics in our plot.
 
 To show some benefit of this function,  *NCCTG Lung Cancer Data*, available in the survival package is used.
