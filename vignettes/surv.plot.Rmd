@@ -582,7 +582,9 @@ close.screen(all = TRUE)
 
 # Export plots as png file
 
-The following examples show how a figure can be exported as png file. 
+## Figure ourput for a report
+
+The following examples show how a figure can be exported as png file for a report. 
 
 ```{r export1, eval = FALSE}
 
@@ -598,6 +600,8 @@ dev.off()
 
 
 ```
+
+## Figure output for a poster
 
 If a bigger font size is needed then this can be done efficiently by choosing a different size of the output file. 
 
