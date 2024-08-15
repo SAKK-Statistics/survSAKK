@@ -29,7 +29,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Stefanie Hayoz \email{Stefanie.Hayoz@sakk.ch} [contributor]
-  \item SAKK, CC [copyright holder]
+  \item SAKK, CC [copyright holder, funder]
   \item SCTO, Statistics [funder]
 }
 
