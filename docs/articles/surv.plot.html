@@ -150,7 +150,7 @@ Data</em>, available in the survival package is used.</p>
 <h3 id="legend-position-name-and-title">Legend position, name and title<a class="anchor" aria-label="anchor" href="#legend-position-name-and-title"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Chose legend position and names of the arms</span></span>
+<code class="sourceCode R"><span><span class="co"># Choose legend position and names of the arms</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span></span>
@@ -158,7 +158,7 @@ Data</em>, available in the survival package is used.</p>
 <p><img src="surv.plot_files/figure-html/baseplot3-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Chose legend position manually and add a legend title</span></span>
+<span><span class="co"># Choose legend position manually and add a legend title</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">0.9</span><span class="op">)</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
@@ -167,7 +167,7 @@ Data</em>, available in the survival package is used.</p>
 <p><img src="surv.plot_files/figure-html/baseplot3-2.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="axis-limts-xticks-and-yticks">Axis limts, xticks and yticks<a class="anchor" aria-label="anchor" href="#axis-limts-xticks-and-yticks"></a>
+<h3 id="axis-limits-xticks-and-yticks">Axis limits, xticks and yticks<a class="anchor" aria-label="anchor" href="#axis-limits-xticks-and-yticks"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
@@ -194,7 +194,9 @@ Data</em>, available in the survival package is used.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
 <span>          <span class="co"># Global adjustment</span></span>
-<span>          cex <span class="op">=</span> <span class="fl">1.3</span></span>
+<span>          cex <span class="op">=</span> <span class="fl">1.3</span>,</span>
+<span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">7</span>,</span>
+<span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">7</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/baseplot6-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -240,7 +242,7 @@ Data</em>, available in the survival package is used.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="marging-area-customisation">Marging area customisation<a class="anchor" aria-label="anchor" href="#marging-area-customisation"></a>
+<h3 id="margin-area-customisation">Margin area customisation<a class="anchor" aria-label="anchor" href="#margin-area-customisation"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -316,7 +318,7 @@ different time points.</p>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
 <span>          risktable.name.position <span class="op">=</span> <span class="op">-</span><span class="fl">6</span>,</span>
-<span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">7</span></span>
+<span>          risktable.title.position <span class="op">=</span> <span class="op">-</span><span class="fl">6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/risktable.pos1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -383,6 +385,7 @@ survival curve and how to adjust segment annotation.</p>
 <code class="sourceCode R"><span><span class="co">#  Drawing a segment line at 12 months</span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">12</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="surv.plot_files/figure-html/timepoint-1.png" width="672" style="display: block; margin: auto;"></p>
@@ -501,6 +504,7 @@ for two arms.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
 <span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>          time.unit <span class="op">=</span> <span class="st">"month"</span>,</span>
 <span>          segment.timepoint <span class="op">=</span> <span class="fl">18</span>,</span>
 <span>          y.unit <span class="op">=</span> <span class="st">"percent"</span>,</span>
 <span>          conf.int <span class="op">=</span> <span class="fl">0.9</span></span>
@@ -605,6 +609,9 @@ stratification factor for the calculation of the statistics.</p>
 <div class="section level2">
 <h2 id="predefined-theme-options">Predefined theme options<a class="anchor" aria-label="anchor" href="#predefined-theme-options"></a>
 </h2>
+<p>The following themes are implemented: <code>SAKK</code>,
+<code>Lancet</code>, <code>JCO</code>, <code>WCLC</code>,
+<code>ESMO</code></p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
@@ -698,6 +705,37 @@ stratification factor for the calculation of the statistics.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/screen.html" class="external-link">close.screen</a></span><span class="op">(</span>all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
+<div class="section level2">
+<h2 id="export-plots-as-png-file">Export plots as png file<a class="anchor" aria-label="anchor" href="#export-plots-as-png-file"></a>
+</h2>
+<p>The following examples show how a figure can be exported as png
+file.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"kaplan_meier_plot.png"</span><span class="op">)</span>,</span>
+<span>    width <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">14</span>,</span>
+<span>    units <span class="op">=</span> <span class="st">"cm"</span>,</span>
+<span>    res <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          risktable.name.position<span class="op">=</span><span class="op">-</span><span class="fl">4</span>,</span>
+<span>          risktable.title.position<span class="op">=</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If a bigger font size is needed then this can be done efficiently by
+choosing a different size of the output file.</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"kaplan_meier_plot_big_font.png"</span><span class="op">)</span>,</span>
+<span>    width <span class="op">=</span> <span class="fl">20</span><span class="op">*</span><span class="fl">0.7</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">14</span><span class="op">*</span><span class="fl">0.7</span>,</span>
+<span>    units <span class="op">=</span> <span class="st">"cm"</span>,</span>
+<span>    res <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/surv.plot.html">surv.plot</a></span><span class="op">(</span><span class="va">fit.lung.arm.m</span>,</span>
+<span>          ylab <span class="op">=</span> <span class="st">"Estimated survival \n (probability)"</span>,</span>
+<span>          risktable.name.position<span class="op">=</span><span class="op">-</span><span class="fl">6.5</span>,</span>
+<span>          risktable.title.position<span class="op">=</span><span class="op">-</span><span class="fl">6.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -705,7 +743,7 @@ stratification factor for the calculation of the statistics.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Vithersan Somasundaram, Katrin Gysel, SCTO, Statistics.</p>
+  <p>Developed by Vithersan Somasundaram, Katrin Gysel, SAKK, CC, SCTO, Statistics.</p>
 </div>
 
 <div class="pkgdown-footer-right">
