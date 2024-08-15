@@ -76,13 +76,13 @@ surv.plot(fit.lung.arm.m,
 ## Legend position, name and title
 
 ```{r baseplot3}
-# Chose legend position and names of the arms
+# Choose legend position and names of the arms
 surv.plot(fit.lung.arm.m,
           legend.position = "bottomleft",
           legend.name = c("Male", "Female")
 )
 
-# Chose legend position manually and add a legend title
+# Choose legend position manually and add a legend title
 surv.plot(fit.lung.arm.m,
           legend.position = c(18, 0.9),
           legend.name = c("Male", "Female"),
@@ -90,7 +90,7 @@ surv.plot(fit.lung.arm.m,
 )
 ```
 
-## Axis limts, xticks and yticks
+## Axis limits, xticks and yticks
 
 ```{r baseplot4}
 surv.plot(fit.lung.arm.m,
@@ -157,7 +157,7 @@ surv.plot(fit.lung.arm.m,
 ```
 
 
-## Marging area customisation
+## Margin area customisation
 
 ```{r baseplot9}
 
@@ -285,6 +285,7 @@ surv.plot(fit.lung.arm.m,
 #  Drawing a segment line at 12 months
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
+          time.unit = "month",
           segment.timepoint = 12
 )
 ```
@@ -388,6 +389,7 @@ surv.plot(fit.lung.arm.m,
 
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
+          time.unit = "month",
           segment.timepoint = 18,
           y.unit = "percent",
           conf.int = 0.9
@@ -482,6 +484,8 @@ surv.plot(fit.lung.arm.m,
 
 # Predefined theme options
 
+The following themes are implemented: `SAKK`, `Lancet`, `JCO`, `WCLC`, `ESMO`
+
 ```{r Design1}
 
 surv.plot(fit.lung.arm.m,
@@ -495,9 +499,6 @@ surv.plot(fit.lung.arm.m,
           theme = "Lancet")
 
 ```
-
-
-
 
 
 # Multiple survival plots
