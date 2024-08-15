@@ -1448,7 +1448,7 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
 
   # Default title position values based on the number of strata
   factor_one <- 0.05 # arm == 1
-  factor_two <- 0.10 # arm >= 2
+  factor_two <- 0.15 # arm >= 2
 
   pos_factor <- ifelse(arm_no == 1, factor_one, factor_two)
 

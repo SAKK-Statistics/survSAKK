@@ -114,7 +114,9 @@ surv.plot(fit.lung.arm.m,
 surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           # Global adjustment
-          cex = 1.3
+          cex = 1.3,
+          risktable.name.position = -7,
+          risktable.title.position = -7
 )
 ```
 
@@ -221,7 +223,7 @@ surv.plot(fit.lung.arm.m,
 surv.plot(fit.lung.arm.m,
           legend.name = c("male", "female"),
           risktable.name.position = -6,
-          risktable.title.position = -7
+          risktable.title.position = -6
 )
 ```
 
@@ -574,4 +576,49 @@ surv.plot(fit.lung.arm.m,
           segment.confint = FALSE)
 close.screen(all = TRUE)
 ```
+
+
+# Export plots as png file
+
+The following examples show how a figure can be exported as png file. 
+
+```{r export1, eval = FALSE}
+
+png(file = file.path("kaplan_meier_plot.png"),
+    width = 20,
+    height = 14,
+    units = "cm",
+    res = 300)
+surv.plot(fit.lung.arm.m,
+          risktable.name.position=-4,
+          risktable.title.position=-4)
+dev.off()
+
+
+```
+
+If a bigger font size is needed then this can be done efficiently by choosing a different size of the output file. 
+
+```{r export2, eval = FALSE}
+
+png(file = file.path("kaplan_meier_plot_big_font.png"),
+    width = 20*0.7,
+    height = 14*0.7,
+    units = "cm",
+    res = 300)
+surv.plot(fit.lung.arm.m,
+          ylab = "Estimated survival \n (probability)",
+          risktable.name.position=-6.5,
+          risktable.title.position=-6.5)
+dev.off()
+
+
+```
+
+
+
+
+
+
+
 
