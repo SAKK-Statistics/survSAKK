@@ -13,11 +13,13 @@ knitr::opts_chunk$set(
   comment = "#>",
   echo = TRUE,
   eval = TRUE,
-  fig.height = 5,
-  fig.width = 7,
+  fig.height = 6,
+  fig.width = 9,
   fig.align='center'
 )
 ```
+
+Tests-3
 
 After inserting the `survfit{survival}` object into `surv.plot{survSAKK}`, we can create simple survival curves, allowing to visualize survival patterns and incorporate various statistics in our plot.
 
@@ -115,8 +117,8 @@ surv.plot(fit.lung.arm.m,
           legend.name = c("Male", "Female"),
           # Global adjustment
           cex = 1.3,
-          risktable.name.position = -7,
-          risktable.title.position = -7
+          risktable.name.position = -6,
+          risktable.title.position = -6
 )
 ```
 
