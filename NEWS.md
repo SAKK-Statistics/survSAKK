@@ -1,11 +1,15 @@
 # survSAKK 1.2.1
 
-Bug fix in risk table censoring
+This update brings a bug fix and small adaptions. 
 
-Adjustment of github page 
+🐛  **Bug Fix**
+  
+Correction of number of censored patients in risk table at time 0.
 
-- Vignette: How to save figures for reports and poster
-- Adaption citation
+🛠️ **Improvement of github page**
+  
+- Adaption in citation
+- Additional example in Vignette how to export figures for reports and posters
 
 --------------------------------------------------------------------------------
 
