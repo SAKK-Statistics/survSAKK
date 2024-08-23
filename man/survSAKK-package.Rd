@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Vithersan Somasundaram \email{Vithersan.Somasundaram@sakk.ch}
+\strong{Maintainer}: Vithersan Somasundaram \email{consulting@sakk.ch}
 
 Authors:
 \itemize{
