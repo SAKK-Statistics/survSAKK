@@ -9,3 +9,5 @@
 ^R_dev$
 ^doc$
 ^Meta$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
