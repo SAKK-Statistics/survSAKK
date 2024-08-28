@@ -1,6 +1,6 @@
 Package: survSAKK
 Type: Package
-Title: Create publication ready Kaplan-Meier plot
+Title: Create Publication Ready Kaplan-Meier Plot
 Version: 1.2.2
 Authors@R: 
     c(
