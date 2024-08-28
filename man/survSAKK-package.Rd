@@ -4,7 +4,7 @@
 \name{survSAKK-package}
 \alias{survSAKK}
 \alias{survSAKK-package}
-\title{survSAKK: Create publication ready Kaplan-Meier plot}
+\title{survSAKK: Create Publication Ready Kaplan-Meier Plot}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
