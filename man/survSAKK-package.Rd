@@ -19,7 +19,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Vithersan Somasundaram \email{Vithersan.Somasundaram@sakk.ch}
+\strong{Maintainer}: Katrin Gysel \email{Katrin.Gysel@sakk.ch}
+
+Authors:
+\itemize{
+  \item Vithersan Somasundaram \email{Vithersan.Somasundaram@sakk.ch}
+}
 
 Other contributors:
 \itemize{
