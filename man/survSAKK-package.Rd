@@ -4,11 +4,11 @@
 \name{survSAKK-package}
 \alias{survSAKK}
 \alias{survSAKK-package}
-\title{survSAKK: Create Publication Ready Kaplan-Meier Plot}
+\title{survSAKK: Create Publication Ready Kaplan-Meier Plots}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The survSAKK R package, incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
+The survSAKK R package incorporates various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plots.
 }
 \seealso{
 Useful links:
@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Katrin Gysel \email{Katrin.Gysel@sakk.ch}
+\strong{Maintainer}: Katrin Gysel \email{Katrin.Gysel@sakk.ch} [contributor]
 
 Authors:
 \itemize{

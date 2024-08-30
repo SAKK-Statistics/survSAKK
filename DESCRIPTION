@@ -1,17 +1,17 @@
 Package: survSAKK
 Type: Package
-Title: Create Publication Ready Kaplan-Meier Plot
+Title: Create Publication Ready Kaplan-Meier Plots
 Version: 1.2.3
 Authors@R: 
     c(
   person(given = "Vithersan", family = "Somasundaram", role = c("aut"), email = "Vithersan.Somasundaram@sakk.ch"),
-  person(given = "Katrin", family = "Gysel", role = c("cre"), email = "Katrin.Gysel@sakk.ch"),
+  person(given = "Katrin", family = "Gysel", role = c("cre", "ctb"), email = "Katrin.Gysel@sakk.ch"),
   person(given = "Stefanie", family = "Hayoz", role = c("ctb"), email = "Stefanie.Hayoz@sakk.ch"),
   person("SAKK, CC", role = c("cph", "fnd")),
   person("SCTO, Statistics", role = c("fnd"))
   )
-Description: The survSAKK R package, incorporate various statistics and layout 
-             customization options to enhance the efficiency and adaptability of the Kaplan-Meier plot.
+Description: The survSAKK R package incorporates various statistics and layout 
+             customization options to enhance the efficiency and adaptability of the Kaplan-Meier plots.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
