@@ -1238,7 +1238,8 @@ surv.plot <- function(
       ## Input >1 for segment.quantile()
     } else if (length(segment.quantile) > 1){
       if(!is.null(segment.main)) {warning("`segment.main` for more than one quantile is not supported")}
-      text(x = t(segment_x$quantile),
+      text(x = segment_x$quantile,
+           #x = t(segment_x$quantile),
            y = segment.quantile,
            labels = round(segment_x$quantile,0),
            pos = pos,
