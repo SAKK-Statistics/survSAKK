@@ -510,7 +510,6 @@ We present to ways how to combine plots: via `par(mfrow=c())` and via `split.scr
 ## Multiple plots using `par(mfrow=c())` 
 
 ```{r plots1, fig.height = 8, fig.width = 8}
-
 # Save old settings
 old_par_settings <- par(no.readonly = TRUE) 
 
@@ -542,15 +541,14 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position = -9,
           risktable.title.position = -9,
           risktable.cex = 0.7)
+```
 
-# reset the plotting area
-par(old_par_settings)
+```{r resetSetting, echo = FALSE, eval = TRUE}
+# Ensure that old settings are restored when the function exits
+on.exit(par(no.readonly = TRUE))
 ```
 
 ```{r plots2, fig.height = 10, fig.width = 8}
-
-# Save old settings
-old_par_settings <- par(no.readonly = TRUE)
 
 par(mfrow=c(2,1))
 # Plot 1
@@ -563,7 +561,11 @@ surv.plot(fit.lung.arm.m,
           col = c("cadetblue2", "cadetblue"), 
           time.unit = "month", 
           segment.timepoint = 6)
-par(old_par_settings)
+```
+
+```{r resetSetting, echo = FALSE, eval = TRUE}
+# Ensure that old settings are restored when the function exits
+on.exit(par(no.readonly = TRUE))
 ```
 
 ## Multiple plots using `split.screen()` 
@@ -583,6 +585,10 @@ surv.plot(fit.lung.arm.m,
 close.screen(all = TRUE)
 ```
 
+```{r resetSetting, echo = FALSE, eval = TRUE}
+# Ensure that old settings are restored when the function exits
+on.exit(par(no.readonly = TRUE))
+```
 
 # Export plots as png file
 
@@ -601,8 +607,6 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position=-4,
           risktable.title.position=-4)
 dev.off()
-
-
 ```
 
 ## Figure output for a poster
@@ -621,8 +625,6 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position=-6.5,
           risktable.title.position=-6.5)
 dev.off()
-
-
 ```
 
 
