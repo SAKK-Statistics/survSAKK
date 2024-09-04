@@ -535,6 +535,10 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
 
+  # Save users current par settings and reset them when exiting the function
+  par_settings_user <- par(no.readonly = TRUE)
+  on.exit(par(par_settings_user))
+
   if(is.logical(risktable)){
     if (risktable == TRUE){
       # Left margin
