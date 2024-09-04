@@ -15,7 +15,7 @@ Description: Incorporate various statistics and layout
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 URL: https://sakk-statistics.github.io/survSAKK/
 BugReports: https://github.com/SAKK-Statistics/survSAKK/issues
 Suggests: 
