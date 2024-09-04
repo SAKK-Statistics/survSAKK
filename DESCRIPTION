@@ -10,8 +10,7 @@ Authors@R:
   person("SAKK, CC", role = c("cph", "fnd")),
   person("SCTO, Statistics", role = c("fnd"))
   )
-Description: Incorporate various statistics and layout 
-             customization options to enhance the efficiency and adaptability of the Kaplan-Meier plots.
+Description: Incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plots.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
