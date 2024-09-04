@@ -398,10 +398,6 @@ surv.plot(fit.lung.arm.m,
 )
 ```
 
-
-
-
-
 # Include statistics
 
 There are three options for the parameter `stat` to display statistics:
@@ -509,10 +505,12 @@ We present to ways how to combine plots: via `par(mfrow=c())` and via `split.scr
 
 ## Multiple plots using `par(mfrow=c())` 
 
-```{r plots1, fig.height = 8, fig.width = 8}
+```{r default_setting, echo=FALSE, eval=TRUE}
 # Save old settings
-old_par_settings <- par(no.readonly = TRUE) 
+users_default_setting <- par(no.readonly = TRUE) 
+```
 
+```{r plots1, fig.height = 8, fig.width = 8}
 # Creating 4 sub-plot
 par(mfrow=c(2,2))
 
@@ -543,13 +541,7 @@ surv.plot(fit.lung.arm.m,
           risktable.cex = 0.7)
 ```
 
-```{r resetSetting, echo = FALSE, eval = TRUE}
-# Ensure that old settings are restored when the function exits
-on.exit(par(no.readonly = TRUE))
-```
-
 ```{r plots2, fig.height = 10, fig.width = 8}
-
 par(mfrow=c(2,1))
 # Plot 1
 surv.plot(fit.lung.arm.m, 
@@ -565,7 +557,7 @@ surv.plot(fit.lung.arm.m,
 
 ```{r resetSetting, echo = FALSE, eval = TRUE}
 # Ensure that old settings are restored when the function exits
-on.exit(par(no.readonly = TRUE))
+par(users_default_setting)
 ```
 
 ## Multiple plots using `split.screen()` 
@@ -583,11 +575,6 @@ surv.plot(fit.lung.arm.m,
           segment.quantile = 0.75, 
           segment.confint = FALSE)
 close.screen(all = TRUE)
-```
-
-```{r resetSetting, echo = FALSE, eval = TRUE}
-# Ensure that old settings are restored when the function exits
-on.exit(par(no.readonly = TRUE))
 ```
 
 # Export plots as png file
