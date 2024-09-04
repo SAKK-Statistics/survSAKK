@@ -511,6 +511,9 @@ We present to ways how to combine plots: via `par(mfrow=c())` and via `split.scr
 
 ```{r plots1, fig.height = 8, fig.width = 8}
 
+# Save old settings
+old_par_settings <- par(no.readonly = TRUE) 
+
 # Creating 4 sub-plot
 par(mfrow=c(2,2))
 
@@ -541,10 +544,13 @@ surv.plot(fit.lung.arm.m,
           risktable.cex = 0.7)
 
 # reset the plotting area
-par(mfrow=c(1,1))
+par(old_par_settings)
 ```
 
 ```{r plots2, fig.height = 10, fig.width = 8}
+
+# Save old settings
+old_par_settings <- par(no.readonly = TRUE)
 
 par(mfrow=c(2,1))
 # Plot 1
@@ -557,7 +563,7 @@ surv.plot(fit.lung.arm.m,
           col = c("cadetblue2", "cadetblue"), 
           time.unit = "month", 
           segment.timepoint = 6)
-par(mfrow=c(1,1))
+par(old_par_settings)
 ```
 
 ## Multiple plots using `split.screen()` 
