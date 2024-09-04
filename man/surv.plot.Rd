@@ -318,7 +318,9 @@ Kaplan-Meier curves of the input \code{fit},
 incorporating various statistics and layout option(s).
 }
 \description{
-\code{surv.plot(fit, ...)} returns Kaplan-Meier survival time curves.
+Provide an open-source, user-friendly tool designed to enhance the creation
+and customization of Kaplan-Meier plots and incorporating various statistics
+and layout customization options using \code{surv.plot(fit, ...)}.
 }
 \details{
 The survSAKK R package provides the \code{\link[=surv.plot]{surv.plot()}} function, facilitating
