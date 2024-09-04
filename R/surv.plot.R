@@ -1213,7 +1213,7 @@ surv.plot <- function(
            font = segment.font)
       ## Input >1 for segment.timepoint()
     } else if (length(segment.timepoint) > 1){
-      print("Note:` segment.main` for more than one timepoint is not supported")
+      if(!is.null(segment.main)) {warning("`segment.main` for more than one timepoint is not supported")}
         if(y.unit == "percent"){
           text(x = segment_x,
                y = segment_y$surv,
@@ -1233,7 +1233,7 @@ surv.plot <- function(
         }
       ## Input >1 for segment.quantile()
     } else if (length(segment.quantile) > 1){
-      print("Note: `segment.main` for more than one quantile is not supported")
+      if(!is.null(segment.main)) {warning("`segment.main` for more than one quantile is not supported")}
       text(x = t(segment_x$quantile),
            y = segment.quantile,
            labels = round(segment_x$quantile,0),
