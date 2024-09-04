@@ -82,10 +82,12 @@ test_that("Ensure `segment.quanitle` is handles without error.",{
   expect_silent(surv.plot(fit = survObject, segment.quantile = 0.5, segment.type = 3))
 })
 
-test_that("Ensure `segment.quanitle` is handles without error.",{
-  expect_output(surv.plot(fit = survObject, segment.quantile = c(0.25,0.5,0.75)),
-                "Note: `segment.main` for more than one quantile is not supported")
-})
+## KGY: Weshalb kam Funktion vorher durch diesen Test??
+# test_that("Ensure `segment.quanitle` is handles without error.",{
+#   expect_output(surv.plot(fit = survObject, segment.quantile = c(0.25,0.5,0.75)),
+#                 "Note: `segment.main` for more than one quantile is not supported")
+# })
+
 
 test_that("Ensure `segment.timpoint` is handles without error.",{
   expect_silent(surv.plot(fit = survObject, segment.timepoint = 360, segment.type = 1))
@@ -99,16 +101,18 @@ test_that("Ensure `segment.timpoint` is handles without error.",{
   expect_silent(surv.plot(fit = survObject, segment.timepoint = 360, segment.type = 3))
 })
 
-test_that("Ensure `segment.timpoint` is handles without error.",{
-  expect_output(surv.plot(fit = survObject, segment.timepoint = c(180, 360)),
-                "Note:` segment.main` for more than one timepoint is not supported")
-})
+## KGY: Weshalb kam Funktion vorher durch diesen Test??
+# test_that("Ensure `segment.timpoint` is handles without error.",{
+#   expect_output(surv.plot(fit = survObject, segment.timepoint = c(180, 360)),
+#                 "Note:` segment.main` for more than one timepoint is not supported")
+# })
 
-test_that("Ensure `segment.timpoint` is handles without error.",{
-  expect_output(surv.plot(fit = survObject,
-                          segment.timepoint = c(180, 360),
-                          y.unit = "percent"))
-})
+## KGY: Weshalb kam Funktion vorher durch diesen Test??
+# test_that("Ensure `segment.timpoint` is handles without error.",{
+#   expect_output(surv.plot(fit = survObject,
+#                           segment.timepoint = c(180, 360),
+#                           y.unit = "percent"))
+# })
 
 # Test 10: Check `segment.annotation` parameters
 test_that("surv.plot throws error for invalid risktable parameter", {
@@ -385,7 +389,7 @@ test_that("Check if CI with one arm can handle error.", {
                          segment.confint = FALSE))
 })
 
-# Test 21: Check Error message if no confidence interval should be displayed but number of arms is not equal to 2
+# Test 22: Check Error message if no confidence interval should be displayed but number of arms is not equal to 2
 test_that("Check if error with different segment type can handle error.", {
   expect_error(surv.plot(fit = survfit(Surv(time, status) ~ 1, data = lung),
                          segment.quantile = 0.50,
@@ -406,6 +410,28 @@ test_that("Check if error with different segment type can handle error.", {
                          segment.timepoint = 360,
                          segment.type = 3))
 })
+
+# Test 23: Check Warning message if segment at several time points or quantiles should be added and segment.main is not null
+test_that("Check if error with different segment type can handle error.", {
+  expect_warning(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                           segment.quantile = c(0.25, 0.5),
+                           segment.main = "Test"))
+})
+
+test_that("Check if error with different segment type can handle error.", {
+  expect_warning(surv.plot(fit = survfit(Surv(time, status) ~ sex, data = lung),
+                           segment.timepoint = c(300, 650),
+                           segment.main = "Test"))
+})
+
+
+
+
+
+
+
+
+
 
 
 
