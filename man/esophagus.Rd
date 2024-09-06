@@ -8,13 +8,13 @@
 A data frame with 297 patients and 8 variables:
 
 \describe{
-\item{\strong{ID}}{Patient Identification.}
-\item{\strong{sex}}{Biological sex of the patient.}
-\item{\strong{arm}}{Represents the group of patients being followed over time in the study.}
-\item{\strong{OS.time}}{Overall survival time in years.}
-\item{\strong{OS.event}}{Overall survival status (0 = censored, 1 = event).}
-\item{\strong{hist}}{Histological type of the tumor.}
-\item{\strong{PFS.time}}{Progression-free survival time in years.}
+\item{ID}{Patient Identification.}
+\item{sex}{Biological sex of the patient.}
+\item{arm}{Represents the group of patients being followed over time in the study.}
+\item{OS.time}{Overall survival time in years.}
+\item{OS.event}{Overall survival status (0 = censored, 1 = event).}
+\item{hist}{Histological type of the tumor.}
+\item{PFS.time}{Progression-free survival time in years.}
 \item{PFS.event}{Progression-free survival status (0 = censored, 1 = event).}
 }
 }
