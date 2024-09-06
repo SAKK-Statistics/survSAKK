@@ -7,6 +7,7 @@ This update brings a new data set named `esophagus`.
 - small bugs and typos
 
 --------------------------------------------------------------------------------
+
 # survSAKK 1.2.1
 
 This update brings a bug fix and small adaptions. 
