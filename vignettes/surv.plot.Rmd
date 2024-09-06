@@ -398,10 +398,6 @@ surv.plot(fit.lung.arm.m,
 )
 ```
 
-
-
-
-
 # Include statistics
 
 There are three options for the parameter `stat` to display statistics:
@@ -509,8 +505,12 @@ We present to ways how to combine plots: via `par(mfrow=c())` and via `split.scr
 
 ## Multiple plots using `par(mfrow=c())` 
 
-```{r plots1, fig.height = 8, fig.width = 8}
+```{r default_setting, echo=FALSE, eval=TRUE}
+# Save old settings
+users_default_setting <- par(no.readonly = TRUE) 
+```
 
+```{r plots1, fig.height = 8, fig.width = 8}
 # Creating 4 sub-plot
 par(mfrow=c(2,2))
 
@@ -539,13 +539,9 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position = -9,
           risktable.title.position = -9,
           risktable.cex = 0.7)
-
-# reset the plotting area
-par(mfrow=c(1,1))
 ```
 
 ```{r plots2, fig.height = 10, fig.width = 8}
-
 par(mfrow=c(2,1))
 # Plot 1
 surv.plot(fit.lung.arm.m, 
@@ -557,7 +553,11 @@ surv.plot(fit.lung.arm.m,
           col = c("cadetblue2", "cadetblue"), 
           time.unit = "month", 
           segment.timepoint = 6)
-par(mfrow=c(1,1))
+```
+
+```{r resetSetting, echo = FALSE, eval = TRUE}
+# Ensure that old settings are restored when the function exits
+par(users_default_setting)
 ```
 
 ## Multiple plots using `split.screen()` 
@@ -577,7 +577,6 @@ surv.plot(fit.lung.arm.m,
 close.screen(all = TRUE)
 ```
 
-
 # Export plots as png file
 
 ## Figure output for a report
@@ -595,8 +594,6 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position=-4,
           risktable.title.position=-4)
 dev.off()
-
-
 ```
 
 ## Figure output for a poster
@@ -615,8 +612,6 @@ surv.plot(fit.lung.arm.m,
           risktable.name.position=-6.5,
           risktable.title.position=-6.5)
 dev.off()
-
-
 ```
 
 

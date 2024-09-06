@@ -1,7 +1,11 @@
 #' Publication Ready Kaplan-Meier Estimator
 #'
 #' @description
-#' `surv.plot(fit, ...)` returns Kaplan-Meier survival time curves.
+#' Provide an open-source, user-friendly tool designed to enhance the creation
+#' and customization of Kaplan-Meier plots and incorporating various statistics
+#' and layout customization options using `surv.plot(fit, ...)`.
+#'
+#' @usage NULL
 #'
 #' @details
 #' The survSAKK R package provides the [`surv.plot()`] function, facilitating
@@ -315,8 +319,6 @@
 #'
 #' @export
 #'
-#' @usage NULL
-#'
 #' @examples
 #'  require(survival)
 #'  require(survSAKK)
@@ -535,6 +537,10 @@ surv.plot <- function(
   #----------------------------------------------------------------------------#
   # Note: default is par(mar = c(5, 4, 4, 2)+0.1)
 
+  # Save users current par settings and reset them when exiting the function
+  par_settings_user <- par(no.readonly = TRUE)
+  on.exit(par(par_settings_user))
+
   if(is.logical(risktable)){
     if (risktable == TRUE){
       # Left margin
@@ -704,7 +710,7 @@ surv.plot <- function(
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin
     xaxt = "n", yaxt = "n",               # Remove the original axes
     bty = bty,                            # Remove borders
-    ylim = c(0,1.03),                        # Set y-axis limits
+    ylim = c(0,1.03),                     # Set y-axis limits
     xlim = range(xticks),                 # Set x-axis limits
     xlab = "",                            # Draw x label
     ylab = ""                             # Draw y label
@@ -825,7 +831,7 @@ surv.plot <- function(
         y_coordinates_upr[seq(2, length(upper)*2, 2)] <- upper
         # Combine both y_coordinates
         y_coordinates <- c(y_coordinates_lwr, rev(y_coordinates_upr))
-        y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)      # todo: I'm not sure if this line is really correct. Should it not be: y_coordinates[is.na(y_coordinates)] <- 0 ..?
+        y_coordinates[is.na(y_coordinates)] <- min(lower,na.rm = T)
 
         # Draw CI band
         if(is.null(conf.band.col)){
@@ -1213,7 +1219,7 @@ surv.plot <- function(
            font = segment.font)
       ## Input >1 for segment.timepoint()
     } else if (length(segment.timepoint) > 1){
-      print("Note:` segment.main` for more than one timepoint is not supported")
+      if(!is.null(segment.main)) {warning("`segment.main` for more than one timepoint is not supported")}
         if(y.unit == "percent"){
           text(x = segment_x,
                y = segment_y$surv,
@@ -1233,10 +1239,10 @@ surv.plot <- function(
         }
       ## Input >1 for segment.quantile()
     } else if (length(segment.quantile) > 1){
-      print("Note: `segment.main` for more than one quantile is not supported")
+      if(!is.null(segment.main)) {warning("`segment.main` for more than one quantile is not supported")}
       text(x = t(segment_x$quantile),
            y = segment.quantile,
-           labels = round(segment_x$quantile,0),
+           labels = round(t(segment_x$quantile),0),
            pos = pos,
            col = rep(segment.annotation.col, each = length(segment.quantile)),
            cex = segment.cex,

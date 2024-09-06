@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The survSAKK R package incorporates various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plots.
+Incorporate various statistics and layout customization options to enhance the efficiency and adaptability of the Kaplan-Meier plots.
 }
 \seealso{
 Useful links:

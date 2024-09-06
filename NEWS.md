@@ -1,3 +1,12 @@
+# survSAKK 1.3.0
+
+This update brings a new data set named `esophagus`.
+
+🐛  **Bug Fix**
+
+- small bugs and typos
+
+--------------------------------------------------------------------------------
 # survSAKK 1.2.1
 
 This update brings a bug fix and small adaptions. 
