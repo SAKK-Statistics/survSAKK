@@ -5,7 +5,7 @@
 \alias{esophagus}
 \title{SAKK Esophagus Cancer Data}
 \format{
-A data frame with 297 patients and 8 variables:
+A data frame with 297 patients and 6 variables:
 
 \describe{
 \item{arm}{Treatment Arm.}
