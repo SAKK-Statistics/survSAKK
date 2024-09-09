@@ -8,9 +8,7 @@
 A data frame with 297 patients and 8 variables:
 
 \describe{
-\item{ID}{Patient Identification.}
-\item{sex}{Biological sex of the patient.}
-\item{arm}{Represents the group of patients being followed over time in the study.}
+\item{arm}{Treatment Arm.}
 \item{OS.time}{Overall survival time in years.}
 \item{OS.event}{Overall survival status (0 = censored, 1 = event).}
 \item{hist}{Histological type of the tumor.}
@@ -25,9 +23,9 @@ SAKK Competence Center, Switzerland
 esophagus
 }
 \description{
-This dataset contains survival data from patients with resectable esophageal carcinoma
-to compare the outcomes of two treatment regimens: chemoradiation followed by surgery
-with or without neoadjuvant treatment.
+This anonymized data contains survival data from patients with resectable esophageal carcinoma
+to compare the outcomes of two treatment regimens: Neoadjuvant chemotherapy
+followed by chemoradiation and surgery with and without cetuximab.
 }
 \references{
 Ruhstaller, T., Thuss-Patience, P., Hayoz, S., Schacher, S., Knorrenschild, J. R., Schnider, A., ... & Stahl, M. (2018). Neoadjuvant chemotherapy followed by chemoradiation and surgery with and without cetuximab in patients with resectable esophageal cancer: a randomized, open-label, phase III trial (SAKK 75/08). Annals of oncology, 29(6), 1386-1393.

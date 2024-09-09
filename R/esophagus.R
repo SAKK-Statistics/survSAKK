@@ -1,16 +1,16 @@
 #' SAKK Esophagus Cancer Data
 #'
 #' @description
-#' This dataset contains survival data from patients with resectable esophageal carcinoma
-#' to compare the outcomes of two treatment regimens: chemoradiation followed by surgery
-#' with or without neoadjuvant treatment.
+#' This anonymized data contains survival data from patients with resectable esophageal carcinoma
+#' to compare the outcomes of two treatment regimens: Neoadjuvant chemotherapy
+#' followed by chemoradiation and surgery with and without cetuximab.
+#'
+#'
 #'
 #' @format A data frame with 297 patients and 8 variables:
 #'
 #' \describe{
-#'   \item{ID}{Patient Identification.}
-#'   \item{sex}{Biological sex of the patient.}
-#'   \item{arm}{Represents the group of patients being followed over time in the study.}
+#'   \item{arm}{Treatment Arm.}
 #'   \item{OS.time}{Overall survival time in years.}
 #'   \item{OS.event}{Overall survival status (0 = censored, 1 = event).}
 #'   \item{hist}{Histological type of the tumor.}
