@@ -2,6 +2,8 @@
 
 This is a resubmission. In this version I have: 
 
+* Updated the esophagus dataset and minor typos.
+
 * Replaced informational messages with `message()` and `warning()` to align with R convention
 
 * Preservation of User Settings
