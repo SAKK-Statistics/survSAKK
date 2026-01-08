@@ -720,7 +720,7 @@ surv.plot <- function(
     lwd = rep(lwd.main, arm_no),
     # Add censoring information with ticks
     mark.time = censoring.mark,
-    mark = "/",
+    pch = 3,
     cex = censoring.cex,                  # increase mark for censored patients.
     # Modify Layout
     xaxs = "i", yaxs = "i",               # Start axis exactly from zero origin

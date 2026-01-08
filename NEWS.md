@@ -1,3 +1,12 @@
+# survSAKK 1.3.3
+
+Internal adaptation to make package compatible with new version if survival: 
+`pch` instead of `mark`.
+
+
+--------------------------------------------------------------------------------
+
+
 # survSAKK 1.3.2
 
 This update brings a new functionality `letter` and the possibility of adding several segments.
