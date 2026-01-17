@@ -1583,23 +1583,27 @@ if (length(segment.timepoint) == 1 | length(segment.quantile) == 1){
   #----------------------------------------------------------------------------#
   ### 5.1.2 Number at risk ####
   #----------------------------------------------------------------------------#
-  # Initialize a matrix 'n.risk.matrix' with zeros
-  n.risk.matrix <- matrix(0,nrow = length(xticks), ncol = arm_no)
+  # Use summary.survfit to get correct risk table values at specified time points
+  # This is the standard approach and correctly handles:
+  # - Interpolation at exact timepoints
 
-  # Loop over each arm and each time point defined by 'xticks'
-  for (stratum_i in 1:arm_no) {
-    for (x in 1:length(xticks)) {
-      # Find the indices where the survival time for the current group is
-      # greater than the current 'xticks'
-      index <- which(fit$time[grp == stratum_i] > xticks[x])
-      # If there are no such indices,
-      # set the corresponding element in 'n.risk.matrix' to 0
-      if (length(index) == 0)
-        n.risk.matrix[x,stratum_i] <- 0
-      else
-        # Otherwise, set the element to the minimum number at risk
-        # for the specified group and time point
-        n.risk.matrix[x,stratum_i] <- fit$n.risk[grp == stratum_i][min(index)]
+  # - Edge cases (times before first event, after last event)
+  # - Proper alignment with strata
+  summary_fit <- summary(fit, times = xticks, extend = TRUE)
+
+  # Initialize matrix
+  n.risk.matrix <- matrix(0, nrow = length(xticks), ncol = arm_no)
+
+  if (arm_no == 1) {
+    # Single arm - directly use n.risk from summary
+    n.risk.matrix[, 1] <- summary_fit$n.risk
+  } else {
+    # Multiple arms - extract n.risk by strata
+    strata_names <- names(fit$strata)
+    for (stratum_i in 1:arm_no) {
+      # Find indices for this stratum in summary output
+      strata_match <- summary_fit$strata == strata_names[stratum_i]
+      n.risk.matrix[, stratum_i] <- summary_fit$n.risk[strata_match]
     }
   }
 
